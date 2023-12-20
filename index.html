@@ -4,88 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <link rel="stylesheet" href="./Assets/style.css" />
+    <title>Dan Brandt Portfolio</title>
+    <link rel="stylesheet" href="./Assets/styletest2.css">
 </head>
 
 <body>
-    <header class="header">
-        <h1>Dan Brandt</h1>
-        <p>PORTFOLIO</p>
+    <header>
+        <nav class="navbar">
+            <div class="logo">DAN BRANDT</div>
+            <div class="nav-links">
+                <a href="#about">About Me</a>
+                <a href="#work">Work</a>
+                <a href="#contact">Contact Me</a>
+            </div>
+        </nav>
+        <div class="hero">
+            <img src="./Assets/me.jpg" alt="Dan with his cat, Beau">
+            <h1>Me and Beau</h1>
+        </div>
     </header>
 
-    <div class="navbar">
-        <a href="#about">About Me</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact Me</a>
-        <a href="#resume">Resume</a>
-    </div>
-
-    <div class="main">
+    <section id="about">
         <h2>About Me</h2>
-        <p>
-            This is where you'll add your 'About Me' content. Replace this text with your own.
-        </p>
+        <p>Hello! I'm Dan, a graphic designer with a knack for sales and a journey into self-taught coding. My current world is
+            a blend of creativity and life's simple joys, like my love for cats and the excitement of planning my
+            wedding with my amazing fiancé, Jess.</p>
+
+        <p>In my professional life, I merge the persuasive skills honed in sales with the artistic flair of design, and
+            now, the logic of coding. These experiences shape my approach, infusing each project with a unique
+            perspective.</p>
+
+        <p>Welcome to my portfolio, where each design and code line is part of my story a journey of passion,
+            learning, and meaningful creation. </p>
+    </section>
+
+    <section id="work">
+        <h2>Work</h2>
+        <div class="projects">
+            <div class="project-card" id="first-card">
+                <a href="https://github.com/DB-Doo/semantic-html">
+                    <img src="./Assets/first-project.png"
+                        alt="screengrab of the first homework assignment we did in Bootcamp">
+                </a>
+                <p>Surf Report</p>
+                <p>MERN Stack</p>
+            </div>
+
+    </section>
+    <div class="project-card">
+        <img src="./Assets/sikuli.png" alt="Dan's first script in python">
+        <p>Sikuli</p>
+        <p>This is a sample of one of my first scripts I wrote in python in a software called Sikuli. It looks
+            for defined images on the screen so its extremely customizable. I grew to make scripts for dozens of
+            games for fun in my free time. This script specifically was part of a larger one that made me money
+            passively in a game called "Rust"</p>
     </div>
 
-    <div class="portfolio">
-        <!-- Portfolio item 1 -->
-        <div class="portfolio-item">
-            <img src="path_to_your_image.jpg" alt="Project image">
-            <h3>Project Name</h3>
-            <p>Short description of the project.</p>
-            <p><strong>Tech stack:</strong> HTML, CSS, JS</p>
+    <div class="project-card">
+        <img src="./Assets/Beau.jpg" alt="My Cat Beau">
+        <p>My Cat Beau</p>
+        <p>I dont much more to show really so enjoy this placeholder image of my cat</p>
+    </div>
+
+    <!-- more project cards. copy one above and paste if i want more-->
+    </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <p>952.470.4566</p>
+        <p>danbrantt@gmail.com</p>
+        <div class="social-links">
+            <a href="https://github.com/DB-Doo">GitHub</a>
+            <a href="https://www.linkedin.com/in/danpbrandt/">LinkedIn</a>
         </div>
-        <!-- Repeat for other portfolio items -->
-    </div>
+    </section>
 
-    <div class="portfolio">
-        <!-- Portfolio item 1 -->
-        <div class="portfolio-item">
-            <img src="path_to_your_image.jpg" alt="Project image">
-            <h3>Project Name</h3>
-            <p>Short description of the project.</p>
-            <p><strong>Tech stack:</strong> HTML, CSS, JS</p>
-        </div>
-        <!-- Repeat for other portfolio items -->
-    </div>
-
-    <div class="portfolio">
-        <!-- Portfolio item 1 -->
-        <div class="portfolio-item">
-            <img src="path_to_your_image.jpg" alt="Project image">
-            <h3>Project Name</h3>
-            <p>Short description of the project.</p>
-            <p><strong>Tech stack:</strong> HTML, CSS, JS</p>
-        </div>
-        <!-- Repeat for other portfolio items -->
-    </div>
-
-    <div class="portfolio">
-        <!-- Portfolio item 1 -->
-        <div class="portfolio-item">
-            <img src="path_to_your_image.jpg" alt="Project image">
-            <h3>Project Name</h3>
-            <p>Short description of the project.</p>
-            <p><strong>Tech stack:</strong> HTML, CSS, JS</p>
-        </div>
-        <!-- Repeat for other portfolio items -->
-    </div>
-
-    <div class="portfolio">
-        <!-- Portfolio item 1 -->
-        <div class="portfolio-item portfolio-end">
-            <img src="path_to_your_image.jpg" alt="Project image">
-            <h3>Project Name</h3>
-            <p>Short description of the project.</p>
-            <p><strong>Tech stack:</strong> HTML, CSS, JS</p>
-        </div>
-        <!-- Repeat for other portfolio items -->
-    </div>
-
-    <div class="footer">
-        <p>Footer content goes here.</p>
-    </div>
+    <footer>
+        <p>&copy; 2023 Dan Brandt</p>
+    </footer>
 </body>
 
 </html>
