@@ -1,0 +1,122 @@
+/* Reset some default styles */
+body,h1,h2,p,a {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Navigation bar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+}
+
+.navbar .logo {
+    font-weight: bold;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+/* Hero section style ---- my pic*/
+.hero {
+    background-color: black ;
+    background-size: cover;
+    text-align: center;
+    padding: 5rem 1rem;
+    color: white;
+}
+
+.hero img {
+    width: 50%;
+    height: auto;
+}
+
+/* about section style */
+
+#about {
+    display: flex;
+    flex-direction: column;
+    padding: 5rem;
+    max-width: 500px;
+}
+
+#about p {
+    margin: 2rem, 0;
+}
+
+/* Section styles */
+section {
+    padding: 2rem;
+    text-align: center;
+}
+
+.projects {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#first-card {
+    width: 100%;
+    margin: 1rem;
+    background-color: #eee;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.first-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.project-card {
+    width: 20%;
+    margin: 0rem 4rem;
+    background-color: #eee;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+}
+
+.project-card p {
+    text-decoration: none; 
+}
+
+
+.project-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Contact styles */
+.contact {
+    background-color: #ddd;
+    padding: 2rem;
+    text-align: center;
+}
+
+.social-links a {
+    margin-right: 1rem;
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+}
