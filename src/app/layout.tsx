@@ -14,7 +14,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dan Brandt — Your app, built in days",
-  description: "Web apps, mobile apps, automation systems. You get a working product, not a mockup. Available for contract work in Kansas City.",
+  description:
+    "Web apps, mobile apps, automation systems. You get a working product, not a mockup. Available for contract work in Kansas City.",
+  openGraph: {
+    title: "Dan Brandt — Your app, built in days",
+    description:
+      "I ship working apps in days, not months. Web, mobile, automation. Kansas City contractor available now.",
+    url: "https://danbrandt.vercel.app",
+    siteName: "Dan Brandt",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dan Brandt — Your app, built in days",
+    description:
+      "I ship working apps in days, not months. Web, mobile, automation.",
+  },
+  metadataBase: new URL("https://danbrandt.vercel.app"),
 };
 
 export default function RootLayout({
