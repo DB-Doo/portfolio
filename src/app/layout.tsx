@@ -23,12 +23,21 @@ export const metadata: Metadata = {
     url: "https://dbdoo.dev",
     siteName: "Dan Brandt",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Dan Brandt — Your app, built in days",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Dan Brandt — Your app, built in days",
     description:
       "I ship working apps in days, not months. Web, mobile, automation.",
+    images: ["/og-image.png"],
   },
   metadataBase: new URL("https://dbdoo.dev"),
 };
