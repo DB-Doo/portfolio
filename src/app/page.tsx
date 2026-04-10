@@ -97,7 +97,7 @@ const stats = [
 ];
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
-const CALENDLY_URL = `mailto:${CONTACT_EMAIL}`; // TODO: replace with Calendly link
+const CALENDLY_URL = "https://calendly.com/dan-dbdoo/30min";
 
 export default function Home() {
   return (
@@ -125,9 +125,11 @@ export default function Home() {
           <div className="mt-7 flex items-center justify-center gap-x-4">
             <a
               href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition"
             >
-              Get in touch
+              Book a call
             </a>
             <a
               href="#projects"
@@ -328,18 +330,25 @@ export default function Home() {
           Tell me what you&rsquo;re building.
         </h2>
         <p className="text-neutral-400 mb-2">
-          Email me your idea. I reply within 24 hours with a scope and timeline.
+          Book a 30-minute call or email me your idea. I reply within 24 hours with a scope and timeline.
         </p>
         <p className="text-sm text-neutral-600 mb-8">
           Typical projects ship in 1-2 weeks.
         </p>
         <a
           href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
         >
-          Email me your idea
+          Book a call
         </a>
-        <p className="mt-3 text-sm text-neutral-500">{CONTACT_EMAIL}</p>
+        <p className="mt-3 text-sm text-neutral-500">
+          or email me at{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-neutral-400 hover:text-white transition">
+            {CONTACT_EMAIL}
+          </a>
+        </p>
       </section>
 
       {/* ===== FOOTER ===== */}
