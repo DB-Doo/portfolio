@@ -91,7 +91,8 @@ const stats = [
   { value: "10x", label: "Faster delivery", color: "text-amber-400" },
 ];
 
-const CALENDLY_URL = "mailto:dan.p.brandt@gmail.com"; // TODO: replace with Calendly link
+const CONTACT_EMAIL = "dan@dbdoo.dev";
+const CALENDLY_URL = `mailto:${CONTACT_EMAIL}`; // TODO: replace with Calendly link
 
 export default function Home() {
   return (
@@ -308,7 +309,7 @@ export default function Home() {
           href={CALENDLY_URL}
           className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
         >
-          dan.p.brandt@gmail.com
+          {CONTACT_EMAIL}
         </a>
       </section>
 
@@ -318,7 +319,7 @@ export default function Home() {
           <p>Dan Brandt &middot; Kansas City, KS</p>
           <div className="flex gap-6">
             <a
-              href="mailto:dan.p.brandt@gmail.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="hover:text-neutral-300 transition"
             >
               Email

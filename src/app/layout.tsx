@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "Dan Brandt — Your app, built in days",
     description:
       "I ship working apps in days, not months. Web, mobile, automation. Kansas City contractor available now.",
-    url: "https://danbrandt.vercel.app",
+    url: "https://dbdoo.dev",
     siteName: "Dan Brandt",
     type: "website",
   },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     description:
       "I ship working apps in days, not months. Web, mobile, automation.",
   },
-  metadataBase: new URL("https://danbrandt.vercel.app"),
+  metadataBase: new URL("https://dbdoo.dev"),
 };
 
 export default function RootLayout({
