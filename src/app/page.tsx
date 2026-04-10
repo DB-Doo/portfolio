@@ -70,20 +70,20 @@ const projects = [
   },
   {
     title: "Vault Daemon",
-    subtitle: "Personal automation system in Rust",
+    subtitle: "AI-powered second brain in Rust",
     badge: null,
     badgeColor: "",
     problem:
-      "My productivity system ran on 11 separate scripts and services — fragile and impossible to maintain.",
+      "My productivity system ran on 11 separate scripts — fragile and impossible to maintain. No intelligent search, no conversation understanding, no self-healing.",
     built:
-      "One Rust daemon: 10 cron timers, 7 file watchers, event-sourced architecture, Google Calendar sync, and self-healing diagnostics.",
-    result: "11 services → 1 process. Runs 24/7 unattended.",
-    tech: ["Rust", "SQLite", "Tokio", "Event Sourcing"],
+      "One Rust daemon with a local AI brain: 13 cron timers, 7 file watchers, event-sourced architecture, semantic search across 1,900+ notes, a local Gemma LLM for classification and summarization, and an Omi wearable integration that extracts commitments, insights, and task completions from real conversations.",
+    result: "11 services → 1 process. Understands my day from voice conversations. Auto-completes tasks. Runs 24/7 unattended.",
+    tech: ["Rust", "SQLite", "Tokio", "Ollama/Gemma", "Event Sourcing", "Embeddings"],
     timeline: "Ongoing",
     gradient: "from-orange-500 to-red-500",
     images: ["/images/obhook/dashboard.jpg"],
     bridge:
-      "APIs, data pipelines, cron jobs, background workers — I build the backend that keeps your product running.",
+      "APIs, data pipelines, cron jobs, local AI, background workers — I build the backend intelligence that keeps your product running.",
     bridgeColor: "bg-orange-500/5 text-orange-400",
     liveUrl: null,
   },
