@@ -369,7 +369,7 @@ export default function Home() {
               GitHub
             </a>
             <a
-              href="https://linkedin.com/in/dan-brandt"
+              href="https://www.linkedin.com/in/danpbrandt/"
               className="hover:text-neutral-300 transition"
             >
               LinkedIn
