@@ -112,12 +112,12 @@ export default function Home() {
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl leading-[1.1]">
             Your app.
             <br />
-            Built in days.
+            Built right, built fast.
           </h1>
           <p className="mt-5 text-lg leading-8 text-neutral-300">
-            Web apps, mobile apps, automation systems.
+            Working prototypes with polish &mdash; not just code that runs,
             <br className="hidden sm:block" />
-            You get a working prototype, not a mockup.
+            but products people actually enjoy using.
           </p>
           <p className="mt-2 text-sm text-neutral-500">
             Kansas City, KS &middot; Available for contract work
@@ -284,13 +284,35 @@ export default function Home() {
       <section className="mx-auto max-w-4xl px-6 py-12">
         <h2 className="text-2xl font-bold mb-4">About Me</h2>
         <p className="text-neutral-300 leading-relaxed max-w-2xl">
-          I&rsquo;m Dan &mdash; a builder in Kansas City who ships working
-          prototypes fast. I use AI-assisted development to move at startup
-          speed as a solo developer &mdash; iOS apps, web apps, Rust daemons,
-          and an Apple Watch assistant, most in under two weeks. I care about
-          how things feel to use, not just how they work under the hood. You
-          get a real product you can test with users, not a slide deck.
+          I&rsquo;m Dan &mdash; a product-obsessed developer in Kansas City.
+          I use AI-assisted development to ship at startup speed, but what
+          sets me apart is taste. I do 30+ test-and-fix cycles per session
+          because I obsess over how things feel &mdash; the button placement,
+          the loading states, the edge cases your users will hit. Anyone can
+          generate code with AI. I design products people love to use.
         </p>
+      </section>
+
+      {/* ===== HOW I'M DIFFERENT ===== */}
+      <section className="mx-auto max-w-4xl px-6 py-12">
+        <h2 className="text-2xl font-bold mb-6 text-center">Why Me Over a Bigger Agency</h2>
+        <div className="grid sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
+          <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
+            <p className="text-2xl mb-2">🎯</p>
+            <p className="font-semibold mb-2">Obsessive UX</p>
+            <p className="text-sm text-neutral-400">I don&rsquo;t ship &ldquo;good enough.&rdquo; I test, tweak, and polish until it feels right. 30+ iteration cycles per session.</p>
+          </div>
+          <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
+            <p className="text-2xl mb-2">⚡</p>
+            <p className="font-semibold mb-2">Startup Speed</p>
+            <p className="text-sm text-neutral-400">Working prototype in days, not months. You see real progress daily &mdash; no vanishing into a black box for weeks.</p>
+          </div>
+          <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
+            <p className="text-2xl mb-2">🤝</p>
+            <p className="font-semibold mb-2">You Talk to Me</p>
+            <p className="text-sm text-neutral-400">No project managers, no ticket queues. Direct line to the person building your product. Feedback loops in hours.</p>
+          </div>
+        </div>
       </section>
 
       {/* ===== HOW I WORK ===== */}
