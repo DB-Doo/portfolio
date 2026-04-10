@@ -14,9 +14,11 @@ const projects = [
     tech: ["Next.js", "Google Sheets API", "Google Drive", "Vercel"],
     timeline: "6 days",
     gradient: "from-blue-500 to-cyan-500",
-    images: [] as string[],
-    bridge: null,
-    bridgeColor: "",
+    images: ["/images/bidtracker/landing.png"],
+    bridge:
+      "This is what I do for clients. Your project gets the same speed and attention.",
+    bridgeColor: "bg-amber-500/5 text-amber-400",
+    liveUrl: "https://brandtprojects.vercel.app",
   },
   {
     title: "NinKeys",
@@ -40,6 +42,7 @@ const projects = [
     bridge:
       "If I can reverse-engineer an abandoned app and beat it in a week, your clearly-scoped project is a sure thing.",
     bridgeColor: "bg-purple-500/5 text-purple-400",
+    liveUrl: null,
   },
   {
     title: "HeyClaude",
@@ -63,6 +66,7 @@ const projects = [
     bridge:
       "Real-time apps, push notifications, voice interfaces, cross-device sync — the features modern products need.",
     bridgeColor: "bg-emerald-500/5 text-emerald-400",
+    liveUrl: null,
   },
   {
     title: "Vault Daemon",
@@ -81,6 +85,7 @@ const projects = [
     bridge:
       "APIs, data pipelines, cron jobs, background workers — I build the backend that keeps your product running.",
     bridgeColor: "bg-orange-500/5 text-orange-400",
+    liveUrl: null,
   },
 ];
 
@@ -88,7 +93,7 @@ const stats = [
   { value: "6", label: "Days to ship", color: "text-blue-400" },
   { value: "517", label: "Commits / week", color: "text-purple-400" },
   { value: "4", label: "Apps shipped", color: "text-emerald-400" },
-  { value: "10x", label: "Faster delivery", color: "text-amber-400" },
+  { value: "< 14", label: "Days avg", color: "text-amber-400" },
 ];
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
@@ -154,12 +159,12 @@ export default function Home() {
 
       {/* ===== PROJECTS ===== */}
       <section id="projects" className="mx-auto max-w-4xl px-6 py-14">
-        <h2 className="text-2xl font-bold mb-10">Recent Work</h2>
+        <h2 className="text-2xl font-bold mb-10">What I&rsquo;ve Built</h2>
         <div className="grid gap-8">
           {projects.map((project) => (
             <article
               key={project.title}
-              className={`rounded-xl border overflow-hidden transition ${
+              className={`rounded-xl border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/20 ${
                 project.badge
                   ? "bg-neutral-900 border-amber-500/20 hover:border-amber-500/40"
                   : "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
@@ -222,6 +227,18 @@ export default function Home() {
                       ))}
                     </div>
 
+                    {/* Live demo link */}
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block mt-4 text-sm font-medium text-blue-400 hover:text-blue-300 transition"
+                      >
+                        View live app &rarr;
+                      </a>
+                    )}
+
                     {/* Bridge line */}
                     {project.bridge && (
                       <div
@@ -259,6 +276,17 @@ export default function Home() {
             </article>
           ))}
         </div>
+      </section>
+
+      {/* ===== ABOUT ===== */}
+      <section className="mx-auto max-w-4xl px-6 py-12">
+        <h2 className="text-2xl font-bold mb-4">About Me</h2>
+        <p className="text-neutral-300 leading-relaxed max-w-2xl">
+          I&rsquo;m Dan &mdash; a builder in Kansas City who turns ideas into
+          working software fast. I&rsquo;ve shipped iOS apps, web apps, Rust
+          daemons, and an Apple Watch assistant, most in under two weeks. I care
+          about how things feel to use, not just how they work under the hood.
+        </p>
       </section>
 
       {/* ===== HOW I WORK ===== */}
@@ -309,8 +337,9 @@ export default function Home() {
           href={CALENDLY_URL}
           className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
         >
-          {CONTACT_EMAIL}
+          Email me your idea
         </a>
+        <p className="mt-3 text-sm text-neutral-500">{CONTACT_EMAIL}</p>
       </section>
 
       {/* ===== FOOTER ===== */}
@@ -329,6 +358,12 @@ export default function Home() {
               className="hover:text-neutral-300 transition"
             >
               GitHub
+            </a>
+            <a
+              href="https://linkedin.com/in/dan-brandt"
+              className="hover:text-neutral-300 transition"
+            >
+              LinkedIn
             </a>
           </div>
         </div>
