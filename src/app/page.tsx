@@ -117,7 +117,7 @@ export default function Home() {
           <p className="mt-5 text-lg leading-8 text-neutral-300">
             Web apps, mobile apps, automation systems.
             <br className="hidden sm:block" />
-            You get a working product, not a mockup.
+            You get a working prototype, not a mockup.
           </p>
           <p className="mt-2 text-sm text-neutral-500">
             Kansas City, KS &middot; Available for contract work

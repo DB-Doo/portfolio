@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Dan Brandt — Your app, built in days",
   description:
-    "Web apps, mobile apps, automation systems. You get a working product, not a mockup. Available for contract work in Kansas City.",
+    "Web apps, mobile apps, automation systems. You get a working prototype, not a mockup. Available for contract work in Kansas City.",
   openGraph: {
     title: "Dan Brandt — Your app, built in days",
     description:
-      "I ship working apps in days, not months. Web, mobile, automation. Kansas City contractor available now.",
+      "I ship working prototypes in days, not months. Web, mobile, automation. Kansas City contractor available now.",
     url: "https://dbdoo.dev",
     siteName: "Dan Brandt",
     type: "website",
