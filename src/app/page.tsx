@@ -121,7 +121,7 @@ export default function Home() {
               href={CALENDLY_URL}
               className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition"
             >
-              Book a free call
+              Get in touch
             </a>
             <a
               href="#projects"
@@ -158,7 +158,11 @@ export default function Home() {
           {projects.map((project) => (
             <article
               key={project.title}
-              className="bg-neutral-900 rounded-xl border border-neutral-800 hover:border-neutral-700 transition overflow-hidden"
+              className={`rounded-xl border overflow-hidden transition ${
+                project.badge
+                  ? "bg-neutral-900 border-amber-500/20 hover:border-amber-500/40"
+                  : "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
+              }`}
             >
               {/* Client badge */}
               {project.badge && (
@@ -295,7 +299,7 @@ export default function Home() {
           Tell me what you&rsquo;re building.
         </h2>
         <p className="text-neutral-400 mb-2">
-          15-minute call. I&rsquo;ll tell you how fast I can get you there.
+          Email me your idea. I reply within 24 hours with a scope and timeline.
         </p>
         <p className="text-sm text-neutral-600 mb-8">
           Typical projects ship in 1-2 weeks.
@@ -304,22 +308,29 @@ export default function Home() {
           href={CALENDLY_URL}
           className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
         >
-          Book a free call
+          dan.p.brandt@gmail.com
         </a>
-        <p className="mt-4 text-sm text-neutral-600">
-          dan.p.brandt@gmail.com &middot;{" "}
-          <a
-            href="https://github.com/DB-Doo"
-            className="text-neutral-500 hover:text-neutral-300 transition"
-          >
-            GitHub
-          </a>
-        </p>
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer className="border-t border-neutral-800 py-8 text-center text-sm text-neutral-600">
-        <p>Dan Brandt &middot; Kansas City, KS &middot; 2026</p>
+      <footer className="border-t border-neutral-800 py-8">
+        <div className="mx-auto max-w-4xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-600">
+          <p>Dan Brandt &middot; Kansas City, KS</p>
+          <div className="flex gap-6">
+            <a
+              href="mailto:dan.p.brandt@gmail.com"
+              className="hover:text-neutral-300 transition"
+            >
+              Email
+            </a>
+            <a
+              href="https://github.com/DB-Doo"
+              className="hover:text-neutral-300 transition"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
       </footer>
     </main>
   );
