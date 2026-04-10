@@ -97,23 +97,26 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
       {/* ===== HERO ===== */}
-      <section className="relative overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
+      <section className="relative overflow-hidden px-6 pt-16 pb-12 sm:pt-24 sm:pb-16 lg:px-8">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-neutral-950 to-neutral-950" />
         <div className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-medium text-blue-400 tracking-wide uppercase mb-4">
+            Dan Brandt
+          </p>
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl leading-[1.1]">
             Your app.
             <br />
             Built in days.
           </h1>
-          <p className="mt-6 text-lg leading-8 text-neutral-300">
+          <p className="mt-5 text-lg leading-8 text-neutral-300">
             Web apps, mobile apps, automation systems.
             <br className="hidden sm:block" />
             You get a working product, not a mockup.
           </p>
-          <p className="mt-3 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-neutral-500">
             Kansas City, KS &middot; Available for contract work
           </p>
-          <div className="mt-8 flex items-center justify-center gap-x-4">
+          <div className="mt-7 flex items-center justify-center gap-x-4">
             <a
               href={CALENDLY_URL}
               className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition"
@@ -127,23 +130,12 @@ export default function Home() {
               See my work &darr;
             </a>
           </div>
-
-          {/* Testimonial */}
-          <div className="mt-10 mx-auto max-w-md border-l-[3px] border-blue-600 bg-blue-600/5 rounded-r-lg px-5 py-4 text-left">
-            <p className="text-[15px] text-neutral-300 italic leading-relaxed">
-              &ldquo;Dan built our entire bid tracking system in 6 days. We use
-              it every day.&rdquo;
-            </p>
-            <p className="mt-2 text-sm text-neutral-500">
-              — Testimonial coming soon
-            </p>
-          </div>
         </div>
       </section>
 
       {/* ===== STATS BAR ===== */}
       <section className="border-y border-neutral-800/50 bg-neutral-900/30">
-        <div className="mx-auto max-w-4xl px-6 py-10">
+        <div className="mx-auto max-w-4xl px-6 py-8">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
             {stats.map((stat) => (
               <div key={stat.label}>
@@ -160,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* ===== PROJECTS ===== */}
-      <section id="projects" className="mx-auto max-w-4xl px-6 py-20">
+      <section id="projects" className="mx-auto max-w-4xl px-6 py-14">
         <h2 className="text-2xl font-bold mb-10">Recent Work</h2>
         <div className="grid gap-8">
           {projects.map((project) => (
@@ -298,7 +290,7 @@ export default function Home() {
       </section>
 
       {/* ===== BOTTOM CTA ===== */}
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
+      <section className="mx-auto max-w-4xl px-6 py-16 text-center">
         <h2 className="text-3xl font-bold mb-3">
           Tell me what you&rsquo;re building.
         </h2>
