@@ -3,13 +3,13 @@ import Image from "next/image";
 const projects = [
   {
     title: "Bid Tracker",
-    subtitle: "Full-stack bid management — intuitive for users, powerful for admins",
+    subtitle: "Full-stack bid management, intuitive for users and powerful for admins",
     badge: "CLIENT PROJECT",
     badgeColor: "bg-amber-500/20 text-amber-400",
     problem:
-      "A contractor was drowning in spreadsheets — bids scattered everywhere, costs untracked, receipt photos lost in text threads.",
+      "A contractor was drowning in spreadsheets. bids scattered everywhere, costs untracked, receipt photos lost in text threads.",
     built:
-      "Full web app with idea submission, competitive bidding, cost tracking with budget bars, receipt photo management via Google Drive, and a complete admin dashboard. The backend is Google Sheets + Drive + Apps Script — the admin can manage everything from the app's UI or drop into the spreadsheet directly. Zero learning curve either way.",
+      "Full web app with idea submission, competitive bidding, cost tracking with budget bars, receipt photo management via Google Drive, and a complete admin dashboard. The backend is Google Sheets + Drive + Apps Script. the admin can manage everything from the app's UI or drop into the spreadsheet directly. Zero learning curve either way.",
     result: "Shipped in 6 days. In daily use. Intuitive enough for non-technical users, powerful enough for full admin control.",
     tech: ["Next.js", "Google Sheets API", "Google Apps Script", "Google Drive", "Vercel"],
     timeline: "6 days",
@@ -26,7 +26,7 @@ const projects = [
     badge: null,
     badgeColor: "",
     problem:
-      "A beloved iOS keyboard was abandoned years ago — no source code, no documentation, nothing.",
+      "A beloved iOS keyboard was abandoned years ago, no source code, no documentation, nothing.",
     built:
       "Reverse-engineered the original from ARM binaries. Built a custom C++ prediction engine from scratch. 517 commits, 9,500 lines of production code in one week.",
     result:
@@ -64,7 +64,7 @@ const projects = [
       "/images/heyclaude/dashboard.jpg",
     ],
     bridge:
-      "Real-time apps, push notifications, voice interfaces, cross-device sync — the features modern products need.",
+      "Real-time apps, push notifications, voice interfaces, cross-device sync, the features modern products need.",
     bridgeColor: "bg-emerald-500/5 text-emerald-400",
     liveUrl: null,
   },
@@ -74,7 +74,7 @@ const projects = [
     badge: null,
     badgeColor: "",
     problem:
-      "My productivity system ran on 11 separate scripts — fragile and impossible to maintain. No intelligent search, no conversation understanding, no self-healing.",
+      "My productivity system ran on 11 separate scripts, fragile and impossible to maintain. No intelligent search, no conversation understanding, no self-healing.",
     built:
       "One Rust daemon with a local AI brain: 13 cron timers, 7 file watchers, event-sourced architecture, semantic search across 1,900+ notes, a local Gemma LLM for classification and summarization, and an Omi wearable integration that extracts commitments, insights, and task completions from real conversations.",
     result: "11 services → 1 process. Understands my day from voice conversations. Auto-completes tasks. Runs 24/7 unattended.",
@@ -83,7 +83,7 @@ const projects = [
     gradient: "from-orange-500 to-red-500",
     images: ["/images/obhook/dashboard.jpg"],
     bridge:
-      "APIs, data pipelines, cron jobs, local AI, background workers — I build the backend intelligence that keeps your product running.",
+      "APIs, data pipelines, cron jobs, local AI, background workers. I build the backend intelligence that keeps your product running.",
     bridgeColor: "bg-orange-500/5 text-orange-400",
     liveUrl: null,
   },
@@ -115,7 +115,7 @@ export default function Home() {
             Built right, built fast.
           </h1>
           <p className="mt-5 text-lg leading-8 text-neutral-300">
-            Working prototypes with polish &mdash; not just code that runs,
+            Working prototypes with polish, not just code that runs,
             <br className="hidden sm:block" />
             but products people actually enjoy using.
           </p>
@@ -284,10 +284,10 @@ export default function Home() {
       <section className="mx-auto max-w-4xl px-6 py-12">
         <h2 className="text-2xl font-bold mb-4">About Me</h2>
         <p className="text-neutral-300 leading-relaxed max-w-2xl">
-          I&rsquo;m Dan &mdash; a product-obsessed developer in Kansas City.
+          I&rsquo;m Dan, a product-obsessed developer in Kansas City.
           I use AI-assisted development to ship at startup speed, but what
           sets me apart is taste. I do 30+ test-and-fix cycles per session
-          because I obsess over how things feel &mdash; the button placement,
+          because I obsess over how things feel: the button placement,
           the loading states, the edge cases your users will hit. Anyone can
           generate code with AI. I design products people love to use.
         </p>
@@ -305,7 +305,7 @@ export default function Home() {
           <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
             <p className="text-2xl mb-2">⚡</p>
             <p className="font-semibold mb-2">Startup Speed</p>
-            <p className="text-sm text-neutral-400">Working prototype in days, not months. You see real progress daily &mdash; no vanishing into a black box for weeks.</p>
+            <p className="text-sm text-neutral-400">Working prototype in days, not months. You see real progress daily, no vanishing into a black box for weeks.</p>
           </div>
           <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
             <p className="text-2xl mb-2">🤝</p>
