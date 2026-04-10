@@ -3,15 +3,15 @@ import Image from "next/image";
 const projects = [
   {
     title: "Bid Tracker",
-    subtitle: "Construction bid management, idea to production",
+    subtitle: "Full-stack bid management — intuitive for users, powerful for admins",
     badge: "CLIENT PROJECT",
     badgeColor: "bg-amber-500/20 text-amber-400",
     problem:
-      "A contractor was drowning in spreadsheets — bids scattered everywhere, costs slipping through the cracks.",
+      "A contractor was drowning in spreadsheets — bids scattered everywhere, costs untracked, receipt photos lost in text threads.",
     built:
-      "Full web app with photo uploads, competitive bid comparison, admin dashboard, and a Google Sheets backend so the client manages their own data without learning new tools.",
-    result: "Shipped in 6 days. In daily use.",
-    tech: ["Next.js", "Google Sheets API", "Google Drive", "Vercel"],
+      "Full web app with idea submission, competitive bidding, cost tracking with budget bars, receipt photo management via Google Drive, and a complete admin dashboard. The backend is Google Sheets + Drive + Apps Script — the admin can manage everything from the app's UI or drop into the spreadsheet directly. Zero learning curve either way.",
+    result: "Shipped in 6 days. In daily use. Intuitive enough for non-technical users, powerful enough for full admin control.",
+    tech: ["Next.js", "Google Sheets API", "Google Apps Script", "Google Drive", "Vercel"],
     timeline: "6 days",
     gradient: "from-blue-500 to-cyan-500",
     images: ["/images/bidtracker/landing.png"],
