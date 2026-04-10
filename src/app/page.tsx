@@ -22,7 +22,7 @@ const projects = [
   },
   {
     title: "NinKeys",
-    subtitle: "The only modern dual-swipe keyboard for iOS",
+    subtitle: "A modern dual-swipe keyboard for iOS",
     badge: null,
     badgeColor: "",
     problem:
@@ -284,10 +284,12 @@ export default function Home() {
       <section className="mx-auto max-w-4xl px-6 py-12">
         <h2 className="text-2xl font-bold mb-4">About Me</h2>
         <p className="text-neutral-300 leading-relaxed max-w-2xl">
-          I&rsquo;m Dan &mdash; a builder in Kansas City who turns ideas into
-          working software fast. I&rsquo;ve shipped iOS apps, web apps, Rust
-          daemons, and an Apple Watch assistant, most in under two weeks. I care
-          about how things feel to use, not just how they work under the hood.
+          I&rsquo;m Dan &mdash; a builder in Kansas City who ships working
+          prototypes fast. I use AI-assisted development to move at startup
+          speed as a solo developer &mdash; iOS apps, web apps, Rust daemons,
+          and an Apple Watch assistant, most in under two weeks. I care about
+          how things feel to use, not just how they work under the hood. You
+          get a real product you can test with users, not a slide deck.
         </p>
       </section>
 
