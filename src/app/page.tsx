@@ -271,7 +271,7 @@ export default function Home() {
                           key={i}
                           url={src}
                           size="lg"
-                          className="shrink-0 !w-44 !h-28 sm:!w-full sm:!h-28 !rounded-lg !border-neutral-700 bg-neutral-800"
+                          className="shrink-0 !w-36 !h-24 sm:!w-full sm:!h-28 !rounded-lg !border-neutral-700 bg-neutral-800"
                           gallery={project.images}
                           galleryIndex={i}
                         />
