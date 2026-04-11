@@ -35,9 +35,10 @@ const projects = [
     timeline: "6 days",
     gradient: "from-purple-500 to-pink-500",
     images: [
-      "/images/ninkeys/keyboard-1.jpg",
-      "/images/ninkeys/keyboard-2.jpg",
-      "/images/ninkeys/keyboard-3.jpg",
+      "/images/ninkeys/keyboard.jpg",
+      "/images/ninkeys/gestures.jpg",
+      "/images/ninkeys/animations.jpg",
+      "/images/ninkeys/settings.jpg",
     ],
     bridge:
       "If I can reverse-engineer an abandoned app and beat it in a week, your clearly-scoped project is a sure thing.",
@@ -256,18 +257,18 @@ export default function Home() {
 
                   {/* Images */}
                   {project.images.length > 0 && (
-                    <div className="flex sm:flex-col gap-3 sm:w-44 shrink-0 overflow-x-auto sm:overflow-visible">
+                    <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0">
                       {project.images.map((src, i) => (
                         <div
                           key={i}
-                          className="relative shrink-0 w-32 h-56 sm:w-full sm:h-32 rounded-lg overflow-hidden border border-neutral-700"
+                          className="relative shrink-0 w-44 h-28 sm:w-full sm:h-28 rounded-lg overflow-hidden border border-neutral-700 bg-neutral-800"
                         >
                           <Image
                             src={src}
                             alt={`${project.title} screenshot ${i + 1}`}
                             fill
-                            className="object-cover"
-                            sizes="(min-width: 640px) 176px, 128px"
+                            className="object-contain"
+                            sizes="(min-width: 640px) 192px, 176px"
                           />
                         </div>
                       ))}
