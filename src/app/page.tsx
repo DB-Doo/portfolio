@@ -2,7 +2,6 @@ import Image from "next/image";
 import PhotoThumb from "@/components/PhotoLightbox";
 import { MagneticButton } from "@/components/MagneticButton";
 import { TiltCard } from "@/components/TiltCard";
-import { PhysicsTagsWrapper } from "@/components/PhysicsTagsWrapper";
 
 
 const projects = [
@@ -167,13 +166,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ===== INTERACTIVE TECH STACK ===== */}
-      <section className="mx-auto max-w-4xl px-6 py-10">
-        <h2 className="text-2xl font-bold mb-2">Tech Stack</h2>
-        <p className="text-sm text-neutral-500 mb-4">Grab them. Fling them. They have physics.</p>
-        <PhysicsTagsWrapper />
       </section>
 
       {/* ===== PROJECTS ===== */}
