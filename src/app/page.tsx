@@ -265,13 +265,13 @@ export default function Home() {
 
                   {/* Images */}
                   {project.images.length > 0 && (
-                    <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 max-w-full">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:w-48 sm:shrink-0">
                       {project.images.map((src, i) => (
                         <PhotoThumb
                           key={i}
                           url={src}
                           size="lg"
-                          className="shrink-0 !w-36 !h-24 sm:!w-full sm:!h-28 !rounded-lg !border-neutral-700 bg-neutral-800"
+                          className="!w-full !h-24 sm:!h-28 !rounded-lg !border-neutral-700 bg-neutral-800"
                           gallery={project.images}
                           galleryIndex={i}
                         />
