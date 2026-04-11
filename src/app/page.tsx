@@ -117,7 +117,7 @@ export default function Home() {
             Built right, built fast.
           </h1>
           <p className="mt-5 text-lg leading-8 text-neutral-300">
-            Working prototypes with polish, not just code that runs,
+            Working prototypes with polish, not just code that runs,{" "}
             <br className="hidden sm:block" />
             but products people actually enjoy using.
           </p>
