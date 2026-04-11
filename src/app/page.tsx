@@ -1,7 +1,22 @@
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import PhotoThumb from "@/components/PhotoLightbox";
 import { MagneticButton } from "@/components/MagneticButton";
 import { TiltCard } from "@/components/TiltCard";
+
+const PhysicsTags = dynamic(
+  () => import("@/components/PhysicsTags").then((m) => m.PhysicsTags),
+  { ssr: false }
+);
+
+const ALL_TECH = [
+  "Swift", "SwiftUI", "iOS", "C++", "Metal GPU",
+  "Next.js", "React", "TypeScript", "Tailwind CSS",
+  "Rust", "Python", "Node.js",
+  "Google Sheets API", "Google Drive", "Vercel",
+  "SQLite", "Tokio", "WebSocket",
+  "GLSL", "Matter.js", "Three.js",
+];
 
 const projects = [
   {
@@ -165,6 +180,13 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ===== INTERACTIVE TECH STACK ===== */}
+      <section className="mx-auto max-w-4xl px-6 py-10">
+        <h2 className="text-2xl font-bold mb-2">Tech Stack</h2>
+        <p className="text-sm text-neutral-500 mb-4">Grab them. Fling them. They have physics.</p>
+        <PhysicsTags tags={ALL_TECH} className="h-[320px] sm:h-[280px] rounded-xl border border-neutral-800 bg-neutral-950/50" />
       </section>
 
       {/* ===== PROJECTS ===== */}
