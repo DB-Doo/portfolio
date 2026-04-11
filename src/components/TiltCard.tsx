@@ -50,7 +50,7 @@ export function TiltCard({
       style={{ rotateX, rotateY, transformPerspective: 800 }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className={`transform-gpu ${className}`}
+      className={`transform-gpu w-full ${className}`}
     >
       {children}
     </motion.div>
