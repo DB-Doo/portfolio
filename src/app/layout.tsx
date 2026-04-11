@@ -8,6 +8,11 @@ const CustomCursor = dynamic(
   { ssr: false }
 );
 
+const SmoothScroll = dynamic(
+  () => import("@/components/SmoothScroll").then((m) => m.SmoothScroll),
+  { ssr: false }
+);
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -60,6 +65,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <CustomCursor />
+        <SmoothScroll />
         {children}
       </body>
     </html>
