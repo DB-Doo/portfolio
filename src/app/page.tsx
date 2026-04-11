@@ -303,21 +303,27 @@ export default function Home() {
       <section className="mx-auto max-w-4xl px-6 py-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Why Me Over a Bigger Agency</h2>
         <div className="grid sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
-            <p className="text-2xl mb-2">🎯</p>
-            <p className="font-semibold mb-2">Obsessive UX</p>
-            <p className="text-sm text-neutral-400">I don&rsquo;t ship &ldquo;good enough.&rdquo; I test, tweak, and polish until it feels right. 30+ iteration cycles per session.</p>
-          </div>
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
-            <p className="text-2xl mb-2">⚡</p>
-            <p className="font-semibold mb-2">Startup Speed</p>
-            <p className="text-sm text-neutral-400">Working prototype in days, not months. You see real progress daily, no vanishing into a black box for weeks.</p>
-          </div>
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center">
-            <p className="text-2xl mb-2">🤝</p>
-            <p className="font-semibold mb-2">You Talk to Me</p>
-            <p className="text-sm text-neutral-400">No project managers, no ticket queues. Direct line to the person building your product. Feedback loops in hours.</p>
-          </div>
+          <TiltCard tiltStrength={6}>
+            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center h-full">
+              <p className="text-2xl mb-2">🎯</p>
+              <p className="font-semibold mb-2">Obsessive UX</p>
+              <p className="text-sm text-neutral-400">I don&rsquo;t ship &ldquo;good enough.&rdquo; I test, tweak, and polish until it feels right. 30+ iteration cycles per session.</p>
+            </div>
+          </TiltCard>
+          <TiltCard tiltStrength={6}>
+            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center h-full">
+              <p className="text-2xl mb-2">⚡</p>
+              <p className="font-semibold mb-2">Startup Speed</p>
+              <p className="text-sm text-neutral-400">Working prototype in days, not months. You see real progress daily, no vanishing into a black box for weeks.</p>
+            </div>
+          </TiltCard>
+          <TiltCard tiltStrength={6}>
+            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center h-full">
+              <p className="text-2xl mb-2">🤝</p>
+              <p className="font-semibold mb-2">You Talk to Me</p>
+              <p className="text-sm text-neutral-400">No project managers, no ticket queues. Direct line to the person building your product. Feedback loops in hours.</p>
+            </div>
+          </TiltCard>
         </div>
       </section>
 
@@ -325,32 +331,38 @@ export default function Home() {
       <section className="mx-auto max-w-4xl px-6 py-16">
         <h2 className="text-2xl font-bold mb-8">How I Work</h2>
         <div className="grid sm:grid-cols-3 gap-6">
-          <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-blue-500">
-            <div className="text-lg font-bold mb-1">Day 1</div>
-            <div className="text-blue-400 text-sm mb-3">We talk</div>
-            <p className="text-sm text-neutral-400 leading-relaxed">
-              30-minute call. I learn your problem. You get a clear scope and
-              timeline before I write a single line of code.
-            </p>
-          </div>
-          <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-purple-500">
-            <div className="text-lg font-bold mb-1">Days 2-7</div>
-            <div className="text-purple-400 text-sm mb-3">
-              I build, you watch
+          <TiltCard tiltStrength={5}>
+            <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-blue-500 h-full">
+              <div className="text-lg font-bold mb-1">Day 1</div>
+              <div className="text-blue-400 text-sm mb-3">We talk</div>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                30-minute call. I learn your problem. You get a clear scope and
+                timeline before I write a single line of code.
+              </p>
             </div>
-            <p className="text-sm text-neutral-400 leading-relaxed">
-              Daily updates with working demos you can click. Feedback loops
-              measured in hours, not weeks.
+          </TiltCard>
+          <TiltCard tiltStrength={5}>
+            <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-purple-500 h-full">
+              <div className="text-lg font-bold mb-1">Days 2-7</div>
+              <div className="text-purple-400 text-sm mb-3">
+                I build, you watch
+              </div>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Daily updates with working demos you can click. Feedback loops
+                measured in hours, not weeks.
+              </p>
+            </div>
+          </TiltCard>
+          <TiltCard tiltStrength={5}>
+            <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-emerald-500 h-full">
+              <div className="text-lg font-bold mb-1">Week 2</div>
+              <div className="text-emerald-400 text-sm mb-3">You ship</div>
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Deployed, documented, yours. Hand it to a full-time team or keep
+                iterating with me.
             </p>
-          </div>
-          <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-emerald-500">
-            <div className="text-lg font-bold mb-1">Week 2</div>
-            <div className="text-emerald-400 text-sm mb-3">You ship</div>
-            <p className="text-sm text-neutral-400 leading-relaxed">
-              Deployed, documented, yours. Hand it to a full-time team or keep
-              iterating with me.
-            </p>
-          </div>
+            </div>
+          </TiltCard>
         </div>
       </section>
 
