@@ -1,5 +1,7 @@
 import Image from "next/image";
 import PhotoThumb from "@/components/PhotoLightbox";
+import { MagneticButton } from "@/components/MagneticButton";
+import { TiltCard } from "@/components/TiltCard";
 
 const projects = [
   {
@@ -125,20 +127,24 @@ export default function Home() {
             Kansas City, KS &middot; Available for contract work
           </p>
           <div className="mt-7 flex items-center justify-center gap-x-4">
-            <a
-              href={CALENDLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition"
-            >
-              Book a call
-            </a>
-            <a
-              href="#projects"
-              className="rounded-lg border border-neutral-700 px-6 py-3 text-sm font-semibold text-neutral-300 hover:border-neutral-500 hover:text-white transition"
+            <MagneticButton strength={0.3}>
+              <a
+                href={CALENDLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition inline-block"
+              >
+                Book a call
+              </a>
+            </MagneticButton>
+            <MagneticButton strength={0.3}>
+              <a
+                href="#projects"
+                className="rounded-lg border border-neutral-700 px-6 py-3 text-sm font-semibold text-neutral-300 hover:border-neutral-500 hover:text-white transition inline-block"
             >
               See my work &darr;
             </a>
+            </MagneticButton>
           </div>
         </div>
       </section>
@@ -166,9 +172,9 @@ export default function Home() {
         <h2 className="text-2xl font-bold mb-10">What I&rsquo;ve Built</h2>
         <div className="grid gap-8">
           {projects.map((project) => (
+            <TiltCard key={project.title} tiltStrength={4}>
             <article
-              key={project.title}
-              className={`rounded-xl border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/20 ${
+              className={`rounded-xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20 ${
                 project.badge
                   ? "bg-neutral-900 border-amber-500/20 hover:border-amber-500/40"
                   : "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
@@ -274,6 +280,7 @@ export default function Home() {
                 </div>
               </div>
             </article>
+            </TiltCard>
           ))}
         </div>
       </section>
@@ -357,14 +364,16 @@ export default function Home() {
         <p className="text-sm text-neutral-600 mb-8">
           Typical projects ship in 1-2 weeks.
         </p>
-        <a
-          href={CALENDLY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
-        >
-          Book a call
-        </a>
+        <MagneticButton strength={0.25}>
+          <a
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
+          >
+            Book a call
+          </a>
+        </MagneticButton>
         <p className="mt-3 text-sm text-neutral-500">
           or email me at{" "}
           <a href={`mailto:${CONTACT_EMAIL}`} className="text-neutral-400 hover:text-white transition">
