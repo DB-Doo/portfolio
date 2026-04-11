@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PhotoThumb from "@/components/PhotoLightbox";
 
 const projects = [
   {
@@ -259,18 +260,14 @@ export default function Home() {
                   {project.images.length > 0 && (
                     <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0">
                       {project.images.map((src, i) => (
-                        <div
+                        <PhotoThumb
                           key={i}
-                          className="relative shrink-0 w-44 h-28 sm:w-full sm:h-28 rounded-lg overflow-hidden border border-neutral-700 bg-neutral-800"
-                        >
-                          <Image
-                            src={src}
-                            alt={`${project.title} screenshot ${i + 1}`}
-                            fill
-                            className="object-contain"
-                            sizes="(min-width: 640px) 192px, 176px"
-                          />
-                        </div>
+                          url={src}
+                          size="lg"
+                          className="shrink-0 !w-44 !h-28 sm:!w-full sm:!h-28 !rounded-lg !border-neutral-700 bg-neutral-800"
+                          gallery={project.images}
+                          galleryIndex={i}
+                        />
                       ))}
                     </div>
                   )}
