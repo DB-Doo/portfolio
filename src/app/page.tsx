@@ -13,8 +13,8 @@ const projects = [
     problem:
       "A contractor was drowning in spreadsheets. bids scattered everywhere, costs untracked, receipt photos lost in text threads.",
     built:
-      "Full web app with idea submission, competitive bidding, cost tracking with budget bars, receipt photo management via Google Drive, and a complete admin dashboard. The backend is Google Sheets + Drive + Apps Script. the admin can manage everything from the app's UI or drop into the spreadsheet directly. Zero learning curve either way.",
-    result: "Shipped in 6 days. In daily use. Intuitive enough for non-technical users, powerful enough for full admin control.",
+      "Full web app: idea submission, competitive bidding, cost tracking with budget bars, receipt photos via Google Drive, and admin dashboard. Google Sheets + Apps Script backend, manageable from the app UI or the spreadsheet directly.",
+    result: "Shipped in 6 days. In daily use by the client.",
     tech: ["Next.js", "Google Sheets API", "Google Apps Script", "Google Drive", "Vercel"],
     timeline: "6 days",
     gradient: "from-blue-500 to-cyan-500",
