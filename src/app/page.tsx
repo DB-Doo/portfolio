@@ -169,7 +169,7 @@ export default function Home() {
       </section>
 
       {/* ===== PROJECTS ===== */}
-      <section id="projects" className="mx-auto max-w-4xl px-6 py-14">
+      <section id="projects" className="mx-auto max-w-4xl px-6 py-14 overflow-hidden">
         <h2 className="text-2xl font-bold mb-10">What I&rsquo;ve Built</h2>
         <div className="grid gap-8">
           {projects.map((project) => (
@@ -265,7 +265,7 @@ export default function Home() {
 
                   {/* Images */}
                   {project.images.length > 0 && (
-                    <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0">
+                    <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 max-w-full">
                       {project.images.map((src, i) => (
                         <PhotoThumb
                           key={i}
