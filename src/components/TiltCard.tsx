@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   motion,
   useMotionValue,
@@ -43,6 +44,19 @@ export function TiltCard({
     x.set(0.5);
     y.set(0.5);
   };
+
+  // Disable tilt on mobile (touch devices don't hover, and perspective causes overflow)
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth < 640);
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (isMobile) {
+    return <div className={`w-full ${className}`}>{children}</div>;
+  }
 
   return (
     <motion.div
