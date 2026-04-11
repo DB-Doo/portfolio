@@ -14,7 +14,7 @@ const projects = [
     tech: ["Next.js", "Google Sheets API", "Google Apps Script", "Google Drive", "Vercel"],
     timeline: "6 days",
     gradient: "from-blue-500 to-cyan-500",
-    images: ["/images/bidtracker/landing.png"],
+    images: ["/images/bidtracker/landing.png", "/images/bidtracker/dashboard.png", "/images/bidtracker/admin.png", "/images/bidtracker/projects.png"],
     bridge:
       "This is what I do for clients. Your project gets the same speed and attention.",
     bridgeColor: "bg-amber-500/5 text-amber-400",
