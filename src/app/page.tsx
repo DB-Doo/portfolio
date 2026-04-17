@@ -22,7 +22,7 @@ const projects = [
     bridge:
       "This is what I do for clients. Your project gets the same speed and attention.",
     bridgeColor: "bg-amber-500/5 text-amber-400",
-    liveUrl: "https://bid-tracker-demo.vercel.app",
+    liveUrl: "https://dbdoo.dev/bid-tracker-demo",
   },
   {
     title: "NinKeys",
