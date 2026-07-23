@@ -41,10 +41,10 @@ export default function PhotoThumb({ url: rawUrl, size = "md", className, galler
     requestAnimationFrame(() => setVisible(true));
   }
 
-  function closeLightbox() {
+  const closeLightbox = useCallback(() => {
     setVisible(false);
     setTimeout(() => setFullscreen(false), 200);
-  }
+  }, []);
 
   const goNext = useCallback(() => {
     if (currentIndex < allUrls.length - 1) setCurrentIndex((i) => i + 1);
@@ -56,7 +56,6 @@ export default function PhotoThumb({ url: rawUrl, size = "md", className, galler
 
   const currentUrl = parsePhotoUrl(allUrls[currentIndex] || rawUrl).url;
 
-  const sizeClasses = { sm: "w-10 h-10", md: "w-20 h-20", lg: "w-24 h-24" };
   const sizePx = { sm: 40, md: 80, lg: 96 };
   const thumbSrc = thumb || (!thumbFailed ? proxyUrl(url) : "");
 
@@ -79,8 +78,7 @@ export default function PhotoThumb({ url: rawUrl, size = "md", className, galler
         document.body.style.overflow = "";
       };
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fullscreen, goNext, goPrev]);
+  }, [closeLightbox, fullscreen, goNext, goPrev]);
 
   // Swipe navigation disabled — use arrow buttons only.
   // Swipe gestures conflict with pinch-to-zoom on mobile.

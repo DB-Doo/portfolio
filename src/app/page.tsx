@@ -1,4 +1,3 @@
-import Image from "next/image";
 import PhotoThumb from "@/components/PhotoLightbox";
 import { MagneticButton } from "@/components/MagneticButton";
 import { TiltCard } from "@/components/TiltCard";

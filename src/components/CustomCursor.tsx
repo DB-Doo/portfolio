@@ -9,52 +9,47 @@ export function CustomCursor() {
   const followerX = useSpring(x, { stiffness: 80, damping: 20 });
   const followerY = useSpring(y, { stiffness: 80, damping: 20 });
   const [hovered, setHovered] = useState(false);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Only show custom cursor on desktop with hover capability
-    if (!window.matchMedia("(hover: hover)").matches) return;
-
-    setVisible(true);
-
     const move = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
     };
-
-    const addHoverListeners = () => {
-      document
-        .querySelectorAll("a, button, [data-hover], [role='button']")
-        .forEach((el) => {
-          el.addEventListener("mouseenter", () => setHovered(true));
-          el.addEventListener("mouseleave", () => setHovered(false));
-        });
+    const interactiveSelector = "a, button, [data-hover], [role='button']";
+    const updateHover = (event: PointerEvent) => {
+      const target =
+        event.type === "pointerout" ? event.relatedTarget : event.target;
+      setHovered(
+        target instanceof Element && target.closest(interactiveSelector) !== null
+      );
     };
 
     window.addEventListener("mousemove", move);
-
-    // Initial + observe DOM changes for dynamically added elements
-    addHoverListeners();
-    const observer = new MutationObserver(addHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener("pointerover", updateHover);
+    document.addEventListener("pointerout", updateHover);
 
     return () => {
       window.removeEventListener("mousemove", move);
-      observer.disconnect();
+      document.removeEventListener("pointerover", updateHover);
+      document.removeEventListener("pointerout", updateHover);
     };
   }, [x, y]);
 
-  if (!visible) return null;
-
   return (
     <>
-      <style>{`@media (hover: hover) { * { cursor: none !important; } }`}</style>
+      <style>{`
+        .dbdoo-custom-cursor { display: none; }
+        @media (hover: hover) {
+          * { cursor: none !important; }
+          .dbdoo-custom-cursor { display: block; }
+        }
+      `}</style>
       <motion.div
-        className="fixed w-2 h-2 bg-blue-400 rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="dbdoo-custom-cursor fixed w-2 h-2 bg-blue-400 rounded-full pointer-events-none z-[9999] mix-blend-difference"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
       />
       <motion.div
-        className="fixed rounded-full border border-blue-400/40 pointer-events-none z-[9998]"
+        className="dbdoo-custom-cursor fixed rounded-full border border-blue-400/40 pointer-events-none z-[9998]"
         style={{
           x: followerX,
           y: followerY,

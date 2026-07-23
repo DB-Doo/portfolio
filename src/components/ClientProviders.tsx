@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 const CustomCursor = dynamic(
@@ -14,10 +15,13 @@ const SmoothScroll = dynamic(
 );
 
 export function ClientProviders({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isPolicySurface = pathname.startsWith("/doto-launcher/privacy");
+
   return (
     <>
-      <CustomCursor />
-      <SmoothScroll />
+      {!isPolicySurface && <CustomCursor />}
+      {!isPolicySurface && <SmoothScroll />}
       {children}
     </>
   );
