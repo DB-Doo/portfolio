@@ -263,18 +263,29 @@ export default function DotoLauncherPrivacyPolicy() {
                     >
                       the Norwegian Meteorological Institute (MET Norway)
                     </a>{" "}
-                    to retrieve a forecast. Current-location coordinates are
-                    rounded to about 0.1 degrees first. For a custom city,
-                    Android&apos;s configured geocoder receives the city name
-                    and returns coordinates; dot.o sends those coordinates to
-                    MET with no more than four decimal places. The configured
-                    geocoder may also process coordinates to produce a readable
-                    place label. MET receives ordinary network metadata such as
-                    an IP address and may log the IP address and coordinates
-                    under its terms. While a current-location weather widget is
-                    active in the foreground, dot.o may refresh approximately
-                    every 30 minutes; it does not run a continuous background
-                    location tracker.
+                    to retrieve a forecast. If precise location was already
+                    enabled for another feature, Android may briefly provide a
+                    more precise fix. dot.o immediately rounds a
+                    current-location fix to about 0.1 degrees before caching it
+                    or sending it to MET. For a custom city, Android&apos;s
+                    configured geocoder receives the city name and returns
+                    coordinates; dot.o sends those coordinates to MET with no
+                    more than four decimal places. The configured geocoder may
+                    also process rounded current-location coordinates to
+                    produce a readable place label. MET receives ordinary
+                    network metadata such as an IP address and may log the IP
+                    address and coordinates under its terms. While a
+                    current-location weather widget is active in the
+                    foreground, dot.o may refresh approximately every 30
+                    minutes; it does not run a continuous background location
+                    tracker.
+                  </p>
+                  <p className="mt-3">
+                    If the Google Weather app is unavailable, tapping a weather
+                    widget can open an HTTPS Google Search URL containing the
+                    readable city or place label. That search is handled by
+                    Google and the selected browser under their respective
+                    privacy policies.
                   </p>
                   <p className="mt-3">
                     Forecast data © the Norwegian Meteorological Institute,
@@ -317,9 +328,10 @@ export default function DotoLauncherPrivacyPolicy() {
                   </h3>
                   <p className="mt-2">
                     Android provides permission screens, notification access,
-                    app usage access, geocoding, and encrypted-capable backup or
-                    device transfer. Those services are governed by your device
-                    provider&apos;s terms and settings.
+                    app usage access, geocoding, encrypted-capable cloud backup,
+                    and device transfer. Cloud backup and device transfer are
+                    separate Android system paths governed by your device or
+                    account provider&apos;s terms and settings.
                   </p>
                 </div>
               </div>
@@ -354,9 +366,11 @@ export default function DotoLauncherPrivacyPolicy() {
                 <p>
                   Launcher layout, notes, appearance settings, widget
                   configuration, custom weather city, and the selected weather
-                  location mode are stored locally. Android backup or
-                  device-transfer services may transfer this selected state
-                  when the destination supports encryption.
+                  location mode are stored locally. Android cloud backup may
+                  transfer this selected state only through a transport that
+                  reports encryption capability. Android device transfer is a
+                  separate system path and may also move the same allowlisted
+                  state.
                 </p>
                 <p>
                   Cached weather coordinates, forecast responses, active
@@ -375,7 +389,10 @@ export default function DotoLauncherPrivacyPolicy() {
                   Local launcher state remains until you change it, clear the
                   app&apos;s storage, or uninstall dot.o. Active notification,
                   audio, Wi-Fi, and connected-device snapshots are kept only as
-                  needed for the live feature.
+                  needed for the live feature. Cached weather locations and
+                  forecasts may remain until they are refreshed, replaced,
+                  cleared with app storage, or removed when dot.o is
+                  uninstalled.
                 </p>
                 <p>
                   You can delete local data from{" "}
