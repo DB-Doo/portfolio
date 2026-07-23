@@ -269,11 +269,11 @@ export default function DotoLauncherPrivacyPolicy() {
                     current-location fix to about 0.1 degrees before caching it
                     or sending it to MET. For a custom city, Android&apos;s
                     configured geocoder receives the city name and returns
-                    coordinates; dot.o sends those coordinates to MET with no
-                    more than four decimal places. The configured geocoder may
-                    also process rounded current-location coordinates to
-                    produce a readable place label. MET receives ordinary
-                    network metadata such as an IP address and may log the IP
+                    coordinates; dot.o also rounds those coordinates to about
+                    0.1 degrees before sending them to MET. The configured
+                    geocoder may also process rounded current-location
+                    coordinates to produce a readable place label. MET receives
+                    ordinary network metadata such as an IP address and may log the IP
                     address and coordinates under its terms. While a
                     current-location weather widget is active in the
                     foreground, dot.o may refresh approximately every 30
@@ -307,9 +307,14 @@ export default function DotoLauncherPrivacyPolicy() {
                   </h3>
                   <p className="mt-2">
                     Google Play processes the optional one-time dot.o Pro
-                    purchase and ownership checks. dot.o receives purchase
-                    status and keeps only a local ownership record and
-                    verification time. Google Play Billing may send technical
+                    purchase and ownership checks. dot.o receives the product
+                    ID, purchase and acknowledgment status, and a purchase
+                    token that it returns to Play for acknowledgment. The token
+                    is never logged, saved, backed up, or sent to a dot.o
+                    server. dot.o keeps only a local ownership record and
+                    verification time, uses a maximum seven-day offline grace,
+                    and deletes that local record when you clear app storage or
+                    uninstall. Google Play Billing may send technical
                     and operational diagnostics to Google under{" "}
                     <a
                       href="https://policies.google.com/privacy"
