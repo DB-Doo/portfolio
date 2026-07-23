@@ -15,7 +15,7 @@ JavaScript.
 export const metadata: Metadata = {
   title: "dot.o Launcher Privacy Policy | dbdoo.dev",
   description:
-    "Privacy policy for dot.o Launcher, including permissions, local processing, optional Shizuku high fidelity, weather, Google Play Billing, and Android backup.",
+    "Privacy policy for the Google Play edition of dot.o Launcher, including permissions, local processing, MET Norway weather, Google Play Billing, and Android backup.",
   alternates: {
     canonical: "/doto-launcher/privacy",
   },
@@ -60,7 +60,7 @@ const localFeatures = [
   {
     name: "Music visualization",
     detail:
-      "Standard visualization reads live audio levels through Android. Audio is processed while a visualizer is active and is not recorded, saved, or uploaded. High Fidelity is a separate optional Shizuku mode described below.",
+      "Visualization reads live audio levels through Android. Audio is processed while a visualizer is active and is not recorded, saved, or uploaded.",
   },
   {
     name: "Notes and personalization",
@@ -73,11 +73,13 @@ const permissions = [
   ["Notifications", "Badges, notification widgets, opening notifications, and media controls."],
   ["Calendar", "Agenda widgets that you choose to use."],
   ["Microphone / audio", "Live Android audio levels for music visualization; audio is not saved."],
-  ["Approximate location", "Current-location weather when you explicitly select it or refresh it."],
+  [
+    "Approximate location",
+    "Current-location weather after you explicitly select it, including bounded foreground refreshes while its widget is active.",
+  ],
   ["Precise location", "Android requires this access to reveal the connected Wi-Fi network name."],
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
-  ["Shizuku", "Optional High Fidelity output-loopback capture with shell privileges."],
 ] as const;
 
 function SectionHeading({
@@ -138,7 +140,7 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective July 22, 2026
+              Effective July 23, 2026
               <br />
               Version 1.0
             </p>
@@ -197,6 +199,10 @@ export default function DotoLauncherPrivacyPolicy() {
                 Most information stays on your device. The limited cases where
                 information can leave the device are explained below.
               </p>
+              <p className="mt-4 max-w-2xl font-mono text-xs leading-6 text-neutral-500">
+                This policy covers the Google Play edition with package ID
+                dev.dbdoo.launcher.
+              </p>
               <div className="mt-9 border-y border-neutral-800 py-6">
                 <dl className="grid gap-6 sm:grid-cols-3">
                   <div>
@@ -248,20 +254,40 @@ export default function DotoLauncherPrivacyPolicy() {
                     Weather and place names
                   </h3>
                   <p className="mt-2">
-                    Weather sends either the custom city you enter or rounded
-                    approximate coordinates to{" "}
+                    Weather sends forecast coordinates to{" "}
                     <a
-                      href="https://open-meteo.com/en/terms"
+                      href="https://api.met.no/doc/TermsOfService"
                       target="_blank"
                       rel="noreferrer"
                       className="text-cyan-300 underline decoration-cyan-800 underline-offset-4 hover:decoration-cyan-300"
                     >
-                      Open-Meteo
+                      the Norwegian Meteorological Institute (MET Norway)
                     </a>{" "}
-                    to retrieve a forecast. Android&apos;s configured geocoding
-                    service may also process coordinates to produce a readable
-                    place label. dot.o does not track location in the
-                    background.
+                    to retrieve a forecast. Current-location coordinates are
+                    rounded to about 0.1 degrees first. For a custom city,
+                    Android&apos;s configured geocoder receives the city name
+                    and returns coordinates; dot.o sends those coordinates to
+                    MET with no more than four decimal places. The configured
+                    geocoder may also process coordinates to produce a readable
+                    place label. MET receives ordinary network metadata such as
+                    an IP address and may log the IP address and coordinates
+                    under its terms. While a current-location weather widget is
+                    active in the foreground, dot.o may refresh approximately
+                    every 30 minutes; it does not run a continuous background
+                    location tracker.
+                  </p>
+                  <p className="mt-3">
+                    Forecast data © the Norwegian Meteorological Institute,
+                    licensed under{" "}
+                    <a
+                      href="https://creativecommons.org/licenses/by/4.0/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-cyan-300 underline decoration-cyan-800 underline-offset-4 hover:decoration-cyan-300"
+                    >
+                      CC BY 4.0
+                    </a>
+                    , and adapted by dot.o.
                   </p>
                 </div>
                 <div>
@@ -283,20 +309,6 @@ export default function DotoLauncherPrivacyPolicy() {
                       Google&apos;s Privacy Policy
                     </a>
                     . dot.o does not receive your payment-card details.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-base font-medium text-white">
-                    Optional Shizuku High Fidelity
-                  </h3>
-                  <p className="mt-2">
-                    Shizuku is a separately installed, user-controlled bridge.
-                    If you explicitly choose High Fidelity and approve the
-                    disclosure, dot.o asks Shizuku to run a narrow
-                    audio-capture service with shell privileges and create a
-                    live output-loopback stream. Audio remains on the device
-                    and is not recorded or saved. Automatic and System Audio
-                    modes do not use Shizuku.
                   </p>
                 </div>
                 <div>
