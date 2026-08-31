@@ -37,8 +37,9 @@ const sections = [
   ["03", "External services", "external-services"],
   ["04", "Permissions and access", "permissions"],
   ["05", "Storage and backup", "storage-and-backup"],
-  ["06", "Retention and deletion", "retention-and-deletion"],
-  ["07", "Security and changes", "security-and-changes"],
+  ["06", "Diagnostics you send", "diagnostics-you-send"],
+  ["07", "Retention and deletion", "retention-and-deletion"],
+  ["08", "Security and changes", "security-and-changes"],
 ] as const;
 
 const localFeatures = [
@@ -140,13 +141,13 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective July 23, 2026
+              Effective August 31, 2026
               <br />
-              Version 1.0
+              Version 1.1
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
-              Local-first. No ads, no dot.o account, and no
-              developer-operated analytics or crash reporting.
+              Local-first. No ads, no dot.o account, and no automatic
+              analytics or crash reporting.
             </p>
           </div>
 
@@ -191,8 +192,10 @@ export default function DotoLauncherPrivacyPolicy() {
               </p>
               <p className="mt-5 max-w-2xl text-2xl font-medium leading-[1.35] tracking-tight text-white sm:text-4xl">
                 dot.o is a local-first Android launcher. It has no ads, no
-                dot.o account, and no developer-operated analytics or crash
-                reporting.
+                dot.o account, and no automatic analytics or crash reporting.
+                The only things that ever reach the developer are the
+                diagnostic report and crash logs you choose to attach to a
+                support email — and you can read both before they go.
               </p>
               <p className="mt-7 max-w-2xl text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8">
                 Sensitive access is optional and tied to a feature you choose.
@@ -387,8 +390,41 @@ export default function DotoLauncherPrivacyPolicy() {
               </div>
             </section>
 
+            <section id="diagnostics-you-send" className="scroll-mt-8 pt-20">
+              <SectionHeading number="06" title="Diagnostics you send" />
+              <div className="space-y-5 text-sm leading-7 text-neutral-400">
+                <p>
+                  dot.o never sends logs or diagnostics on its own. When you
+                  email support, you can choose to attach a diagnostic report.
+                  It is written into the email body, so you can read every line
+                  before sending, and it travels only when you press send in
+                  your own email app. The report describes the launcher&apos;s
+                  state: app version, device model, Android version, feature
+                  settings, permission and entitlement status, and the music
+                  pipeline&apos;s state, including the name of the app
+                  currently playing audio. It never includes song titles,
+                  contacts, messages, files, location, or anything you typed.
+                </p>
+                <p>
+                  If the launcher has crashed, it writes a crash log — a
+                  technical stack trace of what failed, with the app version
+                  and nothing personal — to its own private storage, keeping
+                  only the newest five and never backing them up. You can also
+                  choose to attach those recent crash logs to a support email
+                  under the same rules, in the same readable body.
+                </p>
+                <p>
+                  Reports arrive in the developer&apos;s support mailbox, are
+                  used only to answer your email, and are kept no longer than
+                  the conversation. If dot.o adds other diagnostic reports in
+                  the future, they will follow these same rules: clearly
+                  offered, shown to you in full, and sent only by you.
+                </p>
+              </div>
+            </section>
+
             <section id="retention-and-deletion" className="scroll-mt-8 pt-20">
-              <SectionHeading number="06" title="Retention and deletion" />
+              <SectionHeading number="07" title="Retention and deletion" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   Local launcher state remains until you change it, clear the
@@ -413,7 +449,7 @@ export default function DotoLauncherPrivacyPolicy() {
             </section>
 
             <section id="security-and-changes" className="scroll-mt-8 pt-20">
-              <SectionHeading number="07" title="Security and changes" />
+              <SectionHeading number="08" title="Security and changes" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   dot.o minimizes external transfer, keeps optional access
