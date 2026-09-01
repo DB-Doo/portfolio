@@ -36,10 +36,11 @@ const sections = [
   ["02", "Data and features", "data-and-features"],
   ["03", "External services", "external-services"],
   ["04", "Permissions and access", "permissions"],
-  ["05", "Storage and backup", "storage-and-backup"],
-  ["06", "Diagnostics you send", "diagnostics-you-send"],
-  ["07", "Retention and deletion", "retention-and-deletion"],
-  ["08", "Security and changes", "security-and-changes"],
+  ["05", "Health data", "health-data"],
+  ["06", "Storage and backup", "storage-and-backup"],
+  ["07", "Diagnostics you send", "diagnostics-you-send"],
+  ["08", "Retention and deletion", "retention-and-deletion"],
+  ["09", "Security and changes", "security-and-changes"],
 ] as const;
 
 const localFeatures = [
@@ -81,6 +82,7 @@ const permissions = [
   ["Precise location", "Android requires this access to reveal the connected Wi-Fi network name."],
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
+  ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. dot.o never writes, changes, or deletes health data."],
 ] as const;
 
 function SectionHeading({
@@ -141,9 +143,9 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective August 31, 2026
+              Effective September 1, 2026
               <br />
-              Version 1.1
+              Version 1.2
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
               Local-first. No ads, no dot.o account, and no automatic
@@ -368,8 +370,47 @@ export default function DotoLauncherPrivacyPolicy() {
               </dl>
             </section>
 
+            <section id="health-data" className="scroll-mt-8 pt-20">
+              <SectionHeading number="05" title="Health data" />
+              <div className="space-y-5 text-sm leading-7 text-neutral-400">
+                <p>
+                  dot.o can show your steps, heart rate, and sleep on your home
+                  screen. These three widgets are optional. If you never add one,
+                  dot.o never asks for health access and never reads anything.
+                </p>
+                <p>
+                  <span className="text-white">What it reads.</span> With your
+                  permission, dot.o reads three things from Health Connect: your
+                  step count, your heart rate, and your sleep. It requests read
+                  access only. It cannot write, change, or delete anything in
+                  Health Connect, and it does not ask for permission to.
+                </p>
+                <p>
+                  <span className="text-white">Where it goes.</span> Nowhere.
+                  Health data is read when a widget draws and kept in memory only.
+                  dot.o does not store it, cache it to disk, put it in logs,
+                  include it in a diagnostic report, send it over the network, or
+                  share it with anyone, including us. There is no dot.o account
+                  and no dot.o server for it to go to.
+                </p>
+                <p>
+                  <span className="text-white">Turning it off.</span> You can
+                  revoke dot.o&apos;s health access at any time in Health Connect,
+                  or by removing the widgets. Revoking takes effect immediately
+                  and the widgets simply stop showing numbers. Because nothing was
+                  stored, there is nothing left behind to delete.
+                </p>
+                <p>
+                  <span className="text-white">Advertising and analytics.</span>{" "}
+                  Health data is never used for advertising, never used to profile
+                  you, and never fed to analytics. dot.o has no advertising and no
+                  developer-operated analytics of any kind.
+                </p>
+              </div>
+            </section>
+
             <section id="storage-and-backup" className="scroll-mt-8 pt-20">
-              <SectionHeading number="05" title="Storage and backup" />
+              <SectionHeading number="06" title="Storage and backup" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   Launcher layout, notes, appearance settings, widget
@@ -391,7 +432,7 @@ export default function DotoLauncherPrivacyPolicy() {
             </section>
 
             <section id="diagnostics-you-send" className="scroll-mt-8 pt-20">
-              <SectionHeading number="06" title="Diagnostics you send" />
+              <SectionHeading number="07" title="Diagnostics you send" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   dot.o never sends logs or diagnostics on its own. When you
@@ -424,7 +465,7 @@ export default function DotoLauncherPrivacyPolicy() {
             </section>
 
             <section id="retention-and-deletion" className="scroll-mt-8 pt-20">
-              <SectionHeading number="07" title="Retention and deletion" />
+              <SectionHeading number="08" title="Retention and deletion" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   Local launcher state remains until you change it, clear the
@@ -449,7 +490,7 @@ export default function DotoLauncherPrivacyPolicy() {
             </section>
 
             <section id="security-and-changes" className="scroll-mt-8 pt-20">
-              <SectionHeading number="08" title="Security and changes" />
+              <SectionHeading number="09" title="Security and changes" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   dot.o minimizes external transfer, keeps optional access
