@@ -143,9 +143,9 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective September 1, 2026
+              Effective September 8, 2026
               <br />
-              Version 1.2
+              Version 1.3
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
               Local-first. No ads, no dot.o account, and no automatic
@@ -380,25 +380,49 @@ export default function DotoLauncherPrivacyPolicy() {
                 </p>
                 <p>
                   <span className="text-white">What it reads.</span> With your
-                  permission, dot.o reads three things from Health Connect: your
-                  step count, your heart rate, and your sleep. It requests read
-                  access only. It cannot write, change, or delete anything in
-                  Health Connect, and it does not ask for permission to.
+                  permission, dot.o reads steps, recorded heart rate and sleep
+                  sessions from Health Connect. Steps include today and seven
+                  recent days; sleep includes the last recorded sleep and seven
+                  recent nights. Heart rate includes the latest recorded reading,
+                  seven recent hourly averages and available intraday detail over
+                  seven days. Data depends on what your watch or source app writes
+                  to Health Connect. dot.o is a display, not a measuring device or
+                  a live medical monitor. It requests read access only, separately
+                  for each widget, and never writes, changes or deletes health records.
                 </p>
                 <p>
-                  <span className="text-white">Where it goes.</span> Nowhere.
-                  Health data is read when a widget draws and kept in memory only.
-                  dot.o does not store it, cache it to disk, put it in logs,
-                  include it in a diagnostic report, send it over the network, or
-                  share it with anyone, including us. There is no dot.o account
-                  and no dot.o server for it to go to.
+                  <span className="text-white">When it reads.</span> Only metrics
+                  with a placed widget and your permission are read while dot.o is
+                  in the foreground. Summaries refresh on return to the launcher;
+                  steps and heart rate then refresh about every five foreground
+                  minutes, and sleep about every hour. Recent history loads when
+                  requested by a widget and again on return for widgets that
+                  requested it. dot.o does not read health data in the background.
                 </p>
                 <p>
-                  <span className="text-white">Turning it off.</span> You can
-                  revoke dot.o&apos;s health access at any time in Health Connect,
-                  or by removing the widgets. Revoking takes effect immediately
-                  and the widgets simply stop showing numbers. Because nothing was
-                  stored, there is nothing left behind to delete.
+                  <span className="text-white">Where it goes.</span> Readings,
+                  history and source labels stay in process memory on your phone.
+                  dot.o never saves them to disk, includes them in backups, logs or
+                  diagnostic reports, uploads them, or shares them with anyone,
+                  including the developer. There is no dot.o account or server
+                  holding your health data.
+                </p>
+                <p>
+                  <span className="text-white">Turning it off.</span> Removing the
+                  last widget for a metric stops its reads and clears its in-memory
+                  readings and history. This does not revoke its Android permission.
+                  Leaving the foreground cancels reads and clears the health snapshot;
+                  permissions are checked before fresh readings appear on return.
+                  In Settings → Privacy &amp; access → Health Connect, Manage access
+                  opens Android&apos;s controls. Disconnect clears all readings, stops
+                  reads and asks Health Connect to revoke dot.o&apos;s permissions.
+                  If Android cannot complete revocation, dot.o reports the failure
+                  and directs you to Manage access; reads stay stopped for that
+                  session until you choose to reconnect. You can also revoke access
+                  directly in Health Connect. dot.o clears affected readings when
+                  the next permission check detects revocation, including on return
+                  to the launcher. None of these actions deletes records held by
+                  Health Connect or by the original source app.
                 </p>
                 <p>
                   <span className="text-white">Advertising and analytics.</span>{" "}
