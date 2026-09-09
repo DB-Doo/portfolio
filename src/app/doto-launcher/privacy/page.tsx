@@ -413,7 +413,7 @@ export default function DotoLauncherPrivacyPolicy() {
                   readings and history. This does not revoke its Android permission.
                   Leaving the foreground cancels reads and clears the health snapshot;
                   permissions are checked before fresh readings appear on return.
-                  In Settings → Privacy &amp; access → Health Connect, Manage access
+                  In Settings → Privacy → Health Connect, Manage access
                   opens Android&apos;s controls. Disconnect clears all readings, stops
                   reads and asks Health Connect to revoke dot.o&apos;s permissions.
                   If Android cannot complete revocation, dot.o reports the failure
