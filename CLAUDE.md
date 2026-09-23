@@ -31,6 +31,7 @@ Deploys to **Vercel** on every push to `master`. Custom domain `dbdoo.dev` alias
 
 Mobile polish + creative-dev upgrades. Recent shipped work (`git log`):
 
+- `/doto-launcher` landing page for dot.o marketing: interactive dot field hero (`DotField.tsx`, idles with no frames), three reasons, r/doto invite. Copy follows the launcher store voice (no dashes, no prices).
 - Mobile overflow fixes across project cards, photo galleries, tilt cards.
 - 3D tilt on "Why Me" / "How I Work" cards (desktop; disabled on mobile).
 - Magnetic buttons, custom cursor, smooth scroll (Lenis).
