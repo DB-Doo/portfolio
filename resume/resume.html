@@ -1,0 +1,175 @@
+<!doctype html>
+<!--
+Source for public/Dan_Brandt_Resume.pdf. Edit this file, then run resume/build.sh.
+One US Letter page, real selectable text in reading order so applicant tracking systems
+parse it, one accent colour that survives black-and-white printing. Every claim matches
+the case studies in src/content/work.ts and the earlier résumé.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dan Brandt, UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  @page { size: Letter; margin: 0.42in 0.5in; }
+  :root { --ink: #111; --soft: #4a4a4a; --faint: #8a8a8a; --rule: #e2e2e2; --accent: #0e7490; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, Arial, sans-serif; color: var(--ink); font-size: 8.6pt; line-height: 1.36; }
+  a { color: inherit; text-decoration: none; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 10pt; border-bottom: 1.2pt solid var(--ink); }
+  h1 { font-size: 24pt; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .role { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 17pt; color: var(--accent); line-height: 1; margin-top: 4pt; }
+  .contact { text-align: right; font-size: 8.3pt; color: var(--soft); line-height: 1.6; }
+  .contact strong { color: var(--ink); font-weight: 600; }
+
+  .summary { margin-top: 9pt; font-size: 9.2pt; line-height: 1.5; color: #222; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1.72in; gap: 0 22pt; margin-top: 4pt; }
+  h2 { font-size: 7.4pt; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 10pt 0 5pt; padding-bottom: 3pt; border-bottom: 0.6pt solid var(--rule); }
+
+  .item { margin-bottom: 6pt; break-inside: avoid; }
+  .item-head { display: flex; justify-content: space-between; gap: 8pt; align-items: baseline; }
+  h3 { font-size: 9.8pt; font-weight: 600; letter-spacing: -0.01em; }
+  h3 span { font-weight: 400; color: var(--soft); }
+  .when { font-size: 8pt; color: var(--faint); white-space: nowrap; }
+  .meta { font-size: 8.1pt; color: var(--soft); margin-top: 1pt; }
+  ul { margin-top: 3pt; padding-left: 10pt; }
+  li { margin-bottom: 1.2pt; }
+  li::marker { color: var(--accent); }
+
+  aside p, aside li { font-size: 8.3pt; }
+  aside ul { list-style: none; padding-left: 0; }
+  aside li { margin-bottom: 2pt; }
+  .sub { font-weight: 600; font-size: 8.3pt; margin-top: 6pt; }
+  .edu { margin-bottom: 6pt; }
+  .edu strong { display: block; font-weight: 600; }
+  .edu span { color: var(--soft); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Dan Brandt</h1>
+    <p class="role">UX Designer</p>
+  </div>
+  <div class="contact">
+    <strong><a href="https://dbdoo.dev">dbdoo.dev</a></strong> · portfolio and case studies<br>
+    <a href="mailto:dan.p.brandt@gmail.com">dan.p.brandt@gmail.com</a> · (913) 214-6037<br>
+    <a href="https://www.linkedin.com/in/danpbrandt/">linkedin.com/in/danpbrandt</a> · Kansas City, KS
+  </div>
+</header>
+
+<p class="summary">
+  UX designer trained in graphic and web design who designs mobile and web products and builds them too.
+  I shipped an Android home screen app to Google Play as its sole designer, shaped by beta tester feedback.
+  Years in support and customer-facing roles taught me where people get stuck, and why.
+</p>
+
+<div class="grid">
+<main>
+  <h2>Selected work</h2>
+
+  <div class="item">
+    <div class="item-head"><h3>dot.o Launcher <span>· Android home screen, Google Play</span></h3><span class="when">2026 – present</span></div>
+    <p class="meta">Sole designer and developer · case study at dbdoo.dev/work/doto-launcher</p>
+    <ul>
+      <li>Designed a home screen with no grid, where apps and widgets sit anywhere on one canvas, and took it from concept to public release on Google Play.</li>
+      <li>Ran a beta and turned tester feedback into shipped design changes: light themes for daylight use, controls moved within thumb reach, and a way to hold the screen still that one tester asked for three times.</li>
+      <li>Replaced a seven-step onboarding tutorial with one-time hints that appear only when a gesture would help and disappear once used.</li>
+      <li>Audited the appearance settings (15 overlapping controls, 6 names for one concept) and restructured them into complete looks plus six clearly named parts.</li>
+      <li>Designed for accessibility: menus follow the phone's text size, touch targets are generous, and theme changes never override a user's motion settings.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-head"><h3>Wide <span>· Instagram carousel editor, Android beta</span></h3><span class="when">2026</span></div>
+    <p class="meta">Sole designer and developer · case study at dbdoo.dev/work/wide</p>
+    <ul>
+      <li>Designed an editor where a whole carousel is one continuous canvas, so photos and text can cross from one slide to the next.</li>
+      <li>Borrowed print-style trim marks to keep slide edges readable on any photo, and merged layout editing with the export preview.</li>
+      <li>Ran a UX consistency audit that unified animation timing across screens, and wrote a shared vocabulary naming every part of the interface.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-head"><h3>Bid Tracker <span>· client project, web</span></h3><span class="when">2026</span></div>
+    <p class="meta">Design and development, working directly with the business owner</p>
+    <ul>
+      <li>Ran discovery with a contractor whose bids, costs and receipts were spread across spreadsheets and text messages.</li>
+      <li>Designed a phone-first app on top of the Google Sheet the business already used, with budget bars, receipts attached to their costs, and separate views for the team and the owner. In daily use.</li>
+    </ul>
+  </div>
+
+  <h2>Experience</h2>
+
+  <div class="item">
+    <div class="item-head"><h3>Independent UX Designer and Developer <span>· self-employed</span></h3><span class="when">2026 – present</span></div>
+    <ul>
+      <li>Design and build apps, tools and websites for small businesses and my own products, from discovery through prototypes, testing and release. Clients include an artisan metalworker, a children's book series and a speech-language practice.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-head"><h3>Technical Support Specialist <span>· Sunlighten</span></h3><span class="when">2025 – 2026</span></div>
+    <ul>
+      <li>Guided owners through technical problems by phone, email and video, documenting each case and routing complex issues to the right team.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-head"><h3>Sales and Technical Consultant <span>· Google Fiber</span></h3><span class="when">2022 – 2023</span></div>
+    <ul>
+      <li>Explained networking to home and business customers and helped with setup; consistently exceeded targets.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-head"><h3>Media Specialist <span>· Life Time</span></h3><span class="when">2018 – 2019</span></div>
+    <ul>
+      <li>Produced training webinars and documentation for a multi-site company; shot and edited headshots.</li>
+    </ul>
+  </div>
+</main>
+
+<aside>
+  <h2>Design</h2>
+  <ul>
+    <li>Interaction design</li>
+    <li>User flows</li>
+    <li>Prototyping</li>
+    <li>Usability and beta testing</li>
+    <li>Design audits</li>
+    <li>Design systems</li>
+    <li>Accessibility</li>
+    <li>UX writing</li>
+    <li>Visual and UI design</li>
+    <li>Typography</li>
+    <li>Motion design</li>
+  </ul>
+
+  <h2>Tools</h2>
+  <ul>
+    <li>Figma</li>
+    <li>Photo editing</li>
+    <li>AI-assisted prototyping</li>
+  </ul>
+
+  <h2>Build</h2>
+  <p>I prototype and ship in code, so designs survive to release.</p>
+  <ul style="margin-top:4pt">
+    <li>Kotlin and Android</li>
+    <li>Flutter and Dart</li>
+    <li>React and Next.js</li>
+    <li>HTML, CSS, JavaScript</li>
+    <li>Git and GitHub</li>
+  </ul>
+
+  <h2>Education</h2>
+  <div class="edu"><strong>Graphic Design and Web Design, A.A.S.</strong><span>Hennepin Technical College, 2014 – 2018</span></div>
+  <div class="edu"><strong>Full Stack Development Bootcamp</strong><span>University of Minnesota, 2024</span></div>
+</aside>
+</div>
+</body>
+</html>
