@@ -6,7 +6,7 @@ Dan Brandt's contract-portfolio landing site. Public at **https://dbdoo.dev**.
 
 ## What it is
 
-A creative-dev-grade portfolio aimed at senior technical audiences (Google AI engineers, Awwwards-quality reviewers, freelance clients). Currently transitioning from a clean-but-standard Next.js site into a more distinctive, interactive experience per the 6-day creative rebuild plan.
+Dan's UX Designer portfolio, aimed at hiring managers for UX and product design roles (decided 2026-09-23). It replaced the contract-developer pitch ("Your app, built in days"). Case studies carry the argument: problem, people, constraints, decisions as before/after/why, what was tried and dropped, outcome. No stat bars, speed claims or sales language.
 
 ## Stack
 
@@ -29,25 +29,20 @@ Deploys to **Vercel** on every push to `master`. Custom domain `dbdoo.dev` alias
 
 ## Current focus
 
-Mobile polish + creative-dev upgrades. Recent shipped work (`git log`):
+UX portfolio rebuild (branch `ux-portfolio`):
 
-- `/doto-launcher` landing page for dot.o marketing: interactive dot field hero (`DotField.tsx`, idles with no frames), three reasons, r/doto invite. Copy follows the launcher store voice (no dashes, no prices).
-- Mobile overflow fixes across project cards, photo galleries, tilt cards.
-- 3D tilt on "Why Me" / "How I Work" cards (desktop; disabled on mobile).
-- Magnetic buttons, custom cursor, smooth scroll (Lenis).
-- Physics tags (Matter.js) — shipped and reverted pending production-readiness work.
+- Home (`src/app/page.tsx`): hero, three case-study cards, "Also built", How I design, About, contact. Résumé at `public/Dan_Brandt_Resume.pdf`.
+- Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
+- Visual language matches `/doto-launcher`: neutral-950, cyan-300/400 signal, mono eyebrow labels, Geist via `font-sans` (body CSS still says Arial, so each page's `<main>` sets `font-sans`).
+- Every case-study claim is sourced from that project's repo (dot.o: `docs/okf`, `docs/design`, `docs/feedback`, commits; Wide: `docs/audit`, `docs/superpowers/specs`). Never describe unshipped dot.o features as shipped; check its `docs/okf/release/feature-switches.md`.
+- The July recruiter-first draft ("I build the whole product") is saved on branch `july-redesign-draft` in the main checkout; Dan chose to start fresh instead.
 
 ## Next up
 
-From the creative-rebuild plan (priority order):
-
-1. **Dark mode + dynamic color system** — glassmorphism cards, noise texture, section-based accent hue shifts via CSS custom properties + GSAP ScrollTrigger.
-2. **Physics tags, production-ready** — revisit the reverted Matter.js implementation; fix re-render / scroll-shake issues that pushed it off the live site.
-3. **GSAP SplitText reveal** on hero and section headers.
-4. **Fluid distortion cursor effect** (react-fluid-distortion) — drop-in WebGL experiment.
-5. **3D scenes via R3F + Drei + Rapier** — for project showcase sections.
-
-The full 26-page creative plan lives in the Admin memory as `project_dbdoo_creative_rebuild.md`. Dan has it emailed to himself too.
+1. Dan confirms the Bid Tracker "why" lines and the reason the paged grid was dropped in dot.o.
+2. A UX-titled résumé (the current PDF says App & Web Developer).
+3. More before/after pairs for dot.o (tutorial vs hints, three drawers vs one) from old commits.
+4. MagneticButton / TiltCard / PhotoLightbox / physics tags are no longer used by the home page; leave them until the new site settles, then remove.
 
 ## Gotchas
 

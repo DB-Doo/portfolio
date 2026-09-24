@@ -14,31 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dan Brandt | Your app, built in days",
+  title: "Dan Brandt | UX Designer",
   description:
-    "Product-obsessed developer shipping polished prototypes fast. Not just code that runs, but products people love to use. Kansas City contractor.",
+    "UX designer in Kansas City. I design interfaces and build them, so the details survive. Case studies from dot.o Launcher, Wide and client work, from the problem to the shipped product.",
   openGraph: {
-    title: "Dan Brandt | Your app, built in days",
+    title: "Dan Brandt | UX Designer",
     description:
-      "Product-obsessed developer. I ship polished prototypes in days. Not just code, but products people love. Kansas City.",
+      "I design interfaces and build them. Case studies from shipped Android apps and client work.",
     url: "https://dbdoo.dev",
     siteName: "Dan Brandt",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Dan Brandt | Your app, built in days",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dan Brandt | Your app, built in days",
+    title: "Dan Brandt | UX Designer",
     description:
-      "I ship working apps in days, not months. Web, mobile, automation.",
-    images: ["/og-image.png"],
+      "I design interfaces and build them. Case studies from shipped Android apps and client work.",
   },
   metadataBase: new URL("https://dbdoo.dev"),
 };

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Dan Brandt | Your app, built in days";
+export const alt = "Dan Brandt | UX Designer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -10,7 +10,7 @@ export default async function Image() {
     (
       <div
         style={{
-          background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)",
+          background: "#0a0a0a",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -23,7 +23,7 @@ export default async function Image() {
           style={{
             width: 220,
             height: 4,
-            background: "#6366f1",
+            background: "#22d3ee",
             marginBottom: 24,
           }}
         />
@@ -40,11 +40,11 @@ export default async function Image() {
         <div
           style={{
             fontSize: 36,
-            color: "#818cf8",
+            color: "#67e8f9",
             marginBottom: 16,
           }}
         >
-          Your app, built in days.
+          UX Designer
         </div>
         <div
           style={{
@@ -53,7 +53,7 @@ export default async function Image() {
             marginBottom: 8,
           }}
         >
-          Web apps · Mobile apps · Automation systems
+          I design interfaces and build them, so the details survive.
         </div>
         <div
           style={{

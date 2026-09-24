@@ -1,422 +1,239 @@
-import PhotoThumb from "@/components/PhotoLightbox";
-import { MagneticButton } from "@/components/MagneticButton";
-import { TiltCard } from "@/components/TiltCard";
+import Image from "next/image";
+import Link from "next/link";
+import { caseStudies } from "@/content/work";
 
-
-const projects = [
-  {
-    title: "Bid Tracker",
-    subtitle: "Full-stack bid management, intuitive for users and powerful for admins",
-    badge: "CLIENT PROJECT",
-    badgeColor: "bg-amber-500/20 text-amber-400",
-    problem:
-      "A contractor was drowning in spreadsheets. bids scattered everywhere, costs untracked, receipt photos lost in text threads.",
-    built:
-      "Full web app: idea submission, competitive bidding, cost tracking with budget bars, receipt photos via Google Drive, and admin dashboard. Google Sheets + Apps Script backend, manageable from the app UI or the spreadsheet directly.",
-    result: "Shipped in 6 days. In daily use by the client.",
-    tech: ["Next.js", "Google Sheets API", "Google Apps Script", "Google Drive", "Vercel"],
-    timeline: "6 days",
-    gradient: "from-blue-500 to-cyan-500",
-    images: ["/images/bidtracker/landing.png", "/images/bidtracker/dashboard.png", "/images/bidtracker/admin.png", "/images/bidtracker/projects.png"],
-    bridge:
-      "This is what I do for clients. Your project gets the same speed and attention.",
-    bridgeColor: "bg-amber-500/5 text-amber-400",
-    liveUrl: "https://dbdoo.dev/bid-tracker-demo",
-  },
-  {
-    title: "NinKeys",
-    subtitle: "A modern dual-swipe keyboard for iOS",
-    badge: null,
-    badgeColor: "",
-    problem:
-      "A beloved iOS keyboard was abandoned years ago, no source code, no documentation, nothing.",
-    built:
-      "Reverse-engineered the original from ARM binaries. Built a custom C++ prediction engine from scratch. 517 commits, 9,500 lines of production code in one week.",
-    result:
-      "250x faster than v1. 99.5% word accuracy. Features Google Keyboard doesn't have.",
-    tech: ["Swift", "C++", "Metal GPU", "iOS"],
-    timeline: "6 days",
-    gradient: "from-purple-500 to-pink-500",
-    images: [
-      "/images/ninkeys/keyboard.jpg",
-      "/images/ninkeys/gestures.jpg",
-      "/images/ninkeys/animations.jpg",
-      "/images/ninkeys/settings.jpg",
-    ],
-    bridge:
-      "If I can reverse-engineer an abandoned app and beat it in a week, your clearly-scoped project is a sure thing.",
-    bridgeColor: "bg-purple-500/5 text-purple-400",
-    liveUrl: null,
-  },
-  {
-    title: "HeyClaude",
-    subtitle: "Voice-controlled AI assistant for iOS + Apple Watch",
-    badge: null,
-    badgeColor: "",
-    problem:
-      "I manage two AI coding agents across two machines. Needed to monitor both and send commands from my wrist.",
-    built:
-      "Native iOS/watchOS app with voice commands, live terminal streaming, three-way bridge chat, and push notifications.",
-    result:
-      "Full mobile + wearable app with real-time WebSocket streaming.",
-    tech: ["SwiftUI", "watchOS", "WebSocket", "Deepgram STT", "APNs"],
-    timeline: "10 days",
-    gradient: "from-green-500 to-emerald-500",
-    images: [
-      "/images/heyclaude/bridge-chat.jpg",
-      "/images/heyclaude/vault-files.jpg",
-      "/images/heyclaude/dashboard.jpg",
-    ],
-    bridge:
-      "Real-time apps, push notifications, voice interfaces, cross-device sync, the features modern products need.",
-    bridgeColor: "bg-emerald-500/5 text-emerald-400",
-    liveUrl: null,
-  },
-  {
-    title: "Vault Daemon",
-    subtitle: "AI-powered second brain in Rust",
-    badge: null,
-    badgeColor: "",
-    problem:
-      "My productivity system ran on 11 separate scripts, fragile and impossible to maintain. No intelligent search, no conversation understanding, no self-healing.",
-    built:
-      "One Rust daemon with a local AI brain: 13 cron timers, 7 file watchers, event-sourced architecture, semantic search across 1,900+ notes, a local Gemma LLM for classification and summarization, and an Omi wearable integration that extracts commitments, insights, and task completions from real conversations.",
-    result: "11 services → 1 process. Understands my day from voice conversations. Auto-completes tasks. Runs 24/7 unattended.",
-    tech: ["Rust", "SQLite", "Tokio", "Ollama/Gemma", "Event Sourcing", "Embeddings"],
-    timeline: "Ongoing",
-    gradient: "from-orange-500 to-red-500",
-    images: ["/images/obhook/dashboard.jpg"],
-    bridge:
-      "APIs, data pipelines, cron jobs, local AI, background workers. I build the backend intelligence that keeps your product running.",
-    bridgeColor: "bg-orange-500/5 text-orange-400",
-    liveUrl: null,
-  },
-];
-
-const stats = [
-  { value: "6", label: "Days to ship", color: "text-blue-400" },
-  { value: "517", label: "Commits / week", color: "text-purple-400" },
-  { value: "4", label: "Apps shipped", color: "text-emerald-400" },
-  { value: "< 14", label: "Days avg", color: "text-amber-400" },
-];
+/*
+Direction contract: a UX designer's portfolio for hiring managers. The first viewport says
+who Dan is and the job Dan wants; the next thing on the page is the work. Case studies
+carry the argument, so the home page stays short: work, how I design, about, contact.
+Same dark, direct identity and cyan signal as /doto-launcher. No stat bars, no speed
+claims, no sales language.
+*/
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
-const CALENDLY_URL = "https://calendly.com/dan-dbdoo/30min";
+const RESUME_URL = "/Dan_Brandt_Resume.pdf";
+const LINKEDIN_URL = "https://www.linkedin.com/in/danpbrandt/";
+const GITHUB_URL = "https://github.com/DB-Doo";
+
+const label = "font-mono text-xs uppercase tracking-[0.18em] text-cyan-400";
+const focus =
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300";
+const primaryButton = `inline-flex min-h-12 items-center rounded-full bg-cyan-300 px-6 text-sm font-medium text-neutral-950 transition-colors hover:bg-white ${focus}`;
+const secondaryButton = `inline-flex min-h-12 items-center rounded-full border border-neutral-700 px-6 text-sm font-medium text-neutral-200 transition-colors hover:border-neutral-400 hover:text-white ${focus}`;
+
+const process = [
+  {
+    title: "Start from what people say",
+    body: "Tester reports and screenshots come before my own ideas. One tester asked for a lockdown mode three times; it became the pinned canvas in dot.o.",
+  },
+  {
+    title: "Judge it on the real device",
+    body: "I review designs on the phone, at real size, with large system text and in daylight, not only in a mockup.",
+  },
+  {
+    title: "Change one thing, then compare",
+    body: "I capture the screen before and after every visual change, so decisions come from side by side comparison instead of memory.",
+  },
+  {
+    title: "Cut what does not earn its place",
+    body: "I have thrown away a paged grid, a settings redesign and two extra app drawers. Fewer finished features beat more half-done ones.",
+  },
+];
+
+const alsoBuilt = [
+  { title: "NinKeys", body: "A dual-swipe keyboard for iOS, rebuilt from an app that had been abandoned." },
+  { title: "Client websites", body: "Sites for an artisan metalworker, a family nature-journal book series and a speech-language practice." },
+  { title: "HeyClaude", body: "A voice assistant for iPhone and Apple Watch that keeps an eye on long-running tasks." },
+];
 
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-neutral-950 text-white">
-      {/* ===== HERO ===== */}
-      <section className="relative overflow-hidden px-6 pt-16 pb-12 sm:pt-24 sm:pb-16 lg:px-8">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-neutral-950 to-neutral-950" />
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-medium text-blue-400 tracking-wide uppercase mb-4">
-            Dan Brandt
-          </p>
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl leading-[1.1]">
-            Your app.
-            <br />
-            Built right, built fast.
-          </h1>
-          <p className="mt-5 text-lg leading-8 text-neutral-300">
-            Working prototypes with polish, not just code that runs,{" "}
-            <br className="hidden sm:block" />
-            but products people actually enjoy using.
-          </p>
-          <p className="mt-2 text-sm text-neutral-500">
-            Kansas City, KS &middot; Available for contract work
-          </p>
-          <div className="mt-7 flex items-center justify-center gap-x-4">
-            <MagneticButton strength={0.3}>
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition inline-block"
-              >
-                Book a call
-              </a>
-            </MagneticButton>
-            <MagneticButton strength={0.3}>
-              <a
-                href="#projects"
-                className="rounded-lg border border-neutral-700 px-6 py-3 text-sm font-semibold text-neutral-300 hover:border-neutral-500 hover:text-white transition inline-block"
-            >
-              See my work &darr;
-            </a>
-            </MagneticButton>
-          </div>
-        </div>
-      </section>
+  const [featured, ...rest] = caseStudies;
 
-      {/* ===== STATS BAR ===== */}
-      <section className="border-y border-neutral-800/50 bg-neutral-900/30">
-        <div className="mx-auto max-w-4xl px-6 py-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <div className={`text-4xl font-extrabold ${stat.color}`}>
-                  {stat.value}
+  return (
+    <main className="min-h-screen bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
+      <div className="mx-auto max-w-5xl px-6 sm:px-10">
+        {/* ===== NAV ===== */}
+        <nav className="flex flex-wrap items-center justify-between gap-4 py-8">
+          <Link href="/" className={`font-mono text-xs tracking-[0.16em] text-white ${focus}`}>
+            DAN BRANDT
+          </Link>
+          <div className="flex gap-6 text-sm text-neutral-400">
+            <a href="#work" className={`hover:text-white ${focus}`}>Work</a>
+            <a href="#about" className={`hover:text-white ${focus}`}>About</a>
+            <a href={RESUME_URL} className={`hover:text-white ${focus}`}>Résumé</a>
+          </div>
+        </nav>
+
+        {/* ===== HERO ===== */}
+        <header className="pb-24 pt-16 sm:pb-32 sm:pt-24">
+          <p className={label}>UX Designer · Kansas City</p>
+          <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl">
+            I design interfaces, then build them so the details survive.
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg leading-8 text-neutral-400">
+            Trained in graphic and web design, I take products from the problem to a real
+            person&rsquo;s phone. I design the flows and interactions, test them with real
+            users, and build them myself, so nothing gets lost between the mockup and the
+            shipped app.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a href="#work" className={primaryButton}>
+              See the case studies
+            </a>
+            <a href={RESUME_URL} className={secondaryButton}>
+              Résumé (PDF)
+            </a>
+          </div>
+        </header>
+
+        {/* ===== WORK ===== */}
+        <section id="work" className="scroll-mt-8 border-t border-neutral-800 py-20">
+          <p className={label}>Selected work</p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Case studies
+          </h2>
+
+          <Link
+            href={`/work/${featured.slug}`}
+            className={`group mt-12 grid items-center gap-10 rounded-3xl border border-neutral-800 bg-neutral-900/40 p-6 transition-colors hover:border-neutral-600 sm:p-10 md:grid-cols-[1fr_260px] ${focus}`}
+          >
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+                {featured.kind} · {featured.status}
+              </p>
+              <h3 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                {featured.title}
+              </h3>
+              <p className="mt-4 max-w-lg text-base leading-8 text-neutral-400">
+                {featured.summary}
+              </p>
+              <p className="mt-6 text-sm text-neutral-500">{featured.role}</p>
+              <p className="mt-8 text-sm font-medium text-cyan-300">
+                Read the case study{" "}
+                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+              </p>
+            </div>
+            <Image
+              src={featured.cover.src}
+              alt={featured.cover.alt}
+              width={featured.cover.width}
+              height={featured.cover.height}
+              priority
+              sizes="260px"
+              className="mx-auto h-auto w-full max-w-[260px] rounded-[26px] border border-neutral-800"
+            />
+          </Link>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {rest.map((study) => (
+              <Link
+                key={study.slug}
+                href={`/work/${study.slug}`}
+                className={`group flex flex-col rounded-3xl border border-neutral-800 bg-neutral-900/40 p-6 transition-colors hover:border-neutral-600 sm:p-8 ${focus}`}
+              >
+                <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900">
+                  <Image
+                    src={study.cover.src}
+                    alt={study.cover.alt}
+                    fill
+                    sizes="(min-width: 768px) 440px, 100vw"
+                    className={study.cover.shape === "phone" ? "object-cover object-center" : "object-cover object-top"}
+                  />
                 </div>
-                <div className="mt-1 text-xs text-neutral-500 uppercase tracking-wider">
-                  {stat.label}
-                </div>
-              </div>
+                <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+                  {study.kind} · {study.status}
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white">
+                  {study.title}
+                </h3>
+                <p className="mt-3 flex-1 text-sm leading-7 text-neutral-400">{study.summary}</p>
+                <p className="mt-6 text-sm font-medium text-cyan-300">
+                  Read the case study{" "}
+                  <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+                </p>
+              </Link>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ===== PROJECTS ===== */}
-      <section id="projects" className="mx-auto max-w-4xl px-6 py-14">
-        <h2 className="text-2xl font-bold mb-10">What I&rsquo;ve Built</h2>
-        <div className="grid gap-8">
-          {projects.map((project) => (
-            <TiltCard key={project.title} tiltStrength={4}>
-            <article
-              className={`rounded-xl border overflow-hidden transition-all duration-200 hover:shadow-lg hover:shadow-black/20 ${
-                project.badge
-                  ? "bg-neutral-900 border-amber-500/20 hover:border-amber-500/40"
-                  : "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
-              }`}
-            >
-              {/* Client badge */}
-              {project.badge && (
-                <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2">
-                  <span className="text-xs font-bold text-amber-400 tracking-wider">
-                    ★ {project.badge}
-                  </span>
-                </div>
-              )}
-
-              <div className="p-6">
-                <div className="flex flex-col sm:flex-row gap-6">
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-3 mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold">{project.title}</h3>
-                        <p className="text-sm text-neutral-400">
-                          {project.subtitle}
-                        </p>
-                      </div>
-                      <span
-                        className={`shrink-0 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${project.gradient} text-white`}
-                      >
-                        {project.timeline}
-                      </span>
-                    </div>
-
-                    <div className="space-y-2 text-[15px] text-neutral-300 leading-relaxed">
-                      <p>
-                        <span className="font-semibold text-neutral-200">
-                          {project.badge ? "Problem:" : "Challenge:"}
-                        </span>{" "}
-                        {project.problem}
-                      </p>
-                      <p>
-                        <span className="font-semibold text-neutral-200">
-                          {project.badge ? "What I built:" : "What I did:"}
-                        </span>{" "}
-                        {project.built}
-                      </p>
-                      <p className="font-semibold text-emerald-400">
-                        {project.result}
-                      </p>
-                    </div>
-
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="px-2 py-0.5 bg-neutral-800 rounded text-xs text-neutral-500"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Live demo link */}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block mt-4 text-sm font-medium text-blue-400 hover:text-blue-300 transition"
-                      >
-                        View live app &rarr;
-                      </a>
-                    )}
-
-                    {/* Bridge line */}
-                    {project.bridge && (
-                      <div
-                        className={`mt-4 px-4 py-3 rounded-lg ${project.bridgeColor}`}
-                      >
-                        <p className="text-sm">
-                          <span className="font-semibold">For you:</span>{" "}
-                          {project.bridge}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Images */}
-                  {project.images.length > 0 && (
-                    <div className="grid grid-cols-2 sm:flex sm:flex-col gap-2 sm:w-48 sm:shrink-0">
-                      {project.images.map((src, i) => (
-                        <PhotoThumb
-                          key={i}
-                          url={src}
-                          size="lg"
-                          className="!w-full !h-24 sm:!h-28 !rounded-lg !border-neutral-700 bg-neutral-800"
-                          gallery={project.images}
-                          galleryIndex={i}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </article>
-            </TiltCard>
-          ))}
-        </div>
-      </section>
-
-      {/* ===== ABOUT ===== */}
-      <section className="mx-auto max-w-4xl px-6 py-12">
-        <h2 className="text-2xl font-bold mb-4">About Me</h2>
-        <p className="text-neutral-300 leading-relaxed max-w-2xl">
-          I&rsquo;m Dan, a product-obsessed developer in Kansas City.
-          I use AI-assisted development to ship at startup speed, but what
-          sets me apart is taste. I do 30+ test-and-fix cycles per session
-          because I obsess over how things feel: the button placement,
-          the loading states, the edge cases your users will hit. Anyone can
-          generate code with AI. I design products people love to use.
-        </p>
-      </section>
-
-      {/* ===== HOW I'M DIFFERENT ===== */}
-      <section className="mx-auto max-w-4xl px-6 py-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">Why Me Over a Bigger Agency</h2>
-        <div className="grid sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
-          <TiltCard tiltStrength={6}>
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center h-full">
-              <p className="text-2xl mb-2">🎯</p>
-              <p className="font-semibold mb-2">Obsessive UX</p>
-              <p className="text-sm text-neutral-400">I don&rsquo;t ship &ldquo;good enough.&rdquo; I test, tweak, and polish until it feels right. 30+ iteration cycles per session.</p>
-            </div>
-          </TiltCard>
-          <TiltCard tiltStrength={6}>
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center h-full">
-              <p className="text-2xl mb-2">⚡</p>
-              <p className="font-semibold mb-2">Startup Speed</p>
-              <p className="text-sm text-neutral-400">Working prototype in days, not months. You see real progress daily, no vanishing into a black box for weeks.</p>
-            </div>
-          </TiltCard>
-          <TiltCard tiltStrength={6}>
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-5 text-center h-full">
-              <p className="text-2xl mb-2">🤝</p>
-              <p className="font-semibold mb-2">You Talk to Me</p>
-              <p className="text-sm text-neutral-400">No project managers, no ticket queues. Direct line to the person building your product. Feedback loops in hours.</p>
-            </div>
-          </TiltCard>
-        </div>
-      </section>
-
-      {/* ===== HOW I WORK ===== */}
-      <section className="mx-auto max-w-4xl px-6 py-16">
-        <h2 className="text-2xl font-bold mb-8">How I Work</h2>
-        <div className="grid sm:grid-cols-3 gap-6">
-          <TiltCard tiltStrength={5}>
-            <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-blue-500 h-full">
-              <div className="text-lg font-bold mb-1">Day 1</div>
-              <div className="text-blue-400 text-sm mb-3">We talk</div>
-              <p className="text-sm text-neutral-400 leading-relaxed">
-                30-minute call. I learn your problem. You get a clear scope and
-                timeline before I write a single line of code.
-              </p>
-            </div>
-          </TiltCard>
-          <TiltCard tiltStrength={5}>
-            <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-purple-500 h-full">
-              <div className="text-lg font-bold mb-1">Days 2-7</div>
-              <div className="text-purple-400 text-sm mb-3">
-                I build, you watch
-              </div>
-              <p className="text-sm text-neutral-400 leading-relaxed">
-                Daily updates with working demos you can click. Feedback loops
-                measured in hours, not weeks.
-              </p>
-            </div>
-          </TiltCard>
-          <TiltCard tiltStrength={5}>
-            <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 border-t-[3px] border-t-emerald-500 h-full">
-              <div className="text-lg font-bold mb-1">Week 2</div>
-              <div className="text-emerald-400 text-sm mb-3">You ship</div>
-              <p className="text-sm text-neutral-400 leading-relaxed">
-                Deployed, documented, yours. Hand it to a full-time team or keep
-                iterating with me.
+          <div className="mt-16">
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+              Also built
             </p>
-            </div>
-          </TiltCard>
-        </div>
-      </section>
+            <ul className="mt-6 grid gap-6 sm:grid-cols-3">
+              {alsoBuilt.map((item) => (
+                <li key={item.title}>
+                  <p className="font-medium text-neutral-200">{item.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-neutral-500">{item.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
-      {/* ===== BOTTOM CTA ===== */}
-      <section className="mx-auto max-w-4xl px-6 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-3">
-          Tell me what you&rsquo;re building.
-        </h2>
-        <p className="text-neutral-400 mb-2">
-          Book a 30-minute call or email me your idea. I reply within 24 hours with a scope and timeline.
-        </p>
-        <p className="text-sm text-neutral-600 mb-8">
-          Typical projects ship in 1-2 weeks.
-        </p>
-        <MagneticButton strength={0.25}>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-lg bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition"
-          >
-            Book a call
-          </a>
-        </MagneticButton>
-        <p className="mt-3 text-sm text-neutral-500">
-          or email me at{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="text-neutral-400 hover:text-white transition">
-            {CONTACT_EMAIL}
-          </a>
-        </p>
-      </section>
+        {/* ===== HOW I DESIGN ===== */}
+        <section className="border-t border-neutral-800 py-20">
+          <p className={label}>Process</p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            How I design
+          </h2>
+          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {process.map((step, i) => (
+              <li key={step.title}>
+                <p className="font-mono text-xs text-neutral-500">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-3 text-lg font-semibold text-white">{step.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-neutral-400">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-      {/* ===== FOOTER ===== */}
-      <footer className="border-t border-neutral-800 py-8">
-        <div className="mx-auto max-w-4xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-600">
-          <p>Dan Brandt &middot; Kansas City, KS</p>
-          <div className="flex gap-6">
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="hover:text-neutral-300 transition"
-            >
-              Email
+        {/* ===== ABOUT ===== */}
+        <section id="about" className="scroll-mt-8 border-t border-neutral-800 py-20">
+          <p className={label}>About</p>
+          <div className="mt-6 max-w-2xl space-y-6 text-base leading-8 text-neutral-300">
+            <p>
+              I&rsquo;m Dan. I studied graphic and web design, then spent years on the other
+              side of technology: technical support, customer-facing sales and media
+              production. Helping people through confusing products taught me that most
+              problems with software are design problems.
+            </p>
+            <p>
+              Now I design and build apps: an Android launcher on Google Play, a carousel
+              editor in beta and tools for small businesses. I&rsquo;m looking for a UX or
+              product design role on a team that cares about the details as much as I do.
+            </p>
+          </div>
+        </section>
+
+        {/* ===== CONTACT ===== */}
+        <section className="border-t border-neutral-800 py-20">
+          <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Hiring for a UX or product design role? I&rsquo;d like to hear about it.
+          </h2>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>
+              {CONTACT_EMAIL}
             </a>
-            <a
-              href="https://github.com/DB-Doo"
-              className="hover:text-neutral-300 transition"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/danpbrandt/"
-              className="hover:text-neutral-300 transition"
-            >
+            <a href={LINKEDIN_URL} className={secondaryButton}>
               LinkedIn
             </a>
+            <a href={RESUME_URL} className={secondaryButton}>
+              Résumé (PDF)
+            </a>
+          </div>
+        </section>
+      </div>
+
+      {/* ===== FOOTER ===== */}
+      <footer className="border-t border-neutral-800">
+        <div className="mx-auto flex max-w-5xl flex-wrap justify-between gap-4 px-6 py-10 text-xs text-neutral-500 sm:px-10">
+          <p>Dan Brandt · Kansas City, KS</p>
+          <div className="flex gap-6">
+            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-white">Email</a>
+            <a href={LINKEDIN_URL} className="hover:text-white">LinkedIn</a>
+            <a href={GITHUB_URL} className="hover:text-white">GitHub</a>
           </div>
         </div>
       </footer>
