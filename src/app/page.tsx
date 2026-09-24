@@ -27,19 +27,15 @@ const primaryButton = `group inline-flex min-h-12 items-center gap-2 rounded-ful
 const secondaryButton = `inline-flex min-h-12 items-center rounded-full border border-white/15 bg-white/[0.03] px-6 text-sm font-medium text-neutral-200 backdrop-blur transition-colors hover:border-white/40 hover:text-white ${focus}`;
 const eyebrow = "font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-500";
 
-const skills = [
-  "Interaction design",
-  "User flows",
-  "Prototyping",
-  "Usability testing",
-  "Visual design",
-  "Design systems",
-  "Motion design",
-  "Accessibility",
-  "Figma",
-  "Android",
-  "Flutter",
-  "React",
+/* Proof, not a tool list: each line is something that is true of the work below. */
+const proof = [
+  "Live on Google Play",
+  "Shaped by tester feedback",
+  "In beta with creators",
+  "Used every day by a client",
+  "Designed and built solo",
+  "Checked on real devices",
+  "Readable at every text size",
 ];
 
 const process = [
@@ -78,12 +74,10 @@ export default function Home() {
             <a href="#work" className={`hover:text-white ${focus}`}>Work</a>
             <a href="#about" className={`hidden hover:text-white sm:inline ${focus}`}>About</a>
             <a href={RESUME_URL} className={`hover:text-white ${focus}`}>Résumé</a>
-            <a
-              href="#contact"
+            <CopyEmail
+              email={CONTACT_EMAIL}
               className={`hidden rounded-full bg-white px-4 py-1.5 font-medium text-neutral-950 transition-colors hover:bg-cyan-300 sm:inline ${focus}`}
-            >
-              Contact
-            </a>
+            />
           </div>
         </div>
       </nav>
@@ -132,6 +126,14 @@ export default function Home() {
                   Résumé (PDF)
                 </a>
               </div>
+              <Link
+                href={`/work/${doto.slug}`}
+                className={`group mt-10 inline-flex items-center gap-3 text-sm text-neutral-400 transition-colors hover:text-white ${focus}`}
+              >
+                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-600">Latest</span>
+                {doto.title}, live on Google Play
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
             </Reveal>
           </div>
 
@@ -142,7 +144,7 @@ export default function Home() {
       {/* ===== SKILLS MARQUEE ===== */}
       <div className="marquee relative overflow-hidden border-y border-white/10 py-6 [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]">
         <div className="marquee-track flex w-max gap-10">
-          {[...skills, ...skills].map((skill, i) => (
+          {[...proof, ...proof].map((skill, i) => (
             <span key={i} className="flex items-center gap-10 whitespace-nowrap font-serif text-3xl italic text-neutral-400 sm:text-4xl">
               {skill}
               <span aria-hidden="true" className="size-1.5 rounded-full bg-cyan-300/70" />
@@ -167,7 +169,7 @@ export default function Home() {
               className="md:sticky md:pb-16"
               style={{ top: `calc(7rem + ${i * 1.75}rem)` }}
             >
-              <Reveal>
+              <Reveal fade>
                 <Link href={`/work/${study.slug}`} className={`block rounded-[2rem] ${focus}`}>
                   <SpotlightCard accent={study.accent} className="shadow-[0_-30px_60px_-30px_rgba(0,0,0,0.9)]">
                     <div className="grid items-center gap-10 p-7 sm:p-12 md:min-h-[520px] md:grid-cols-[1fr_1.05fr]">
@@ -175,9 +177,10 @@ export default function Home() {
                         <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: study.accent }}>
                           {String(i + 1).padStart(2, "0")} · {study.kind}
                         </p>
-                        <h3 className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-white sm:text-5xl">
-                          {study.title}
-                        </h3>
+                        <h3 className="mt-5 text-lg font-medium text-neutral-400">{study.title}</h3>
+                        <p className="mt-2 text-3xl font-semibold leading-[1.12] tracking-[-0.03em] text-white sm:text-4xl">
+                          {study.headline}
+                        </p>
                         <p className="mt-5 max-w-md text-base leading-8 text-neutral-400">{study.summary}</p>
                         <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm">
                           <div>
@@ -291,6 +294,10 @@ export default function Home() {
                 line above.
               </p>
               <p>
+                I use AI tools to build quickly, which leaves more of my time for the part
+                that matters: testing with people and polishing what they touch.
+              </p>
+              <p>
                 Now I design and build apps: a home screen app on Google Play, a photo editor in
                 beta and tools for small businesses. I&rsquo;m looking for a UX or product design
                 role, and I take on select projects for businesses that care about the details
@@ -321,20 +328,36 @@ export default function Home() {
               Hiring for a design role, or have a product that needs one? Tell me about it.
             </p>
           </Reveal>
-          <Reveal delay={0.15}>
-            <div className="mt-12 flex flex-wrap justify-center gap-3">
-              <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>
-                {CONTACT_EMAIL}
-              </a>
-              <CopyEmail email={CONTACT_EMAIL} className={secondaryButton} />
-              <a href={LINKEDIN_URL} className={secondaryButton}>
-                LinkedIn
-              </a>
-              <a href={RESUME_URL} className={secondaryButton}>
-                Résumé (PDF)
-              </a>
-            </div>
-          </Reveal>
+          <div className="mx-auto mt-16 grid max-w-4xl gap-5 text-left md:grid-cols-2">
+            <Reveal fade>
+              <div className="h-full rounded-3xl border border-white/10 bg-neutral-950/70 p-8 backdrop-blur">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cyan-300">Hiring</p>
+                <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">For employers</h3>
+                <p className="mt-3 text-sm leading-7 text-neutral-400">
+                  I&rsquo;m looking for a full-time UX or product design role on a team that ships
+                  and listens to its users.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a href={RESUME_URL} className={primaryButton}>Résumé (PDF)</a>
+                  <a href={LINKEDIN_URL} className={secondaryButton}>LinkedIn</a>
+                </div>
+              </div>
+            </Reveal>
+            <Reveal fade delay={0.1}>
+              <div className="h-full rounded-3xl border border-white/10 bg-neutral-950/70 p-8 backdrop-blur">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-fuchsia-300">Projects</p>
+                <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">For businesses</h3>
+                <p className="mt-3 text-sm leading-7 text-neutral-400">
+                  Have an app or site that confuses people? I design it, build it and hand it
+                  over working, like Bid Tracker.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>Email me</a>
+                  <CopyEmail email={CONTACT_EMAIL} className={secondaryButton} />
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 

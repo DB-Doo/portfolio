@@ -35,7 +35,11 @@ export type CaseStudy = {
   status: string;
   /** The project's own signal colour, used for glows, rules and highlights. */
   accent: string;
+  /** Card title: what happened, not the product name. */
+  headline: string;
   summary: string;
+  /** One or two sentences for the summary box: what I actually did. */
+  did: string;
   role: string;
   timeline: string;
   platform: string;
@@ -61,8 +65,11 @@ export const caseStudies: CaseStudy[] = [
     kind: "Android home screen",
     status: "Live on Google Play",
     accent: "#67e8f9",
+    headline:
+      "Designed and shipped a home screen with no grid, shaped by what early testers told me.",
     summary:
       "A phone home screen with no grid. You place apps and widgets anywhere on one open canvas, and remember where things are the way you remember a room.",
+    did: "Designed the whole experience and built it: first-run hints instead of a tutorial, one app list instead of three, clearer settings, and a way to hold the screen still that a tester asked for three times.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",
     platform: "Android phones, foldables and tablets",
@@ -249,8 +256,11 @@ export const caseStudies: CaseStudy[] = [
     kind: "Mobile photo editor",
     status: "In beta",
     accent: "#fb7185",
+    headline:
+      "Made seamless Instagram carousels something you can design on a phone.",
     summary:
       "An Android editor for Instagram carousels that flow into each other: one wide image that people swipe through slide by slide.",
+    did: "Designed an editor where the whole carousel is one canvas, with slide edges you can read on any photo, a preview that is also the layout view, and one consistent motion style across the app.",
     role: "Solo project: design and development",
     timeline: "April to June 2026",
     platform: "Android",
@@ -326,8 +336,11 @@ export const caseStudies: CaseStudy[] = [
     kind: "Client project",
     status: "In daily use",
     accent: "#fbbf24",
+    headline:
+      "Turned a contractor’s spreadsheets and text threads into a tool they use every day.",
     summary:
       "A bid and cost tracker for a contractor who was running the business out of spreadsheets and text messages.",
+    did: "Designed a phone-first app on top of the spreadsheet the business already trusted, with budget bars, receipts attached to their costs and separate views for the team and the owner.",
     role: "Design and development, working directly with the owner",
     timeline: "6 days",
     platform: "Web, designed for phones first",

@@ -17,11 +17,13 @@ const SmoothScroll = dynamic(
 export function ClientProviders({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isPolicySurface = pathname.startsWith("/doto-launcher/privacy");
+  const isCaseStudy = pathname.startsWith("/work/");
 
   return (
     <>
       {!isPolicySurface && <CustomCursor />}
-      {!isPolicySurface && <SmoothScroll />}
+      {/* Case studies are long reads: native scrolling keeps reading speed in the reader's hands. */}
+      {!isPolicySurface && !isCaseStudy && <SmoothScroll />}
       {children}
     </>
   );

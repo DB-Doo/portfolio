@@ -184,7 +184,7 @@ export default async function CaseStudyPage({
               </Reveal>
             )}
           </div>
-          <Reveal delay={0.3} y={60}>
+          <Reveal fade delay={0.2} y={60}>
             <div className="relative flex justify-center">
               <div aria-hidden="true" className="absolute inset-[15%] rounded-full opacity-40 blur-[90px]" style={{ background: study.accent }} />
               <div className={`float relative ${study.cover.shape === "phone" ? "w-[62%] max-w-[300px]" : "w-full"}`}>
@@ -200,7 +200,7 @@ export default async function CaseStudyPage({
             <div className="grid gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 md:grid-cols-3">
               {[
                 ["The problem", study.problem[0]],
-                ["What I did", study.decisions.slice(0, 3).map((d) => d.title).join(". ") + "."],
+                ["What I did", study.did],
                 ["The result", study.outcome[0]],
               ].map(([term, value]) => (
                 <div key={term} className="bg-neutral-950/90 p-7 backdrop-blur sm:p-8">
@@ -287,7 +287,7 @@ export default async function CaseStudyPage({
             </ol>
 
             {study.comparison && (
-              <Reveal className="mt-20">
+              <Reveal fade className="mt-20">
                 <div className="grid items-center gap-12 rounded-3xl border border-white/10 bg-white/[0.02] p-8 sm:p-12 lg:grid-cols-[1fr_340px]">
                   <div>
                     <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--accent)]">Before and after</p>
@@ -322,7 +322,7 @@ export default async function CaseStudyPage({
               {study.studies && (
                 <div className="mt-16 grid gap-16">
                   {study.studies.map((figure) => (
-                    <Reveal key={figure.src} as="figure">
+                    <Reveal key={figure.src} as="figure" fade>
                       <BrowserFrame figure={figure} url="design study" />
                       {figure.caption && (
                         <figcaption className="mt-4 max-w-2xl text-sm leading-7 text-neutral-400">{figure.caption}</figcaption>
@@ -345,7 +345,7 @@ export default async function CaseStudyPage({
                 }`}
               >
                 {study.gallery.map((figure, i) => (
-                  <Reveal key={figure.src} as="figure" delay={i * 0.08} className={i % 2 === 1 && figure.shape === "phone" ? "lg:mt-12" : ""}>
+                  <Reveal key={figure.src} as="figure" fade delay={i * 0.08} className={i % 2 === 1 && figure.shape === "phone" ? "lg:mt-12" : ""}>
                     <Device figure={figure} sizes={figure.shape === "phone" ? "260px" : "(min-width: 768px) 480px, 90vw"} />
                     {figure.caption && (
                       <figcaption className="mt-4 text-center text-sm text-neutral-500">{figure.caption}</figcaption>
