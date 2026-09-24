@@ -1,13 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
+import { DotField } from "@/app/doto-launcher/DotField";
 import { caseStudies } from "@/content/work";
+import { Device } from "@/components/ux/Device";
+import { HeroStage } from "@/components/ux/HeroStage";
+import { Reveal, SplitHeadline } from "@/components/ux/Reveal";
+import { CopyEmail, DrawLine } from "@/components/ux/ScrollBits";
+import { SpotlightCard } from "@/components/ux/SpotlightCard";
 
 /*
 Direction contract: a UX designer's portfolio for hiring managers. The first viewport says
-who Dan is and the job Dan wants; the next thing on the page is the work. Case studies
-carry the argument, so the home page stays short: work, how I design, about, contact.
-Same dark, direct identity and cyan signal as /doto-launcher. No stat bars, no speed
-claims, no sales language.
+who Dan is and shows the work as objects before any of it is described. Case studies carry
+the argument, so the home page stays short: work, how I design, about, contact. Dark, calm,
+precise, with the dot field from dot.o as the signature surface and each project's own
+accent colour. Motion is generous but always respects reduced motion. Plain words only: no
+internal feature names, no stat bars, no speed claims.
 */
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
@@ -15,20 +21,35 @@ const RESUME_URL = "/Dan_Brandt_Resume.pdf";
 const LINKEDIN_URL = "https://www.linkedin.com/in/danpbrandt/";
 const GITHUB_URL = "https://github.com/DB-Doo";
 
-const label = "font-mono text-xs uppercase tracking-[0.18em] text-cyan-400";
 const focus =
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300";
-const primaryButton = `inline-flex min-h-12 items-center rounded-full bg-cyan-300 px-6 text-sm font-medium text-neutral-950 transition-colors hover:bg-white ${focus}`;
-const secondaryButton = `inline-flex min-h-12 items-center rounded-full border border-neutral-700 px-6 text-sm font-medium text-neutral-200 transition-colors hover:border-neutral-400 hover:text-white ${focus}`;
+const primaryButton = `group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-neutral-950 transition-colors hover:bg-cyan-300 ${focus}`;
+const secondaryButton = `inline-flex min-h-12 items-center rounded-full border border-white/15 bg-white/[0.03] px-6 text-sm font-medium text-neutral-200 backdrop-blur transition-colors hover:border-white/40 hover:text-white ${focus}`;
+const eyebrow = "font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-500";
+
+const skills = [
+  "Interaction design",
+  "User flows",
+  "Prototyping",
+  "Usability testing",
+  "Visual design",
+  "Design systems",
+  "Motion design",
+  "Accessibility",
+  "Figma",
+  "Android",
+  "Flutter",
+  "React",
+];
 
 const process = [
   {
     title: "Start from what people say",
-    body: "Tester reports and screenshots come before my own ideas. One tester asked for a lockdown mode three times; it became the pinned canvas in dot.o.",
+    body: "Feedback and screenshots from real people come before my own ideas. One tester asked three times for a way to lock the home screen, so I designed one.",
   },
   {
     title: "Judge it on the real device",
-    body: "I review designs on the phone, at real size, with large system text and in daylight, not only in a mockup.",
+    body: "I review designs on the actual phone, at real size, with large text turned on and outside in daylight, not only in a mockup.",
   },
   {
     title: "Change one thing, then compare",
@@ -36,200 +57,291 @@ const process = [
   },
   {
     title: "Cut what does not earn its place",
-    body: "I have thrown away a paged grid, a settings redesign and two extra app drawers. Fewer finished features beat more half-done ones.",
+    body: "I have thrown away a whole grid layout, a settings redesign and two extra versions of the app list. A few finished features beat many half-done ones.",
   },
 ];
 
-const alsoBuilt = [
-  { title: "NinKeys", body: "A dual-swipe keyboard for iOS, rebuilt from an app that had been abandoned." },
-  { title: "Client websites", body: "Sites for an artisan metalworker, a family nature-journal book series and a speech-language practice." },
-  { title: "HeyClaude", body: "A voice assistant for iPhone and Apple Watch that keeps an eye on long-running tasks." },
-];
+const tools = ["Figma", "Prototyping", "Usability testing", "Design systems", "Kotlin", "Flutter", "React", "Next.js"];
 
 export default function Home() {
-  const [featured, ...rest] = caseStudies;
+  const [doto, wide, bid] = caseStudies;
 
   return (
-    <main className="min-h-screen bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
-      <div className="mx-auto max-w-5xl px-6 sm:px-10">
-        {/* ===== NAV ===== */}
-        <nav className="flex flex-wrap items-center justify-between gap-4 py-8">
-          <Link href="/" className={`font-mono text-xs tracking-[0.16em] text-white ${focus}`}>
-            DAN BRANDT
+    <main className="grain relative min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
+      {/* ===== NAV ===== */}
+      <nav className="fixed inset-x-0 top-0 z-40">
+        <div className="mx-auto mt-4 flex max-w-6xl items-center justify-between gap-4 rounded-full border border-white/10 bg-neutral-950/60 px-5 py-2.5 backdrop-blur-xl sm:px-6 [margin-inline:max(1rem,calc((100vw-72rem)/2))]">
+          <Link href="/" className={`text-sm font-medium text-white ${focus}`}>
+            Dan Brandt
           </Link>
-          <div className="flex gap-6 text-sm text-neutral-400">
+          <div className="flex items-center gap-5 text-sm text-neutral-400 sm:gap-7">
             <a href="#work" className={`hover:text-white ${focus}`}>Work</a>
-            <a href="#about" className={`hover:text-white ${focus}`}>About</a>
+            <a href="#about" className={`hidden hover:text-white sm:inline ${focus}`}>About</a>
             <a href={RESUME_URL} className={`hover:text-white ${focus}`}>Résumé</a>
-          </div>
-        </nav>
-
-        {/* ===== HERO ===== */}
-        <header className="pb-24 pt-16 sm:pb-32 sm:pt-24">
-          <p className={label}>UX Designer · Kansas City</p>
-          <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl">
-            I design interfaces, then build them so the details survive.
-          </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-neutral-400">
-            Trained in graphic and web design, I take products from the problem to a real
-            person&rsquo;s phone. I design the flows and interactions, test them with real
-            users, and build them myself, so nothing gets lost between the mockup and the
-            shipped app.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a href="#work" className={primaryButton}>
-              See the case studies
-            </a>
-            <a href={RESUME_URL} className={secondaryButton}>
-              Résumé (PDF)
+            <a
+              href="#contact"
+              className={`hidden rounded-full bg-white px-4 py-1.5 font-medium text-neutral-950 transition-colors hover:bg-cyan-300 sm:inline ${focus}`}
+            >
+              Contact
             </a>
           </div>
-        </header>
+        </div>
+      </nav>
 
-        {/* ===== WORK ===== */}
-        <section id="work" className="scroll-mt-8 border-t border-neutral-800 py-20">
-          <p className={label}>Selected work</p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-            Case studies
-          </h2>
+      {/* ===== HERO ===== */}
+      <header className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 [touch-action:pan-y]">
+        <DotField />
+        <div aria-hidden="true" className="glow-drift pointer-events-none absolute -left-40 top-10 -z-0 size-[560px] rounded-full bg-cyan-400/15 blur-[120px]" />
+        <div aria-hidden="true" className="glow-drift pointer-events-none absolute -right-32 bottom-0 -z-0 size-[520px] rounded-full bg-fuchsia-500/10 blur-[120px]" style={{ animationDelay: "-8s" }} />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(10,10,10,0.85)_0%,rgba(10,10,10,0.4)_50%,rgba(10,10,10,0)_80%)]" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-neutral-950 to-transparent" />
 
-          <Link
-            href={`/work/${featured.slug}`}
-            className={`group mt-12 grid items-center gap-10 rounded-3xl border border-neutral-800 bg-neutral-900/40 p-6 transition-colors hover:border-neutral-600 sm:p-10 md:grid-cols-[1fr_260px] ${focus}`}
-          >
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
-                {featured.kind} · {featured.status}
+        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 pb-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
+          <div>
+            <Reveal y={12}>
+              <p className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-300 backdrop-blur">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+                  <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+                </span>
+                UX Designer · Kansas City · Open to roles and projects
               </p>
-              <h3 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                {featured.title}
-              </h3>
-              <p className="mt-4 max-w-lg text-base leading-8 text-neutral-400">
-                {featured.summary}
-              </p>
-              <p className="mt-6 text-sm text-neutral-500">{featured.role}</p>
-              <p className="mt-8 text-sm font-medium text-cyan-300">
-                Read the case study{" "}
-                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-              </p>
-            </div>
-            <Image
-              src={featured.cover.src}
-              alt={featured.cover.alt}
-              width={featured.cover.width}
-              height={featured.cover.height}
-              priority
-              sizes="260px"
-              className="mx-auto h-auto w-full max-w-[260px] rounded-[26px] border border-neutral-800"
+            </Reveal>
+            <SplitHeadline
+              delay={0.15}
+              className="mt-8 text-[2.7rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-7xl"
+              parts={[
+                { text: "I design interfaces, then build them so the" },
+                { text: "details survive.", serif: true, accent: true },
+              ]}
             />
-          </Link>
-
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
-            {rest.map((study) => (
-              <Link
-                key={study.slug}
-                href={`/work/${study.slug}`}
-                className={`group flex flex-col rounded-3xl border border-neutral-800 bg-neutral-900/40 p-6 transition-colors hover:border-neutral-600 sm:p-8 ${focus}`}
-              >
-                <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900">
-                  <Image
-                    src={study.cover.src}
-                    alt={study.cover.alt}
-                    fill
-                    sizes="(min-width: 768px) 440px, 100vw"
-                    className={study.cover.shape === "phone" ? "object-cover object-center" : "object-cover object-top"}
-                  />
-                </div>
-                <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
-                  {study.kind} · {study.status}
-                </p>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white">
-                  {study.title}
-                </h3>
-                <p className="mt-3 flex-1 text-sm leading-7 text-neutral-400">{study.summary}</p>
-                <p className="mt-6 text-sm font-medium text-cyan-300">
-                  Read the case study{" "}
-                  <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                </p>
-              </Link>
-            ))}
+            <Reveal delay={0.7}>
+              <p className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
+                Trained in graphic and web design, I take products from the first problem to a
+                real person&rsquo;s phone. I design the flows, test them with people and build
+                them myself, so nothing gets lost between the mockup and the finished app.
+              </p>
+            </Reveal>
+            <Reveal delay={0.85}>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <a href="#work" className={primaryButton}>
+                  See my work
+                  <span className="transition-transform group-hover:translate-y-0.5">↓</span>
+                </a>
+                <a href={RESUME_URL} className={secondaryButton}>
+                  Résumé (PDF)
+                </a>
+              </div>
+            </Reveal>
           </div>
 
-          <div className="mt-16">
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
-              Also built
-            </p>
-            <ul className="mt-6 grid gap-6 sm:grid-cols-3">
-              {alsoBuilt.map((item) => (
-                <li key={item.title}>
-                  <p className="font-medium text-neutral-200">{item.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-neutral-500">{item.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+          <HeroStage back={bid.cover} left={wide.cover} right={doto.cover} />
+        </div>
+      </header>
 
-        {/* ===== HOW I DESIGN ===== */}
-        <section className="border-t border-neutral-800 py-20">
-          <p className={label}>Process</p>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-            How I design
-          </h2>
-          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {process.map((step, i) => (
-              <li key={step.title}>
-                <p className="font-mono text-xs text-neutral-500">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <h3 className="mt-3 text-lg font-semibold text-white">{step.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-neutral-400">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* ===== ABOUT ===== */}
-        <section id="about" className="scroll-mt-8 border-t border-neutral-800 py-20">
-          <p className={label}>About</p>
-          <div className="mt-6 max-w-2xl space-y-6 text-base leading-8 text-neutral-300">
-            <p>
-              I&rsquo;m Dan. I studied graphic and web design, then spent years on the other
-              side of technology: technical support, customer-facing sales and media
-              production. Helping people through confusing products taught me that most
-              problems with software are design problems.
-            </p>
-            <p>
-              Now I design and build apps: an Android launcher on Google Play, a carousel
-              editor in beta and tools for small businesses. I&rsquo;m looking for a UX or
-              product design role on a team that cares about the details as much as I do.
-            </p>
-          </div>
-        </section>
-
-        {/* ===== CONTACT ===== */}
-        <section className="border-t border-neutral-800 py-20">
-          <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Hiring for a UX or product design role? I&rsquo;d like to hear about it.
-          </h2>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>
-              {CONTACT_EMAIL}
-            </a>
-            <a href={LINKEDIN_URL} className={secondaryButton}>
-              LinkedIn
-            </a>
-            <a href={RESUME_URL} className={secondaryButton}>
-              Résumé (PDF)
-            </a>
-          </div>
-        </section>
+      {/* ===== SKILLS MARQUEE ===== */}
+      <div className="marquee relative overflow-hidden border-y border-white/10 py-6 [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]">
+        <div className="marquee-track flex w-max gap-10">
+          {[...skills, ...skills].map((skill, i) => (
+            <span key={i} className="flex items-center gap-10 whitespace-nowrap font-serif text-3xl italic text-neutral-400 sm:text-4xl">
+              {skill}
+              <span aria-hidden="true" className="size-1.5 rounded-full bg-cyan-300/70" />
+            </span>
+          ))}
+        </div>
       </div>
 
+      {/* ===== WORK ===== */}
+      <section id="work" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 py-28 sm:px-10 sm:py-36">
+        <Reveal>
+          <p className={eyebrow}>Selected work · 2026</p>
+          <h2 className="mt-4 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white sm:text-6xl">
+            Case studies, from the <span className="font-serif font-normal italic">problem</span> to the product.
+          </h2>
+        </Reveal>
+
+        <div className="mt-20 space-y-10 md:space-y-0">
+          {caseStudies.map((study, i) => (
+            <div
+              key={study.slug}
+              className="md:sticky md:pb-16"
+              style={{ top: `calc(7rem + ${i * 1.75}rem)` }}
+            >
+              <Reveal>
+                <Link href={`/work/${study.slug}`} className={`block rounded-[2rem] ${focus}`}>
+                  <SpotlightCard accent={study.accent} className="shadow-[0_-30px_60px_-30px_rgba(0,0,0,0.9)]">
+                    <div className="grid items-center gap-10 p-7 sm:p-12 md:min-h-[520px] md:grid-cols-[1fr_1.05fr]">
+                      <div className="relative">
+                        <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: study.accent }}>
+                          {String(i + 1).padStart(2, "0")} · {study.kind}
+                        </p>
+                        <h3 className="mt-5 text-4xl font-semibold tracking-[-0.03em] text-white sm:text-5xl">
+                          {study.title}
+                        </h3>
+                        <p className="mt-5 max-w-md text-base leading-8 text-neutral-400">{study.summary}</p>
+                        <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm">
+                          <div>
+                            <dt className="sr-only">Status</dt>
+                            <dd className="inline-flex items-center gap-2 text-neutral-300">
+                              <span className="size-1.5 rounded-full" style={{ background: study.accent }} />
+                              {study.status}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt className="sr-only">Role</dt>
+                            <dd className="text-neutral-500">{study.role}</dd>
+                          </div>
+                        </dl>
+                        <p className="mt-10 inline-flex items-center gap-3 text-sm font-medium text-white">
+                          <span className="relative">
+                            Read the case study
+                            <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" style={{ background: study.accent }} />
+                          </span>
+                          <span className="flex size-9 items-center justify-center rounded-full border border-white/15 transition-all duration-500 group-hover:translate-x-1 group-hover:border-transparent group-hover:text-neutral-950">
+                            <span className="transition-colors">→</span>
+                          </span>
+                        </p>
+                      </div>
+
+                      <div className="relative flex items-center justify-center">
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-[10%] rounded-full opacity-40 blur-[80px] transition-opacity duration-700 group-hover:opacity-70"
+                          style={{ background: study.accent }}
+                        />
+                        <div
+                          className={`relative transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-2 group-hover:scale-[1.03] ${
+                            study.cover.shape === "phone" ? "w-[58%] max-w-[250px]" : "w-full"
+                          }`}
+                        >
+                          <Device figure={study.cover} sizes={study.cover.shape === "phone" ? "250px" : "(min-width: 768px) 520px, 90vw"} />
+                        </div>
+                      </div>
+                    </div>
+                  </SpotlightCard>
+                </Link>
+              </Reveal>
+            </div>
+          ))}
+        </div>
+
+        <Reveal className="mt-20">
+          <p className={eyebrow}>Also built</p>
+          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
+            {[
+              { title: "NinKeys", body: "A swipe keyboard for iPhone, rebuilt from a well-loved app that had been abandoned." },
+              { title: "Client websites", body: "Sites for an artisan metalworker, a children's nature-journal book series and a speech therapy practice." },
+              { title: "HeyClaude", body: "A voice assistant for iPhone and Apple Watch that keeps an eye on long-running tasks." },
+            ].map((item) => (
+              <li key={item.title} className="bg-neutral-950 p-6 transition-colors hover:bg-neutral-900">
+                <p className="font-medium text-neutral-100">{item.title}</p>
+                <p className="mt-2 text-sm leading-6 text-neutral-500">{item.body}</p>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </section>
+
+      {/* ===== HOW I DESIGN ===== */}
+      <section className="relative border-t border-white/10">
+        <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 sm:px-10 sm:py-36 lg:grid-cols-[1fr_1.4fr]">
+          <Reveal>
+            <div className="lg:sticky lg:top-32">
+              <p className={eyebrow}>Process</p>
+              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-white sm:text-6xl">
+                How I <span className="font-serif font-normal italic text-cyan-300">design</span>
+              </h2>
+              <p className="mt-6 max-w-sm text-base leading-8 text-neutral-400">
+                Four habits that show up in every project, learned the hard way.
+              </p>
+            </div>
+          </Reveal>
+
+          <ol className="relative space-y-16 pl-14">
+            <DrawLine className="bottom-4 left-[11px] top-4" />
+            {process.map((step, i) => (
+              <Reveal as="li" key={step.title} className="relative">
+                <span className="absolute -left-14 top-0 flex size-6 items-center justify-center rounded-full border border-cyan-300/60 bg-neutral-950 font-mono text-[10px] text-cyan-300">
+                  {i + 1}
+                </span>
+                <h3 className="text-2xl font-semibold tracking-tight text-white">{step.title}</h3>
+                <p className="mt-3 max-w-lg text-base leading-8 text-neutral-400">{step.body}</p>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ===== ABOUT ===== */}
+      <section id="about" className="relative scroll-mt-24 border-t border-white/10">
+        <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 sm:px-10 sm:py-36 lg:grid-cols-2">
+          <Reveal>
+            <p className={eyebrow}>About</p>
+            <p className="mt-6 font-serif text-4xl leading-[1.15] text-white sm:text-5xl">
+              Most problems people have with software are{" "}
+              <span className="italic text-cyan-300">design problems.</span>
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div className="space-y-6 text-base leading-8 text-neutral-300 lg:pt-12">
+              <p>
+                I&rsquo;m Dan. I studied graphic and web design, then spent years on the other
+                side of technology: technical support, customer-facing sales and media
+                production. Helping people through confusing products is how I learned that
+                line above.
+              </p>
+              <p>
+                Now I design and build apps: a home screen app on Google Play, a photo editor in
+                beta and tools for small businesses. I&rsquo;m looking for a UX or product design
+                role, and I take on select projects for businesses that care about the details
+                as much as I do.
+              </p>
+              <ul className="flex flex-wrap gap-2 pt-4">
+                {tools.map((tool) => (
+                  <li key={tool} className="rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-neutral-400">
+                    {tool}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ===== CONTACT ===== */}
+      <section id="contact" className="relative isolate scroll-mt-24 overflow-hidden border-t border-white/10">
+        <div aria-hidden="true" className="glow-drift pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-[140px]" />
+        <div className="mx-auto max-w-6xl px-6 py-32 text-center sm:px-10 sm:py-44">
+          <Reveal>
+            <p className={eyebrow}>Contact</p>
+            <h2 className="mx-auto mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-[-0.04em] text-white sm:text-8xl">
+              Let&rsquo;s build something <span className="font-serif font-normal italic text-cyan-300">clear.</span>
+            </h2>
+            <p className="mx-auto mt-8 max-w-lg text-lg leading-8 text-neutral-400">
+              Hiring for a design role, or have a product that needs one? Tell me about it.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div className="mt-12 flex flex-wrap justify-center gap-3">
+              <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>
+                {CONTACT_EMAIL}
+              </a>
+              <CopyEmail email={CONTACT_EMAIL} className={secondaryButton} />
+              <a href={LINKEDIN_URL} className={secondaryButton}>
+                LinkedIn
+              </a>
+              <a href={RESUME_URL} className={secondaryButton}>
+                Résumé (PDF)
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
-      <footer className="border-t border-neutral-800">
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-between gap-4 px-6 py-10 text-xs text-neutral-500 sm:px-10">
-          <p>Dan Brandt · Kansas City, KS</p>
+      <footer className="border-t border-white/10">
+        <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-4 px-6 py-10 text-xs text-neutral-500 sm:px-10">
+          <p>© 2026 Dan Brandt · Kansas City, KS</p>
           <div className="flex gap-6">
             <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-white">Email</a>
             <a href={LINKEDIN_URL} className="hover:text-white">LinkedIn</a>

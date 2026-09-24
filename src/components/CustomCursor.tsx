@@ -45,11 +45,11 @@ export function CustomCursor() {
         }
       `}</style>
       <motion.div
-        className="dbdoo-custom-cursor fixed w-2 h-2 bg-blue-400 rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="dbdoo-custom-cursor fixed w-2 h-2 bg-cyan-300 rounded-full pointer-events-none z-[9999] mix-blend-difference"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
       />
       <motion.div
-        className="dbdoo-custom-cursor fixed rounded-full border border-blue-400/40 pointer-events-none z-[9998]"
+        className="dbdoo-custom-cursor fixed rounded-full border border-cyan-300/40 pointer-events-none z-[9998]"
         style={{
           x: followerX,
           y: followerY,
