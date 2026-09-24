@@ -18,7 +18,7 @@ Dan's UX Designer portfolio, aimed at hiring managers for UX and product design 
 - **Lenis** — smooth scroll, synced with GSAP ticker
 - **Matter.js** — 2D physics (currently used for falling-tag sketch, shipped + reverted once)
 
-Deploys to **Vercel** on every push to `master`. Custom domain `dbdoo.dev` aliased on the Vercel project.
+Deploys to **Vercel** on every push to `main`. Custom domain `dbdoo.dev` aliased on the Vercel project.
 
 ## Architecture
 
@@ -29,7 +29,7 @@ Deploys to **Vercel** on every push to `master`. Custom domain `dbdoo.dev` alias
 
 ## Current focus
 
-UX portfolio rebuild (branch `ux-portfolio`):
+UX portfolio (merged to `main` 2026-09-24):
 
 - Home (`src/app/page.tsx`): hero, three case-study cards, "Also built", How I design, About, contact. Résumé at `public/Dan_Brandt_Resume.pdf`.
 - Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
@@ -55,9 +55,9 @@ UX portfolio rebuild (branch `ux-portfolio`):
 
 ## Deploy / ops
 
-- **Auto-deploy**: push to `master` → Vercel rebuilds → live at `dbdoo.dev` within ~60s.
+- **Auto-deploy**: push to `main` → Vercel rebuilds → live at `dbdoo.dev` within ~60s.
 - **Preview deploys**: feature branches get preview URLs automatically.
-- **No staging gate** between local and prod. Test locally (`npm run dev` on :3000) before pushing to master.
+- **No staging gate** between local and prod. Test locally (`npm run dev` on :3000) before pushing to main.
 - `npm run build` must pass cleanly; Vercel will fail the deploy on TypeScript errors.
 
 ## Don't touch without asking
