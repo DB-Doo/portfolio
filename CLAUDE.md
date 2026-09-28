@@ -31,7 +31,7 @@ Deploys to **Vercel** on every push to `main`. Custom domain `dbdoo.dev` aliased
 
 UX portfolio (merged to `main` 2026-09-24):
 
-- Home (`src/app/page.tsx`): hero, three case-study cards, "Also built", How I design, About, contact. Résumé at `public/Dan_Brandt_Resume.pdf`.
+- Home (`src/app/page.tsx`): hero, three case-study cards, "Also built", About (story plus a "Previously" list), contact. No process section: research (2026-09-28) found respected designer sites do not have one and hiring managers read them as filler. Copy opens with plain facts, never slogans or aphorisms. Résumé at `public/Dan_Brandt_Resume.pdf`.
 - Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
 - Visual language matches `/doto-launcher`: neutral-950, cyan-300/400 signal, mono eyebrow labels, Geist via `font-sans` (body CSS still says Arial, so each page's `<main>` sets `font-sans`).
 - Every case-study claim is sourced from that project's repo (dot.o: `docs/okf`, `docs/design`, `docs/feedback`, commits; Wide: `docs/audit`, `docs/superpowers/specs`). Never describe unshipped dot.o features as shipped; check its `docs/okf/release/feature-switches.md`.

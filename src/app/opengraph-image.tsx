@@ -53,7 +53,7 @@ export default async function Image() {
             marginBottom: 8,
           }}
         >
-          I design interfaces and build them, so the details survive.
+          I design mobile and web apps, and build them myself.
         </div>
         <div
           style={{

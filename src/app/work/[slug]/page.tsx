@@ -148,7 +148,7 @@ export default async function CaseStudyPage({
               parts={[{ text: study.title }]}
             />
             <Reveal delay={0.4}>
-              <p className="mt-7 max-w-xl text-xl leading-9 text-neutral-300">{study.summary}</p>
+              <p className="mt-7 max-w-xl text-xl leading-9 text-neutral-300">{study.headline}</p>
             </Reveal>
             <Reveal delay={0.55}>
               <dl className="mt-12 grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-3">
@@ -220,7 +220,7 @@ export default async function CaseStudyPage({
 
         <div className="min-w-0">
           <div className="max-w-3xl">
-            <Section id="problem" number="01" eyebrow="Problem" title="What was wrong">
+            <Section id="problem" number="01" eyebrow="Problem" title="The problem">
               <div className="space-y-6">
                 {study.problem.map((paragraph) => (
                   <Reveal key={paragraph}>
@@ -245,7 +245,7 @@ export default async function CaseStudyPage({
               <List items={study.audience} />
             </Section>
 
-            <Section id="constraints" number="03" eyebrow="Constraints" title="What shaped the design">
+            <Section id="constraints" number="03" eyebrow="Constraints" title="Constraints">
               <List items={study.constraints} />
             </Section>
           </div>
@@ -305,7 +305,7 @@ export default async function CaseStudyPage({
           </Section>
 
           {hasProcess && (
-            <Section id="process" number="05" eyebrow="Process" title="What I tried and let go">
+            <Section id="process" number="05" eyebrow="Process" title="What I tried and dropped">
               {study.explorations.length > 0 && (
                 <div className="grid gap-5 md:grid-cols-2">
                   {study.explorations.map((exploration, i) => (
@@ -357,7 +357,7 @@ export default async function CaseStudyPage({
           )}
 
           <div className="max-w-3xl">
-            <Section id="outcome" number={hasProcess ? "06" : "05"} eyebrow="Outcome" title="Where it landed">
+            <Section id="outcome" number={hasProcess ? "06" : "05"} eyebrow="Outcome" title="Outcome">
               <List items={study.outcome} />
               {study.next.length > 0 && (
                 <Reveal className="mt-14">

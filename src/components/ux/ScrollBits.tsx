@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring } from "motion/react";
+import { useEffect, useState } from "react";
 
 /* A thin bar across the top of the page that fills as you read. */
 export function ScrollProgress() {
@@ -60,22 +60,6 @@ export function SectionNav({ sections }: { sections: { id: string; label: string
         })}
       </ol>
     </nav>
-  );
-}
-
-/* A vertical line that draws itself down the process steps as they scroll past. */
-export function DrawLine({ className = "" }: { className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 60%"] });
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  return (
-    <div ref={ref} aria-hidden="true" className={`absolute w-px bg-neutral-800 ${className}`}>
-      <motion.div
-        className="h-full w-full origin-top bg-gradient-to-b from-cyan-300 via-cyan-300 to-fuchsia-400"
-        style={{ scaleY: reduce ? 1 : scaleY }}
-      />
-    </div>
   );
 }
 

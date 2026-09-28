@@ -4,16 +4,16 @@ import { caseStudies } from "@/content/work";
 import { Device } from "@/components/ux/Device";
 import { HeroStage } from "@/components/ux/HeroStage";
 import { Reveal, SplitHeadline } from "@/components/ux/Reveal";
-import { CopyEmail, DrawLine } from "@/components/ux/ScrollBits";
+import { CopyEmail } from "@/components/ux/ScrollBits";
 import { SpotlightCard } from "@/components/ux/SpotlightCard";
 
 /*
-Direction contract: a UX designer's portfolio for hiring managers. The first viewport says
-who Dan is and shows the work as objects before any of it is described. Case studies carry
-the argument, so the home page stays short: work, how I design, about, contact. Dark, calm,
-precise, with the dot field from dot.o as the signature surface and each project's own
-accent colour. Motion is generous but always respects reduced motion. Plain words only: no
-internal feature names, no stat bars, no speed claims.
+Direction contract: a UX designer's portfolio for hiring managers and clients. Copy follows
+how respected designers present themselves: open with a plain fact (role, place, what I
+made), tell the background as a short story with real names and dates, and let the projects
+carry the argument. No process diagrams, slogans or aphorisms, no adjectives about myself.
+Sections: work, about, contact. Dark and calm, with the dot field from Doto as the
+signature surface and each project's own accent colour. Motion never holds text back.
 */
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
@@ -27,37 +27,23 @@ const primaryButton = `group inline-flex min-h-12 items-center gap-2 rounded-ful
 const secondaryButton = `inline-flex min-h-12 items-center rounded-full border border-white/15 bg-white/[0.03] px-6 text-sm font-medium text-neutral-200 backdrop-blur transition-colors hover:border-white/40 hover:text-white ${focus}`;
 const eyebrow = "font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-500";
 
-/* Proof, not a tool list: each line is something that is true of the work below. */
+/* What I do, in the words a job listing would use. */
 const proof = [
-  "Live on Google Play",
-  "Shaped by tester feedback",
-  "In beta with creators",
-  "Used every day by a client",
-  "Designed and built solo",
-  "Checked on real devices",
-  "Readable at every text size",
+  "Product design",
+  "Interaction design",
+  "Android apps",
+  "Web apps",
+  "Prototypes in real code",
+  "Design systems",
+  "Usability testing",
 ];
 
-const process = [
-  {
-    title: "Start from what people say",
-    body: "Feedback and screenshots from real people come before my own ideas. One tester asked three times for a way to lock the home screen, so I designed one.",
-  },
-  {
-    title: "Judge it on the real device",
-    body: "I review designs on the actual phone, at real size, with large text turned on and outside in daylight, not only in a mockup.",
-  },
-  {
-    title: "Change one thing, then compare",
-    body: "I capture the screen before and after every visual change, so decisions come from side by side comparison instead of memory.",
-  },
-  {
-    title: "Cut what does not earn its place",
-    body: "I have thrown away a whole grid layout, a settings redesign and two extra versions of the app list. A few finished features beat many half-done ones.",
-  },
+const previously = [
+  { role: "Technical support", place: "Sunlighten", years: "2025 – 2026" },
+  { role: "Sales and technical consulting", place: "Google Fiber", years: "2022 – 2023" },
+  { role: "Media production", place: "Life Time", years: "2018 – 2019" },
+  { role: "Graphic and web design, A.A.S.", place: "Hennepin Technical College", years: "2014 – 2018" },
 ];
-
-const tools = ["Figma", "Prototyping", "Usability testing", "Design systems", "Kotlin", "Flutter", "React", "Next.js"];
 
 export default function Home() {
   const [doto, wide, bid] = caseStudies;
@@ -98,22 +84,24 @@ export default function Home() {
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
                   <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
                 </span>
-                UX Designer · Kansas City · Open to roles and projects
+                Open to UX roles and freelance projects
               </p>
             </Reveal>
             <SplitHeadline
               delay={0.15}
               className="mt-8 text-[2.7rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-7xl"
               parts={[
-                { text: "I design interfaces, then build them so the" },
-                { text: "details survive.", serif: true, accent: true },
+                { text: "I design mobile and web apps, and" },
+                { text: "build them myself.", serif: true, accent: true },
               ]}
             />
             <Reveal delay={0.7}>
               <p className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
-                Trained in graphic and web design, I take products from the first problem to a
-                real person&rsquo;s phone. I design the flows, test them with people and build
-                them myself, so nothing gets lost between the mockup and the finished app.
+                I&rsquo;m Dan Brandt, a UX designer in Kansas City. My newest app,{" "}
+                <Link href={`/work/${doto.slug}`} className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-cyan-300">
+                  Doto
+                </Link>
+                , is a home screen for Android, live on Google Play.
               </p>
             </Reveal>
             <Reveal delay={0.85}>
@@ -126,14 +114,6 @@ export default function Home() {
                   Résumé (PDF)
                 </a>
               </div>
-              <Link
-                href={`/work/${doto.slug}`}
-                className={`group mt-10 inline-flex items-center gap-3 text-sm text-neutral-400 transition-colors hover:text-white ${focus}`}
-              >
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-600">Latest</span>
-                {doto.title}, live on Google Play
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </Link>
             </Reveal>
           </div>
 
@@ -156,9 +136,9 @@ export default function Home() {
       {/* ===== WORK ===== */}
       <section id="work" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 py-28 sm:px-10 sm:py-36">
         <Reveal>
-          <p className={eyebrow}>Selected work · 2026</p>
+          <p className={eyebrow}>Selected work</p>
           <h2 className="mt-4 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-white sm:text-6xl">
-            Case studies, from the <span className="font-serif font-normal italic">problem</span> to the product.
+            Three projects I <span className="font-serif font-normal italic">designed</span> and built.
           </h2>
         </Reveal>
 
@@ -230,11 +210,10 @@ export default function Home() {
 
         <Reveal className="mt-20">
           <p className={eyebrow}>Also built</p>
-          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
+          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2">
             {[
               { title: "NinKeys", body: "A swipe keyboard for iPhone, rebuilt from a well-loved app that had been abandoned." },
-              { title: "Client websites", body: "Sites for an artisan metalworker, a children's nature-journal book series and a speech therapy practice." },
-              { title: "HeyClaude", body: "A voice assistant for iPhone and Apple Watch that keeps an eye on long-running tasks." },
+              { title: "Client websites", body: "Sites for an artisan metalworker, a children's nature book series and a speech therapy practice." },
             ].map((item) => (
               <li key={item.title} className="bg-neutral-950 p-6 transition-colors hover:bg-neutral-900">
                 <p className="font-medium text-neutral-100">{item.title}</p>
@@ -245,71 +224,48 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ===== HOW I DESIGN ===== */}
-      <section className="relative border-t border-white/10">
-        <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 sm:px-10 sm:py-36 lg:grid-cols-[1fr_1.4fr]">
-          <Reveal>
-            <div className="lg:sticky lg:top-32">
-              <p className={eyebrow}>Process</p>
-              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-white sm:text-6xl">
-                How I <span className="font-serif font-normal italic text-cyan-300">design</span>
-              </h2>
-              <p className="mt-6 max-w-sm text-base leading-8 text-neutral-400">
-                Four habits that show up in every project, learned the hard way.
-              </p>
-            </div>
-          </Reveal>
-
-          <ol className="relative space-y-16 pl-14">
-            <DrawLine className="bottom-4 left-[11px] top-4" />
-            {process.map((step, i) => (
-              <Reveal as="li" key={step.title} className="relative">
-                <span className="absolute -left-14 top-0 flex size-6 items-center justify-center rounded-full border border-cyan-300/60 bg-neutral-950 font-mono text-[10px] text-cyan-300">
-                  {i + 1}
-                </span>
-                <h3 className="text-2xl font-semibold tracking-tight text-white">{step.title}</h3>
-                <p className="mt-3 max-w-lg text-base leading-8 text-neutral-400">{step.body}</p>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* ===== ABOUT ===== */}
       <section id="about" className="relative scroll-mt-24 border-t border-white/10">
-        <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 sm:px-10 sm:py-36 lg:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl gap-16 px-6 py-28 sm:px-10 sm:py-36 lg:grid-cols-[1fr_1.15fr]">
           <Reveal>
             <p className={eyebrow}>About</p>
-            <p className="mt-6 font-serif text-4xl leading-[1.15] text-white sm:text-5xl">
-              Most problems people have with software are{" "}
-              <span className="italic text-cyan-300">design problems.</span>
-            </p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-white sm:text-6xl">
+              The long way <span className="font-serif font-normal italic text-cyan-300">back to design</span>
+            </h2>
+            <p className="mt-12 font-serif text-2xl italic text-neutral-400">Previously</p>
+            <ul className="mt-5 divide-y divide-white/10 border-y border-white/10">
+              {previously.map((item) => (
+                <li key={item.place} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-4">
+                  <span>
+                    <span className="text-neutral-100">{item.role}</span>
+                    <span className="text-neutral-500"> · {item.place}</span>
+                  </span>
+                  <span className="font-mono text-xs text-neutral-600">{item.years}</span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
-          <Reveal delay={0.15}>
-            <div className="space-y-6 text-base leading-8 text-neutral-300 lg:pt-12">
+          <Reveal delay={0.1}>
+            <div className="space-y-6 text-[17px] leading-8 text-neutral-300 lg:pt-16">
               <p>
-                I&rsquo;m Dan. I studied graphic and web design, then spent years on the other
-                side of technology: technical support, customer-facing sales and media
-                production. Helping people through confusing products is how I learned that
-                line above.
+                I studied graphic and web design, then spent several years working next to
+                technology instead of designing it. I produced training webinars, sold and set
+                up internet service, and walked sauna owners through wiring diagrams over the
+                phone.
               </p>
               <p>
-                I use AI tools to build quickly, which leaves more of my time for the part
-                that matters: testing with people and polishing what they touch.
+                Support work showed me, one call at a time, where people get stuck, and how much
+                of it comes down to how a product explains itself.
               </p>
               <p>
-                Now I design and build apps: a home screen app on Google Play, a photo editor in
-                beta and tools for small businesses. I&rsquo;m looking for a UX or product design
-                role, and I take on select projects for businesses that care about the details
-                as much as I do.
+                In 2024 I took a full stack development bootcamp, and in 2026 I started designing
+                and shipping my own apps. I use AI tools to write code faster, which leaves more
+                of my time for design and for testing with real people.
               </p>
-              <ul className="flex flex-wrap gap-2 pt-4">
-                {tools.map((tool) => (
-                  <li key={tool} className="rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-neutral-400">
-                    {tool}
-                  </li>
-                ))}
-              </ul>
+              <p>
+                I&rsquo;m most useful when a product needs one person who can decide how it
+                should work, and then make it work.
+              </p>
             </div>
           </Reveal>
         </div>
@@ -322,10 +278,11 @@ export default function Home() {
           <Reveal>
             <p className={eyebrow}>Contact</p>
             <h2 className="mx-auto mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-[-0.04em] text-white sm:text-8xl">
-              Let&rsquo;s build something <span className="font-serif font-normal italic text-cyan-300">clear.</span>
+              Say <span className="font-serif font-normal italic text-cyan-300">hello.</span>
             </h2>
             <p className="mx-auto mt-8 max-w-lg text-lg leading-8 text-neutral-400">
-              Hiring for a design role, or have a product that needs one? Tell me about it.
+              Email me with a little context about the role or the project. A short note is
+              plenty.
             </p>
           </Reveal>
           <div className="mx-auto mt-16 grid max-w-4xl gap-5 text-left md:grid-cols-2">
@@ -334,8 +291,8 @@ export default function Home() {
                 <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cyan-300">Hiring</p>
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">For employers</h3>
                 <p className="mt-3 text-sm leading-7 text-neutral-400">
-                  I&rsquo;m looking for a full-time UX or product design role on a team that ships
-                  and listens to its users.
+                  I&rsquo;m looking for a full-time UX or product design role. My résumé has the
+                  short version of everything on this page.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a href={RESUME_URL} className={primaryButton}>Résumé (PDF)</a>
@@ -348,8 +305,8 @@ export default function Home() {
                 <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-fuchsia-300">Projects</p>
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">For businesses</h3>
                 <p className="mt-3 text-sm leading-7 text-neutral-400">
-                  Have an app or site that confuses people? I design it, build it and hand it
-                  over working, like Bid Tracker.
+                  I design and build apps and websites for small businesses, and hand them over
+                  working, like Bid Tracker. Tell me what is confusing your customers or your team.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>Email me</a>

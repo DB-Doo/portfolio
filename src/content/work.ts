@@ -66,10 +66,10 @@ export const caseStudies: CaseStudy[] = [
     status: "Live on Google Play",
     accent: "#67e8f9",
     headline:
-      "Designed and shipped a home screen with no grid, shaped by what early testers told me.",
+      "A home screen with no grid, designed from scratch and shipped on Google Play.",
     summary:
-      "A phone home screen with no grid. You place apps and widgets anywhere on one open canvas, and remember where things are the way you remember a room.",
-    did: "Designed the whole experience and built it: first-run hints instead of a tutorial, one app list instead of three, clearer settings, and a way to hold the screen still that a tester asked for three times.",
+      "You put apps and widgets anywhere on one open canvas and remember where things are, the way you remember a room. Early testers shaped most of the big design changes.",
+    did: "Designed and built the whole app. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",
     platform: "Android phones, foldables and tablets",
@@ -104,14 +104,14 @@ export const caseStudies: CaseStudy[] = [
           "A seven-step tutorial on first launch that walked people through every gesture.",
         after:
           "One small hint at a time, shown only when that gesture would help. It disappears as soon as you use it and never blocks anything.",
-        why: "Going through the tutorial myself, it felt like a list of chores. A hint teaches by being useful at the right moment, and it still works if you ignore it. I also dropped the hint for dragging around the canvas, because everyone already knows how to drag. Only gestures people would not discover on their own get a hint.",
+        why: "Going through the tutorial myself, it felt like a list of chores. A hint shows up at the moment it helps and costs nothing if you ignore it. I also cut the hint for dragging around the canvas, because everyone already knows how to drag. Only gestures people would not find on their own get a hint.",
       },
       {
         title: "One app list, not three",
         before:
           "Three different styles for the list of all your apps, each with its own quirks.",
         after: "One app list, done properly.",
-        why: "Three versions meant every improvement had to be made three times, or they slowly drifted apart. One version done well beats three done halfway.",
+        why: "Three versions meant every improvement had to be made three times, or they slowly drifted apart. I kept the one testers liked and put the effort there.",
       },
       {
         title: "Put settings where people look for them",
@@ -134,7 +134,7 @@ export const caseStudies: CaseStudy[] = [
           "Sliders for fine-tuning effects, such as how big the raindrops are, shown to everyone.",
         after:
           "Good values chosen for you, with only the choices that matter left in settings.",
-        why: "Picking good values is my job, not the user's. A feature with its numbers hidden is finished. A feature hidden entirely is missing.",
+        why: "Nobody installs a home screen to tune raindrop sizes. Choosing values that feel right is my job, so I did that and kept only the choices people actually make, like colors and fonts.",
       },
       {
         title: "Simpler ways to change the look",
@@ -143,7 +143,7 @@ export const caseStudies: CaseStudy[] = [
           "Fifteen different buttons that each changed one slice of the appearance, six different names for the background and seven meanings of the word style.",
         after:
           "A gallery of complete looks to pick from, plus six clearly named things you can adjust on their own: colors, font, icons, widgets, controls and background.",
-        why: "I was getting confused by my own settings, so users certainly were. Picking a new look never overrides accessibility choices, so someone who turned motion off keeps it off. The first part of this has shipped.",
+        why: "When I started getting lost in my own settings, I knew testers would be too. A new look never overrides accessibility choices, so someone who turned motion off keeps it off. The first part of this has shipped.",
       },
     ],
     comparison: {
@@ -176,10 +176,6 @@ export const caseStudies: CaseStudy[] = [
       {
         title: "Swipe down to close settings",
         body: "Removed after three attempts to make it feel right. A tester asked for settings to stay put and not close on an accidental swipe, and they were right.",
-      },
-      {
-        title: "A fading edge effect",
-        body: "Six attempts, then removed. It taught me a rule I still follow: capture the screen before changing anything visual, and compare side by side instead of from memory.",
       },
     ],
     studies: [
@@ -257,9 +253,9 @@ export const caseStudies: CaseStudy[] = [
     status: "In beta",
     accent: "#fb7185",
     headline:
-      "Made seamless Instagram carousels something you can design on a phone.",
+      "Instagram carousels designed as one wide image, on a phone.",
     summary:
-      "An Android editor for Instagram carousels that flow into each other: one wide image that people swipe through slide by slide.",
+      "Most tools make you design each slide on its own and hope the edges line up. Wide shows the whole strip at once, with every cut marked.",
     did: "Designed an editor where the whole carousel is one canvas, with slide edges you can read on any photo, a preview that is also the layout view, and one consistent motion style across the app.",
     role: "Solo project: design and development",
     timeline: "April to June 2026",
@@ -337,9 +333,9 @@ export const caseStudies: CaseStudy[] = [
     status: "In daily use",
     accent: "#fbbf24",
     headline:
-      "Turned a contractor’s spreadsheets and text threads into a tool they use every day.",
+      "A contractor’s spreadsheets and text threads, turned into one tool.",
     summary:
-      "A bid and cost tracker for a contractor who was running the business out of spreadsheets and text messages.",
+      "A bid and cost tracker built on the Google Sheet the business already trusted, so nothing had to move. The client uses it every day.",
     did: "Designed a phone-first app on top of the spreadsheet the business already trusted, with budget bars, receipts attached to their costs and separate views for the team and the owner.",
     role: "Design and development, working directly with the owner",
     timeline: "6 days",
