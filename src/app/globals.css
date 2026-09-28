@@ -14,8 +14,14 @@
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+/* Native smooth scrolling only where Lenis is not running (case studies). Under Lenis it
+   animates every scroll position Lenis writes, the two fight, and the page stops short of
+   the bottom and ignores End and anchor jumps. */
+html:not(.lenis) {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -86,7 +92,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html:not(.lenis) { scroll-behavior: auto; }
   .marquee-track,
   .float,
   .glow-drift,
