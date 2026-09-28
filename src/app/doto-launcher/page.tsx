@@ -4,7 +4,7 @@ import { DotField } from "./DotField";
 
 /*
 Direction contract: the page a stranger lands on from a post, a pitch or a search. The
-first viewport answers what dot.o is and where to get it, over a dot lattice the visitor
+first viewport answers what Doto is and where to get it, over a dot lattice the visitor
 can push around, because the product is something you touch rather than read about. Three
 short reasons follow, then the invitation to r/doto. Same dark, direct identity and cyan
 signal as the privacy policy. Copy follows the launcher's store voice: no dashes, no
@@ -15,14 +15,14 @@ const PLAY_URL = "https://play.google.com/store/apps/details?id=dev.dbdoo.launch
 const COMMUNITY_URL = "https://www.reddit.com/r/doto/";
 
 export const metadata: Metadata = {
-  title: "dot.o Launcher | An infinite canvas for Android",
+  title: "Doto Launcher | An infinite canvas for Android",
   description:
     "An Android home screen made of dots. Put apps and widgets anywhere on one canvas, and play music to watch it move. No ads, no account.",
   alternates: {
     canonical: "/doto-launcher",
   },
   openGraph: {
-    title: "dot.o Launcher",
+    title: "Doto Launcher",
     description:
       "An Android home screen made of dots. Put apps anywhere. Play music and it moves.",
     url: "https://dbdoo.dev/doto-launcher",
@@ -33,13 +33,13 @@ export const metadata: Metadata = {
         url: "/doto-launcher/feature-graphic.png",
         width: 1024,
         height: 500,
-        alt: "dot.o Launcher",
+        alt: "Doto Launcher",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "dot.o Launcher",
+    title: "Doto Launcher",
     description:
       "An Android home screen made of dots. Put apps anywhere. Play music and it moves.",
     images: ["/doto-launcher/feature-graphic.png"],
@@ -86,7 +86,7 @@ export default function DotoLauncherPage() {
 
           <div className="my-auto max-w-2xl py-16">
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
-              dot.o Launcher · Android
+              Doto Launcher · Android
             </p>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white sm:text-6xl">
               Your home screen is a canvas made of dots.
@@ -100,7 +100,7 @@ export default function DotoLauncherPage() {
                 href={PLAY_URL}
                 className="inline-flex min-h-12 items-center rounded-full bg-cyan-300 px-6 text-sm font-medium text-neutral-950 transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
               >
-                Get dot.o on Google Play
+                Get Doto on Google Play
               </a>
               <a
                 href={COMMUNITY_URL}
@@ -145,7 +145,7 @@ export default function DotoLauncherPage() {
             <a href={COMMUNITY_URL} className={linkClass}>
               r/doto
             </a>
-            . Anyone can paste it into dot.o and keep the look, the layout, or both.
+            . Anyone can paste it into Doto and keep the look, the layout, or both.
           </p>
         </div>
       </section>

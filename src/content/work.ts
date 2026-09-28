@@ -61,7 +61,7 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "doto-launcher",
-    title: "dot.o Launcher",
+    title: "Doto Launcher",
     kind: "Android home screen",
     status: "Live on Google Play",
     accent: "#67e8f9",
@@ -77,7 +77,7 @@ export const caseStudies: CaseStudy[] = [
       src: "/images/doto/01-spatial-home.webp",
       width: 720,
       height: 1280,
-      alt: "dot.o home screen: apps and round widgets placed freely on a dark dotted background",
+      alt: "Doto home screen: apps and round widgets placed freely on a dark dotted background",
       shape: "phone",
     },
     problem: [
@@ -189,7 +189,7 @@ export const caseStudies: CaseStudy[] = [
         height: 900,
         alt: "Icon study comparing a capital and a lowercase dotted O",
         caption:
-          "App icon study. The blue dot is meant to read as the period in dot.o. I tested both versions at real icon sizes in three different shapes.",
+          "App icon study. The blue dot was meant to read as the period in dot.o, the app's name before Doto. I tested both versions at real icon sizes in three different shapes.",
         shape: "wide",
       },
       {

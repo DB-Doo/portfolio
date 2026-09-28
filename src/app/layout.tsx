@@ -23,7 +23,7 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Dan Brandt | UX Designer",
   description:
-    "UX designer in Kansas City. I design interfaces and build them, so the details survive. Case studies from dot.o Launcher, Wide and client work, from the problem to the shipped product.",
+    "UX designer in Kansas City. I design interfaces and build them, so the details survive. Case studies from Doto Launcher, Wide and client work, from the problem to the shipped product.",
   openGraph: {
     title: "Dan Brandt | UX Designer",
     description:

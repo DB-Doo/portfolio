@@ -5,7 +5,7 @@ import Link from "next/link";
 Direction contract: Build a durable disclosure console inside dbdoo.dev's existing dark,
 direct identity. A compact left rail establishes product, effective date, and numbered
 navigation; the policy itself is one continuous, readable document rather than a pile of
-cards. Cyan dot.o signals mark structure without becoming decoration. The first viewport
+cards. Cyan Doto signals mark structure without becoming decoration. The first viewport
 must answer who operates the app, what the short version is, and how to contact support.
 Mobile collapses the rail into an indexed header while preserving the exact document order.
 Motion is limited to native anchor scrolling, and the policy remains fully useful without
@@ -13,16 +13,16 @@ JavaScript.
 */
 
 export const metadata: Metadata = {
-  title: "dot.o Launcher Privacy Policy | dbdoo.dev",
+  title: "Doto Launcher Privacy Policy | dbdoo.dev",
   description:
-    "Privacy policy for the Google Play edition of dot.o Launcher, including permissions, local processing, MET Norway weather, Google Play Billing, and Android backup.",
+    "Privacy policy for the Google Play edition of Doto Launcher, including permissions, local processing, MET Norway weather, Google Play Billing, and Android backup.",
   alternates: {
     canonical: "/doto-launcher/privacy",
   },
   openGraph: {
-    title: "dot.o Launcher Privacy Policy",
+    title: "Doto Launcher Privacy Policy",
     description:
-      "How dot.o Launcher handles local data, optional access, external services, and deletion.",
+      "How Doto Launcher handles local data, optional access, external services, and deletion.",
     url: "https://dbdoo.dev/doto-launcher/privacy",
     siteName: "dbdoo.dev",
     type: "website",
@@ -47,12 +47,12 @@ const localFeatures = [
   {
     name: "Launcher and app information",
     detail:
-      "dot.o reads the launchable apps, shortcuts, icons, labels, and placement choices needed to work as your home screen. This information is processed locally.",
+      "Doto reads the launchable apps, shortcuts, icons, labels, and placement choices needed to work as your home screen. This information is processed locally.",
   },
   {
     name: "Notifications and media controls",
     detail:
-      "If you enable notification access, Android may expose active notification titles, text, sender names, badges, and media details. dot.o keeps the active snapshot in memory so widgets and controls can work; it does not upload notification content.",
+      "If you enable notification access, Android may expose active notification titles, text, sender names, badges, and media details. Doto keeps the active snapshot in memory so widgets and controls can work; it does not upload notification content.",
   },
   {
     name: "Calendar, usage, and status widgets",
@@ -82,7 +82,7 @@ const permissions = [
   ["Precise location", "Android requires this access to reveal the connected Wi-Fi network name."],
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
-  ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. dot.o never writes, changes, or deletes health data."],
+  ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. Doto never writes, changes, or deletes health data."],
 ] as const;
 
 function SectionHeading({
@@ -137,18 +137,18 @@ export default function DotoLauncherPrivacyPolicy() {
               ))}
             </div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-400">
-              dot.o Launcher
+              Doto Launcher
             </p>
             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white">
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective September 8, 2026
+              Effective September 27, 2026
               <br />
-              Version 1.3
+              Version 1.4
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
-              Local-first. No ads, no dot.o account, and no automatic
+              Local-first. No ads, no Doto account, and no automatic
               analytics or crash reporting.
             </p>
           </div>
@@ -193,8 +193,8 @@ export default function DotoLauncherPrivacyPolicy() {
                 Plain-language policy
               </p>
               <p className="mt-5 max-w-2xl text-2xl font-medium leading-[1.35] tracking-tight text-white sm:text-4xl">
-                dot.o is a local-first Android launcher. It has no ads, no
-                dot.o account, and no automatic analytics or crash reporting.
+                Doto is a local-first Android launcher. It has no ads, no
+                Doto account, and no automatic analytics or crash reporting.
                 The only things that ever reach the developer are the
                 diagnostic report and crash logs you choose to attach to a
                 support email — and you can read both before they go.
@@ -270,18 +270,18 @@ export default function DotoLauncherPrivacyPolicy() {
                     </a>{" "}
                     to retrieve a forecast. If precise location was already
                     enabled for another feature, Android may briefly provide a
-                    more precise fix. dot.o immediately rounds a
+                    more precise fix. Doto immediately rounds a
                     current-location fix to about 0.1 degrees before caching it
                     or sending it to MET. For a custom city, Android&apos;s
                     configured geocoder receives the city name and returns
-                    coordinates; dot.o also rounds those coordinates to about
+                    coordinates; Doto also rounds those coordinates to about
                     0.1 degrees before sending them to MET. The configured
                     geocoder may also process rounded current-location
                     coordinates to produce a readable place label. MET receives
                     ordinary network metadata such as an IP address and may log the IP
                     address and coordinates under its terms. While a
                     current-location weather widget is active in the
-                    foreground, dot.o may refresh approximately every 30
+                    foreground, Doto may refresh approximately every 30
                     minutes; it does not run a continuous background location
                     tracker.
                   </p>
@@ -303,7 +303,7 @@ export default function DotoLauncherPrivacyPolicy() {
                     >
                       CC BY 4.0
                     </a>
-                    , and adapted by dot.o.
+                    , and adapted by Doto.
                   </p>
                 </div>
                 <div>
@@ -311,12 +311,12 @@ export default function DotoLauncherPrivacyPolicy() {
                     Google Play Billing
                   </h3>
                   <p className="mt-2">
-                    Google Play processes the optional one-time dot.o Pro
-                    purchase and ownership checks. dot.o receives the product
+                    Google Play processes the optional one-time Doto Pro
+                    purchase and ownership checks. Doto receives the product
                     ID, purchase and acknowledgment status, and a purchase
                     token that it returns to Play for acknowledgment. The token
-                    is never logged, saved, backed up, or sent to a dot.o
-                    server. dot.o keeps only a local ownership record and
+                    is never logged, saved, backed up, or sent to a Doto
+                    server. Doto keeps only a local ownership record and
                     verification time, uses a maximum seven-day offline grace,
                     and deletes that local record when you clear app storage or
                     uninstall. Google Play Billing may send technical
@@ -329,7 +329,7 @@ export default function DotoLauncherPrivacyPolicy() {
                     >
                       Google&apos;s Privacy Policy
                     </a>
-                    . dot.o does not receive your payment-card details.
+                    . Doto does not receive your payment-card details.
                   </p>
                 </div>
                 <div>
@@ -350,7 +350,7 @@ export default function DotoLauncherPrivacyPolicy() {
             <section id="permissions" className="scroll-mt-8 pt-20">
               <SectionHeading number="04" title="Permissions and access" />
               <p className="mb-7 text-sm leading-7 text-neutral-400">
-                dot.o explains sensitive access before opening Android&apos;s
+                Doto explains sensitive access before opening Android&apos;s
                 permission or special-access screen. You can deny or revoke
                 optional access at any time; the related feature will stop or
                 use its documented fallback.
@@ -374,37 +374,37 @@ export default function DotoLauncherPrivacyPolicy() {
               <SectionHeading number="05" title="Health data" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
-                  dot.o can show your steps, heart rate, and sleep on your home
+                  Doto can show your steps, heart rate, and sleep on your home
                   screen. These three widgets are optional. If you never add one,
-                  dot.o never asks for health access and never reads anything.
+                  Doto never asks for health access and never reads anything.
                 </p>
                 <p>
                   <span className="text-white">What it reads.</span> With your
-                  permission, dot.o reads steps, recorded heart rate and sleep
+                  permission, Doto reads steps, recorded heart rate and sleep
                   sessions from Health Connect. Steps include today and seven
                   recent days; sleep includes the last recorded sleep and seven
                   recent nights. Heart rate includes the latest recorded reading,
                   seven recent hourly averages and available intraday detail over
                   seven days. Data depends on what your watch or source app writes
-                  to Health Connect. dot.o is a display, not a measuring device or
+                  to Health Connect. Doto is a display, not a measuring device or
                   a live medical monitor. It requests read access only, separately
                   for each widget, and never writes, changes or deletes health records.
                 </p>
                 <p>
                   <span className="text-white">When it reads.</span> Only metrics
-                  with a placed widget and your permission are read while dot.o is
+                  with a placed widget and your permission are read while Doto is
                   in the foreground. Summaries refresh on return to the launcher;
                   steps and heart rate then refresh about every five foreground
                   minutes, and sleep about every hour. Recent history loads when
                   requested by a widget and again on return for widgets that
-                  requested it. dot.o does not read health data in the background.
+                  requested it. Doto does not read health data in the background.
                 </p>
                 <p>
                   <span className="text-white">Where it goes.</span> Readings,
                   history and source labels stay in process memory on your phone.
-                  dot.o never saves them to disk, includes them in backups, logs or
+                  Doto never saves them to disk, includes them in backups, logs or
                   diagnostic reports, uploads them, or shares them with anyone,
-                  including the developer. There is no dot.o account or server
+                  including the developer. There is no Doto account or server
                   holding your health data.
                 </p>
                 <p>
@@ -415,11 +415,11 @@ export default function DotoLauncherPrivacyPolicy() {
                   permissions are checked before fresh readings appear on return.
                   In Settings → Privacy → Health Connect, Manage access
                   opens Android&apos;s controls. Disconnect clears all readings, stops
-                  reads and asks Health Connect to revoke dot.o&apos;s permissions.
-                  If Android cannot complete revocation, dot.o reports the failure
+                  reads and asks Health Connect to revoke Doto&apos;s permissions.
+                  If Android cannot complete revocation, Doto reports the failure
                   and directs you to Manage access; reads stay stopped for that
                   session until you choose to reconnect. You can also revoke access
-                  directly in Health Connect. dot.o clears affected readings when
+                  directly in Health Connect. Doto clears affected readings when
                   the next permission check detects revocation, including on return
                   to the launcher. None of these actions deletes records held by
                   Health Connect or by the original source app.
@@ -427,7 +427,7 @@ export default function DotoLauncherPrivacyPolicy() {
                 <p>
                   <span className="text-white">Advertising and analytics.</span>{" "}
                   Health data is never used for advertising, never used to profile
-                  you, and never fed to analytics. dot.o has no advertising and no
+                  you, and never fed to analytics. Doto has no advertising and no
                   developer-operated analytics of any kind.
                 </p>
               </div>
@@ -448,7 +448,7 @@ export default function DotoLauncherPrivacyPolicy() {
                 <p>
                   Cached weather coordinates, forecast responses, active
                   notifications, Wi-Fi names, Bluetooth addresses, audio, and
-                  Google Play purchase tokens are not included in dot.o&apos;s
+                  Google Play purchase tokens are not included in Doto&apos;s
                   backup allowlist. Backup availability and retention are
                   controlled by Android and your device or account provider.
                 </p>
@@ -459,7 +459,7 @@ export default function DotoLauncherPrivacyPolicy() {
               <SectionHeading number="07" title="Diagnostics you send" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
-                  dot.o never sends logs or diagnostics on its own. When you
+                  Doto never sends logs or diagnostics on its own. When you
                   email support, you can choose to attach a diagnostic report.
                   It is written into the email body, so you can read every line
                   before sending, and it travels only when you press send in
@@ -481,7 +481,7 @@ export default function DotoLauncherPrivacyPolicy() {
                 <p>
                   Reports arrive in the developer&apos;s support mailbox, are
                   used only to answer your email, and are kept no longer than
-                  the conversation. If dot.o adds other diagnostic reports in
+                  the conversation. If Doto adds other diagnostic reports in
                   the future, they will follow these same rules: clearly
                   offered, shown to you in full, and sent only by you.
                 </p>
@@ -493,11 +493,11 @@ export default function DotoLauncherPrivacyPolicy() {
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
                   Local launcher state remains until you change it, clear the
-                  app&apos;s storage, or uninstall dot.o. Active notification,
+                  app&apos;s storage, or uninstall Doto. Active notification,
                   audio, Wi-Fi, and connected-device snapshots are kept only as
                   needed for the live feature. Cached weather locations and
                   forecasts may remain until they are refreshed, replaced,
-                  cleared with app storage, or removed when dot.o is
+                  cleared with app storage, or removed when Doto is
                   uninstalled.
                 </p>
                 <p>
@@ -507,7 +507,7 @@ export default function DotoLauncherPrivacyPolicy() {
                   </span>
                   , or by uninstalling the app. You can manage or delete
                   Android backups through your device or account provider.
-                  There is no dot.o account and no developer-held account
+                  There is no Doto account and no developer-held account
                   profile to request for deletion.
                 </p>
               </div>
@@ -517,7 +517,7 @@ export default function DotoLauncherPrivacyPolicy() {
               <SectionHeading number="09" title="Security and changes" />
               <div className="space-y-5 text-sm leading-7 text-neutral-400">
                 <p>
-                  dot.o minimizes external transfer, keeps optional access
+                  Doto minimizes external transfer, keeps optional access
                   feature-scoped, and limits Android backup to selected
                   user-created launcher state. No software can guarantee
                   absolute security, but the app is designed to avoid operating
