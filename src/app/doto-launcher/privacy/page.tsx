@@ -47,7 +47,7 @@ const localFeatures = [
   {
     name: "Launcher and app information",
     detail:
-      "Doto reads the launchable apps, shortcuts, icons, labels, and placement choices needed to work as your home screen. This information is processed locally.",
+      "Doto reads the launchable apps, shortcuts, icons, labels, and placement choices needed to work as your home screen, including apps in a work profile and, while Android shows it unlocked, your Private Space. This information is processed locally.",
   },
   {
     name: "Notifications and media controls",
@@ -143,9 +143,9 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective September 27, 2026
+              Effective October 12, 2026
               <br />
-              Version 1.4
+              Version 1.5
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
               Local-first. No ads, no Doto account, and no automatic
