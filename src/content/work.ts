@@ -138,12 +138,11 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: "Simpler ways to change the look",
-        status: "In progress",
         before:
           "Fifteen different buttons that each changed one slice of the appearance, six different names for the background and seven meanings of the word style.",
         after:
-          "A gallery of complete looks to pick from, plus six clearly named things you can adjust on their own: colors, font, icons, widgets, controls and background.",
-        why: "When I started getting lost in my own settings, I knew testers would be too. A new look never overrides accessibility choices, so someone who turned motion off keeps it off. The first part of this has shipped.",
+          "Hold empty space on the home screen for two choices. Looks puts on a complete look in one tap. Customize changes colors, font, icons, widgets or fabric one at a time, right on your own home.",
+        why: "When I started getting lost in my own settings, I knew testers would be too. A new look never overrides accessibility choices, so someone who turned motion off keeps it off. Both shipped in October 2026, with an Undo for a look you did not want.",
       },
     ],
     comparison: {

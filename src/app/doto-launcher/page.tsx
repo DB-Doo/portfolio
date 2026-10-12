@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { DotField } from "./DotField";
 
 /*
 Direction contract: the page a stranger lands on from a post, a pitch or a search. The
 first viewport answers what Doto is and where to get it, over a dot lattice the visitor
-can push around, because the product is something you touch rather than read about. Three
-short reasons follow, then the invitation to r/doto. Same dark, direct identity and cyan
-signal as the privacy policy. Copy follows the launcher's store voice: no dashes, no
+can push around, because the product is something you touch rather than read about. The
+Play screenshots and four short reasons follow, then the invitation to r/doto. Same dark,
+direct identity and cyan signal as the privacy policy. Copy follows the launcher's store voice: no dashes, no
 prices, nothing admires itself.
 */
 
@@ -56,14 +57,29 @@ const reasons = [
   },
   {
     number: "02",
-    title: "Music you can see",
-    body: "Play music and the dots, icons and widgets move with what is actually playing. When it stops, the screen goes still and costs no battery.",
+    title: "A whole look in one tap",
+    body: "Hold empty space and tap Looks. Colors, font, icons and fabric change together. Tap Customize to change any one of them on your own home, and Undo if you change your mind.",
   },
   {
     number: "03",
+    title: "Music you can see",
+    body: "Add the music widget and its dots move with what is actually playing. With Pro, the whole home screen moves. When the music stops, the screen goes still and costs no battery.",
+  },
+  {
+    number: "04",
     title: "No ads. No account.",
     body: "No analytics and no crash reporting. Pro is one purchase, never a subscription, with a free week to try it.",
   },
+] as const;
+
+const screens = [
+  { file: "01-home", alt: "A home screen made of dots. No grid, no pages." },
+  { file: "02-music", alt: "Your music moves the dots. Pro." },
+  { file: "03-3d", alt: "Raise it into 3D. Pro." },
+  { file: "04-looks", alt: "One tap, a whole new look: colors, font, icons, widgets and fabric." },
+  { file: "05-anywhere", alt: "Put anything anywhere. Pro." },
+  { file: "06-day", alt: "Your whole day at a glance. Pro." },
+  { file: "07-hold", alt: "Hold anywhere to make it yours." },
 ] as const;
 
 const linkClass =
@@ -92,8 +108,8 @@ export default function DotoLauncherPage() {
               Your home screen is a canvas made of dots.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8">
-              Put apps and widgets anywhere. Pinch out to see all of it. Play music and it
-              moves.
+              Put apps and widgets anywhere. Pinch out to see all of it. Hold empty space
+              to change the whole look.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
@@ -116,8 +132,25 @@ export default function DotoLauncherPage() {
         </div>
       </section>
 
+      <section aria-label="Screenshots" className="border-b border-neutral-800">
+        <ul className="mx-auto flex max-w-5xl snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 py-12 sm:scroll-px-10 [scrollbar-width:thin] sm:px-10">
+          {screens.map((screen) => (
+            <li key={screen.file} className="w-52 shrink-0 snap-start sm:w-60">
+              <Image
+                src={`/doto-launcher/screens/${screen.file}.webp`}
+                alt={screen.alt}
+                width={720}
+                height={1280}
+                sizes="(min-width: 640px) 240px, 208px"
+                className="h-auto w-full rounded-2xl border border-neutral-800"
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="mx-auto max-w-5xl px-6 py-20 sm:px-10">
-        <div className="grid gap-12 md:grid-cols-3 md:gap-10">
+        <div className="grid gap-12 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
           {reasons.map((reason) => (
             <div key={reason.number}>
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
