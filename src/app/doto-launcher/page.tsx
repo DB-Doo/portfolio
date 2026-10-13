@@ -180,7 +180,7 @@ export default function DotoLauncherPage() {
           <div className="mx-auto grid max-w-5xl items-center gap-14 px-6 py-20 sm:px-10 md:grid-cols-[1fr_300px] md:gap-16">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
-                Canvas Critters · Pro · New in the Halloween update
+                Canvas Critters · Pro · New
               </p>
               <h2
                 id="critters-heading"
