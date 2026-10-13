@@ -35,7 +35,7 @@ UX portfolio (merged to `main` 2026-09-24):
 - Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
 - Visual language matches `/doto-launcher`: neutral-950, cyan-300/400 signal, mono eyebrow labels, Geist via `font-sans` (body CSS still says Arial, so each page's `<main>` sets `font-sans`).
 - Every case-study claim is sourced from that project's repo (dot.o: `docs/okf`, `docs/design`, `docs/feedback`, commits; Wide: `docs/audit`, `docs/superpowers/specs`). Never describe unshipped dot.o features as shipped; check its `docs/okf/release/feature-switches.md`.
-- Canvas Critters (2026-10-13, Dan picked "A"): the spider nests on the Doto card in the home hero and the Roomba docks beside the buttons; they wake when a visitor moves over open dots and ignore the cursor over text. A phone playground sits on `/doto-launcher`, marked Pro. Both are preview-only until the launcher update with them is live on Google Play, which Dan plans well before Halloween (draft PR #3).
+- Canvas Critters (2026-10-13, Dan picked "A"): the spider nests on the Doto card in the home hero and the Roomba docks beside the buttons; they wake when a visitor moves over open dots and ignore the cursor over text. A phone playground sits on `/doto-launcher`, marked Pro. Dan decided (2026-10-13) they go live on the site as soon as he approves, ahead of the app; the copy says they are coming to Doto Pro (PR #3).
 - The July recruiter-first draft ("I build the whole product") is saved on branch `july-redesign-draft` in the main checkout; Dan chose to start fresh instead.
 
 ## Next up
@@ -43,13 +43,13 @@ UX portfolio (merged to `main` 2026-09-24):
 1. Dan confirms the Bid Tracker "why" lines and the reason the paged grid was dropped in dot.o.
 2. A UX-titled résumé (the current PDF says App & Web Developer).
 3. More before/after pairs for dot.o (tutorial vs hints, three drawers vs one) from old commits.
-4. Flip `CRITTERS_RELEASED` and merge PR #3 once the launcher update with the critters is live on Google Play (with Dan's OK).
+4. Merge PR #3 once Dan approves it locally. When the critters ship in the app, change the Doto page label "Coming to Doto Pro" to say they are in Pro.
 5. MagneticButton / TiltCard / PhotoLightbox / physics tags are no longer used by the home page; leave them until the new site settles, then remove.
 
 ## Gotchas
 
 - **Next.js 16 breaking changes** — the `AGENTS.md` warning at the top of this file is real. Always check `node_modules/next/dist/docs/` before writing code that assumes old Next patterns.
-- **Canvas Critters** — the spider and Roomba live in the home hero (`HeroCritters.tsx`) and in a phone playground on `/doto-launcher` (`CritterPhone.tsx`); the engine is plain JS in `public/doto-launcher/critters/`. Both show on local builds and Vercel previews only. Set `CRITTERS_RELEASED = true` in `src/content/critters.ts` when the launcher update with the critters is live on Google Play. Elements marked `data-critter="wall"` are text they drive around; `data-critter="ledge"` are cards they can stand on.
+- **Canvas Critters** — the spider and Roomba live in the home hero (`HeroCritters.tsx`) and in a phone playground on `/doto-launcher` (`CritterPhone.tsx`); the engine is plain JS in `public/doto-launcher/critters/`. `CRITTERS_RELEASED` in `src/content/critters.ts` is the kill switch for the live site (previews always show them). Elements marked `data-critter="wall"` are text they drive around; `data-critter="ledge"` are cards they can stand on.
 - **R3F / Three.js** — must be `"use client"`, wrap in `next/dynamic` with `ssr: false`.
 - **GSAP ScrollTrigger** — only fire inside `useEffect`; never during SSR.
 - **react-fluid-distortion** — requires `transpilePackages` config in `next.config.ts`.
