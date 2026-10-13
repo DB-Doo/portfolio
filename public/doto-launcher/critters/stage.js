@@ -403,7 +403,7 @@
       }
     };
 
-    const rope = abseil(o, sp, zoom);
+    const rope = abseil({ ...o, onLand: () => { met = true; } }, sp, zoom);
     let raf = 0, alive = true, last = 0;
     const loop = (now) => {
       if (!alive) return;
@@ -518,16 +518,19 @@
         if (state === "landing" && want) state = "on";
         fade = Math.min(1, fade + dt * 3);
         if (state === "on") {
-          // Over to the right edge, and down as far through the window as the reader is
-          // through the page.
+          // Over to the right edge, and down as far through the window as the reader is through
+          // the page: the line is a live reading-progress meter (Dan, 2026-10-13), so it tracks
+          // the scroll closely, only easing enough to stay soft.
           ax = lerp(ax, lane(), 1 - Math.exp(-dt * 2.6));
-          const p = clamp((scrollY - start) / Math.max(1, room - start), 0, 1);
-          const target = lerp(vh * 0.2, vh * 0.78, p) + 6;
-          const ease = target - L, rate = ease > 0 ? 220 : 420;
-          L += clamp(ease * (1 - Math.exp(-dt * 2.2)), -rate * dt, rate * dt);
-          turn = Math.min(1, turn + dt * 1.6);
+          const p = clamp(scrollY / room, 0, 1);
+          const target = lerp(vh * 0.1, vh * 0.82, p) + 6;
+          // Just on the line it eases over gently; once hanging it follows closely.
+          const grip = lerp(1, 6, turn);
+          L += clamp((target - L) * (1 - Math.exp(-dt * grip)), -900 * dt, 900 * dt);
+          // Swings round to hang head first slowly, over about a second and a half.
+          turn = Math.min(1, turn + dt * 0.65);
         } else {
-          turn = Math.max(0, turn - dt * 2);
+          turn = Math.max(0, turn - dt * 0.9);
         }
         // A scroll that speeds up or brakes swings it, the way a sudden stop swings a pendant.
         const ay = 1500 - acc * 0.1, kick = -acc * 0.04 * Math.sin(clock * 1.7);
@@ -545,6 +548,9 @@
           for (const f of sp.feet) { f.x += (e.x - tx) / zoom; f.y += (e.y - ty) / zoom; }
           sp.inBounds?.();
           sp.away = false; state = "fading";
+          // Then it goes home to its nest, rather than standing where the line left it.
+          o.onLand?.();
+          sp.begin("rest", "Back off its line, heading home to its nest");
         }
       },
       draw() {
