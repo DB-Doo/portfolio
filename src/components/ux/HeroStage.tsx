@@ -10,10 +10,11 @@ import {
 } from "motion/react";
 import { useEffect, useRef } from "react";
 import type { Figure } from "@/content/work";
-import { BrowserFrame, PhoneFrame } from "./Device";
+import Image from "next/image";
+import { PhoneFrame } from "./Device";
 
 /*
-The hero's product composition: a browser window at the back, two phones in front. Each
+The hero's product composition: the NinKeys keyboard at the back, two phones in front. Each
 layer drifts with the pointer at its own depth and separates as the page scrolls, so the
 work feels physical before a single word about it is read. On touch and reduced motion
 the layers simply sit in place.
@@ -65,11 +66,21 @@ export function HeroStage({ back, left, right }: { back: Figure; left: Figure; r
   return (
     <div ref={ref} className="relative mx-auto aspect-[5/4] w-full max-w-[640px] [perspective:1400px]">
       <motion.div
-        className="absolute left-0 top-[6%] w-[82%]"
+        className="absolute left-0 top-[4%] w-[66%]"
         style={reduce ? undefined : { x: backX, y: backY, rotateY: backTiltY }}
       >
-        <motion.div {...enter(0.5)} data-critter="ledge" data-critter-name="the Level window">
-          <BrowserFrame figure={back} sizes="520px" url="dbdoo.dev/level" />
+        <motion.div {...enter(0.5)} data-critter="ledge" data-critter-name="the keyboard">
+          {/* The keyboard cropped out of a real iPhone screenshot, set on its own panel. */}
+          <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#161616] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)]">
+            <Image
+              src={back.src}
+              alt={back.alt}
+              width={back.width}
+              height={back.height}
+              sizes="420px"
+              className="block h-auto w-full"
+            />
+          </div>
         </motion.div>
       </motion.div>
 

@@ -48,7 +48,14 @@ const previously = [
 ];
 
 export default function Home() {
-  const [doto, wide, bid] = caseStudies;
+  const [doto, wide] = caseStudies;
+  const ninkeys = {
+    src: "/images/ninkeys/keyboard-hero.jpg",
+    alt: "NinKeys, my swipe keyboard for iPhone, mid-swipe with word suggestions above the keys.",
+    shape: "wide",
+    width: 1179,
+    height: 1000,
+  } as const;
 
   return (
     <main className="grain relative min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
@@ -121,7 +128,7 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <HeroStage back={bid.cover} left={wide.cover} right={doto.cover} />
+          <HeroStage back={ninkeys} left={wide.cover} right={doto.cover} />
         </div>
       </header>
 
