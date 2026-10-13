@@ -128,8 +128,13 @@
     const presence = world.critter.presence;
     world.critter.presence = () => { met = true; presence(); };
 
-    let sinceMap = 0, drift = 0;
+    let sinceMap = 0, drift = 0, lastScroll = scrollY;
     rb.placeDock();
+    // Carries the spider with whatever it stands on, feet included, so its legs never stretch.
+    const carry = (dx, dy) => {
+      sp.x += dx; sp.y += dy;
+      for (const f of sp.feet) { f.x += dx; f.y += dy; }
+    };
     /** Carries whatever stands on a ledge along with it, and mirrors bumps onto the page. */
     const follow = (dt) => {
       drift += measure();
@@ -139,7 +144,7 @@
       for (const it of [...page.filter((p) => !p.wall), nest]) {
         if (!it.dx && !it.dy) continue;
         const on = (x, y) => sdf(it, x, y) < 2;
-        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) { sp.x += it.dx; sp.y += it.dy; }
+        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) carry(it.dx, it.dy);
         if (rb.z > 3 && on(rb.x, rb.y)) { rb.x += it.dx; rb.y += it.dy; }
         for (const b of world.balls) if (!b.held && on(b.x, b.y + b.r + 1)) { b.x += it.dx; b.y += it.dy; }
       }
@@ -356,8 +361,13 @@
     const presence = world.critter.presence;
     world.critter.presence = () => { met = true; presence(); };
 
-    let sinceMap = 0, drift = 0;
+    let sinceMap = 0, drift = 0, lastScroll = scrollY;
     rb.placeDock();
+    // Carries the spider with whatever it stands on, feet included, so its legs never stretch.
+    const carry = (dx, dy) => {
+      sp.x += dx; sp.y += dy;
+      for (const f of sp.feet) { f.x += dx; f.y += dy; }
+    };
     const follow = (dt) => {
       drift += measure();
       rb.placeDock();
@@ -368,12 +378,19 @@
       for (const it of [...page.filter((p) => !p.wall), nest]) {
         if (!it.dx && !it.dy) continue;
         const on = (x, y) => sdf(it, x, y) < 2;
-        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) { sp.x += it.dx; sp.y += it.dy; }
+        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) carry(it.dx, it.dy);
         if (rb.z > 3 && on(rb.x, rb.y)) { rb.x += it.dx; rb.y += it.dy; }
         for (const b of world.balls) if (!b.held && on(b.x, b.y + b.r + 1)) { b.x += it.dx; b.y += it.dy; }
       }
+      // Silk is tied to the page, so it scrolls with it rather than stretching back to where
+      // it was spun. A line still being paid out keeps its far end on the spider.
+      const scrolled = (lastScroll - scrollY) / zoom;
+      lastScroll = scrollY;
+      if (scrolled) for (const t of world.silk) { t.ay += scrolled; if (!t.flying) t.by += scrolled; }
       // Whoever was carried off the edge of the window comes back in at the edge.
+      const bx = sp.x, by = sp.y;
       sp.inBounds?.();
+      if (sp.x !== bx || sp.y !== by) for (const f of sp.feet) { f.x += sp.x - bx; f.y += sp.y - by; }
       for (const it of page) {
         if (it.wall) continue;
         const jx = it.jx || 0, jy = it.jy || 0;

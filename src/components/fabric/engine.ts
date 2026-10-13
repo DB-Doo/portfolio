@@ -96,6 +96,8 @@ export class Fabric {
   private lift = new Float32Array(0);
   private px = new Float32Array(0);
   private py = new Float32Array(0);
+  /** Each row's page position last frame, to spot a row that has wrapped round. */
+  private rowAt = new Float32Array(0);
 
   colliders: Collider[] = [];
   presses: Press[] = [];
@@ -103,7 +105,9 @@ export class Fabric {
   /** Page scroll, so the sheet travels with the content. */
   scrollY = 0;
   /** Vertical stretch around the middle of the window, sprung back to 1. */
-  stretch = new Spring(1, 0.1, 0.8);
+  stretch = new Spring(1, 0.12, 0.7);
+  /** Furthest the rows may spread or gather from their spacing. */
+  maxStretch = 0.025;
   /** Called before every frame, to read the page (collider rects, scroll). */
   beforeFrame: (() => void) | null = null;
   /** Called after drawing, to mask or decorate. */
@@ -138,7 +142,8 @@ export class Fabric {
     this.context.setTransform(ratio, 0, 0, ratio, 0, 0);
     const S = this.spacing;
     this.cols = Math.ceil(this.width / S) + 3;
-    this.rows = Math.ceil(this.height / S) + 5;
+    // Margin rows above and below the window, so a row wraps round well out of sight.
+    this.rows = Math.ceil(this.height / S) + 10;
     const n = this.cols * this.rows;
     this.dx = new Float32Array(n);
     this.dy = new Float32Array(n);
@@ -149,6 +154,7 @@ export class Fabric {
     this.lift = new Float32Array(n);
     this.px = new Float32Array(n);
     this.py = new Float32Array(n);
+    this.rowAt = new Float32Array(this.rows).fill(NaN);
     this.originX = (this.width % S) / 2 - S;
     this.render();
   }
@@ -159,6 +165,9 @@ export class Fabric {
     const period = rows * S;
     const middle = this.height / 2;
     const stretchMoving = this.stretch.step();
+    const limit = this.maxStretch;
+    // Soft limit: the closer to the edge, the harder it pulls in, so a fling never stops dead.
+    this.stretch.v = 1 + limit * Math.tanh((this.stretch.v - 1) / limit);
     const stretch = this.stretch.v;
     const pointer = this.pointer;
     const colliders = this.colliders.filter(
@@ -170,11 +179,23 @@ export class Fabric {
 
     for (let r = 0; r < rows; r++) {
       // Rows wrap, so a window-sized lattice covers a page of any length.
-      const pageRow = ((((r * S - this.scrollY) % period) + period) % period) - 2 * S;
+      const pageRow = ((((r * S - this.scrollY) % period) + period) % period) - 5 * S;
+      const row = r * cols;
+      // A row that just wrapped round is new cloth for another part of the page. Its old
+      // offsets belong to wherever it was, so it starts flat; otherwise a fast scroll recycles
+      // most of the lattice every frame and the whole sheet lights up with stale motion.
+      if (Math.abs(pageRow - this.rowAt[r]) > period / 2) {
+        dx.fill(0, row, row + cols);
+        dy.fill(0, row, row + cols);
+        vx.fill(0, row, row + cols);
+        vy.fill(0, row, row + cols);
+        px.fill(0, row, row + cols);
+        py.fill(0, row, row + cols);
+      }
+      this.rowAt[r] = pageRow;
       const homeY = middle + (pageRow - middle) * stretch;
       const up = ((r + rows - 1) % rows) * cols;
       const down = ((r + 1) % rows) * cols;
-      const row = r * cols;
       for (let c = 0; c < cols; c++) {
         const i = row + c;
         const homeX = this.originX + c * S;

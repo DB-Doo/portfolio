@@ -8,7 +8,7 @@ import { ledges, walls } from "./room";
 
 /*
 One dot fabric under every page, so the site reads as one material rather than sections on a
-background. It scrolls with the content, stretches a little under a fast scroll and springs
+background. It scrolls with the content, gives very slightly under a fast scroll and springs
 back. Cards, phones and pictures sit in wells with the cloth gathered at their rims, and a
 well you can open deepens under the pointer or keyboard focus. Text presses the cloth lightly,
 so dots thin out behind words. The cursor dents it, a click rings out through it, and the
@@ -95,7 +95,12 @@ export function SiteFabric() {
       const y = window.scrollY;
       const delta = Math.max(-80, Math.min(80, y - lastY));
       lastY = y;
-      if (!still) fabric.stretch.vel += delta * 0.0008;
+      // A nudge per scroll event, capped, so a fling reads as the cloth giving a little and
+      // never as rows pulling apart (Dan, 2026-10-13: it stretched far too much).
+      if (!still) fabric.stretch.vel = Math.max(-0.0025, Math.min(0.0025, fabric.stretch.vel + delta * 0.00012));
+      // A resting cursor would otherwise plough through the sheet as the page slides under it
+      // and light up everything it passes. It dents again on the next move.
+      if (delta && fabric.pointer) fabric.pointer = null;
       fabric.wake();
     };
     const move = (event: PointerEvent) => {
