@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { CritterPhone } from "./CritterPhone";
 import { DotField } from "./DotField";
 
 /*
@@ -80,6 +81,22 @@ const screens = [
   { file: "05-anywhere", alt: "Put anything anywhere. Pro." },
   { file: "06-day", alt: "Your whole day at a glance. Pro." },
   { file: "07-hold", alt: "Hold anywhere to make it yours." },
+] as const;
+
+/*
+The critters ship in the Halloween update (Oct 31, 2026). Until then the section shows on local
+builds and Vercel previews only, so the live page never describes a feature people can't get.
+Set this to true when the update is live on Google Play.
+*/
+const CRITTERS_RELEASED = false;
+const showCritters = CRITTERS_RELEASED || process.env.VERCEL_ENV !== "production";
+
+const critterTips = [
+  "Tap play on the music widget and watch them dance.",
+  "Hold still near the spider and it comes closer.",
+  "Flick anywhere to throw a ball.",
+  "Rub the Roomba fast to tickle it. It won't like it.",
+  "Hold the Roomba to pick it up.",
 ] as const;
 
 const linkClass =
@@ -164,6 +181,38 @@ export default function DotoLauncherPage() {
           ))}
         </div>
       </section>
+
+      {showCritters && (
+        <section aria-labelledby="critters-heading" className="border-t border-neutral-800">
+          <div className="mx-auto grid max-w-5xl items-center gap-14 px-6 py-20 sm:px-10 md:grid-cols-[1fr_300px] md:gap-16">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
+                New in the Halloween update
+              </p>
+              <h2
+                id="critters-heading"
+                className="mt-3 max-w-xl text-2xl font-semibold tracking-tight text-white sm:text-4xl"
+              >
+                Two roommates live on your canvas.
+              </h2>
+              <p className="mt-5 max-w-xl text-sm leading-7 text-neutral-400 sm:text-base">
+                A jumping spider made of dots hops between your widgets and slowly learns to
+                trust you. A little Roomba tidies up after it and goes home to charge. Play music
+                and they both dance. They are live on this phone, so try them.
+              </p>
+              <ul className="mt-8 grid gap-3 font-mono text-xs leading-5 text-neutral-500">
+                {critterTips.map((tip) => (
+                  <li key={tip} className="flex gap-3">
+                    <span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-cyan-300/70" />
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <CritterPhone />
+          </div>
+        </section>
+      )}
 
       <section className="border-t border-neutral-800">
         <div className="mx-auto max-w-5xl px-6 py-20 sm:px-10">

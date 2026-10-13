@@ -47,6 +47,7 @@ UX portfolio (merged to `main` 2026-09-24):
 ## Gotchas
 
 - **Next.js 16 breaking changes** — the `AGENTS.md` warning at the top of this file is real. Always check `node_modules/next/dist/docs/` before writing code that assumes old Next patterns.
+- **Canvas Critters on `/doto-launcher`** — the spider and Roomba playground (`CritterPhone.tsx`, engine in `public/doto-launcher/critters/`) shows on local builds and Vercel previews only. Set `CRITTERS_RELEASED = true` in `src/app/doto-launcher/page.tsx` when the launcher's Halloween update is live on Google Play.
 - **R3F / Three.js** — must be `"use client"`, wrap in `next/dynamic` with `ssr: false`.
 - **GSAP ScrollTrigger** — only fire inside `useEffect`; never during SSR.
 - **react-fluid-distortion** — requires `transpilePackages` config in `next.config.ts`.
