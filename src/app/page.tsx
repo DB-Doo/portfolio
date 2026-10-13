@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { DotField } from "@/app/doto-launcher/DotField";
+import { showCritters } from "@/content/critters";
 import { caseStudies } from "@/content/work";
 import { Device } from "@/components/ux/Device";
+import { HeroCritters } from "@/components/ux/HeroCritters";
 import { HeroStage } from "@/components/ux/HeroStage";
 import { Reveal, SplitHeadline } from "@/components/ux/Reveal";
 import { CopyEmail } from "@/components/ux/ScrollBits";
@@ -46,7 +48,14 @@ const previously = [
 ];
 
 export default function Home() {
-  const [doto, wide, bid] = caseStudies;
+  const [doto, wide] = caseStudies;
+  const ninkeys = {
+    src: "/images/ninkeys/keyboard-hero.jpg",
+    alt: "NinKeys, my swipe keyboard for iPhone, mid-swipe with word suggestions above the keys.",
+    shape: "wide",
+    width: 1179,
+    height: 1000,
+  } as const;
 
   return (
     <main className="grain relative min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
@@ -56,7 +65,7 @@ export default function Home() {
           <Link href="/" className={`text-sm font-medium text-white ${focus}`}>
             Dan Brandt
           </Link>
-          <div className="flex items-center gap-5 text-sm text-neutral-400 sm:gap-7">
+          <div data-critter="wall" data-critter-name="the nav" className="flex items-center gap-5 text-sm text-neutral-400 sm:gap-7">
             <a href="#work" className={`hover:text-white ${focus}`}>Work</a>
             <a href="#about" className={`hidden hover:text-white sm:inline ${focus}`}>About</a>
             <a href={RESUME_URL} className={`hover:text-white ${focus}`}>Résumé</a>
@@ -70,7 +79,7 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <header className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 [touch-action:pan-y]">
-        <DotField />
+        {showCritters ? <HeroCritters /> : <DotField />}
         <div aria-hidden="true" className="glow-drift pointer-events-none absolute -left-40 top-10 -z-0 size-[560px] rounded-full bg-cyan-400/15 blur-[120px]" />
         <div aria-hidden="true" className="glow-drift pointer-events-none absolute -right-32 bottom-0 -z-0 size-[520px] rounded-full bg-fuchsia-500/10 blur-[120px]" style={{ animationDelay: "-8s" }} />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(10,10,10,0.85)_0%,rgba(10,10,10,0.4)_50%,rgba(10,10,10,0)_80%)]" />
@@ -79,7 +88,7 @@ export default function Home() {
         <div className="relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 pb-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <Reveal y={12}>
-              <p className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-300 backdrop-blur">
+              <p data-critter="wall" data-critter-name="the badge" className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-300 backdrop-blur">
                 <span className="relative flex size-2">
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
                   <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
@@ -87,6 +96,7 @@ export default function Home() {
                 Open to UX roles and freelance projects
               </p>
             </Reveal>
+            <div data-critter="wall" data-critter-name="the headline">
             <SplitHeadline
               delay={0.15}
               className="mt-8 text-[2.7rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-7xl"
@@ -95,8 +105,9 @@ export default function Home() {
                 { text: "build them myself.", serif: true, accent: true },
               ]}
             />
+            </div>
             <Reveal delay={0.7}>
-              <p className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
+              <p data-critter="wall" data-critter-name="the intro" className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
                 I&rsquo;m Dan Brandt, a UX designer in Kansas City. My newest app,{" "}
                 <Link href={`/work/${doto.slug}`} className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-cyan-300">
                   Doto
@@ -105,7 +116,7 @@ export default function Home() {
               </p>
             </Reveal>
             <Reveal delay={0.85}>
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div data-critter="wall" data-critter-name="the buttons" className="mt-10 flex w-fit flex-wrap gap-3">
                 <a href="#work" className={primaryButton}>
                   See my work
                   <span className="transition-transform group-hover:translate-y-0.5">↓</span>
@@ -117,7 +128,7 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <HeroStage back={bid.cover} left={wide.cover} right={doto.cover} />
+          <HeroStage back={ninkeys} left={wide.cover} right={doto.cover} />
         </div>
       </header>
 

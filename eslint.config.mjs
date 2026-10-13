@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Canvas Critters engine: plain scripts sharing globals, copied from the launcher's mock.
+    "public/doto-launcher/critters/**",
   ]),
 ]);
 
