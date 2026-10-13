@@ -22,8 +22,11 @@ type Well = { el: Element; col: Collider; depth: Spring; opens: boolean; radius:
 
 const radiusOf = (el: Element | null) => (el ? parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0 : 0);
 
-const REST = 16;
-const DEEP = 38;
+// Well depth. Phones get shallower wells: their cards nearly fill the width, and the gathered
+// cloth has only a narrow margin to go to.
+const narrow = () => typeof window !== "undefined" && window.innerWidth < 640;
+const restDepth = () => (narrow() ? 9 : 16);
+const deepDepth = () => (narrow() ? 20 : 38);
 
 export function SiteFabric() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -43,8 +46,8 @@ export function SiteFabric() {
     const collect = () => {
       wells = ledges().map((el) => ({
         el,
-        col: { x: 0, y: 0, w: 0, h: 0, r: 28, pad: REST, str: 0.06 },
-        depth: new Spring(REST, 0.12, 0.72),
+        col: { x: 0, y: 0, w: 0, h: 0, r: 28, pad: restDepth(), str: 0.06 },
+        depth: new Spring(restDepth(), 0.12, 0.72),
         opens: !!el.closest("a"),
         radius: radiusOf(el) || radiusOf(el.firstElementChild) || 12,
       }));
@@ -68,7 +71,7 @@ export function SiteFabric() {
           well.opens &&
           ((pointer && pointer.x > r.left && pointer.x < r.right && pointer.y > r.top && pointer.y < r.bottom) ||
             (focused instanceof Element && (well.el.contains(focused) || focused.contains(well.el))));
-        well.depth.t = over ? DEEP : REST;
+        well.depth.t = over ? deepDepth() : restDepth();
         moving = well.depth.step() || moving;
         Object.assign(well.col, { x: r.left, y: r.top, w: r.width, h: r.height, r: well.radius, pad: well.depth.v });
       }

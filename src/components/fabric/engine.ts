@@ -234,13 +234,20 @@ export class Fabric {
         }
         for (const o of colliders) {
           if (X < o.x - o.pad || X > o.x + o.w + o.pad || Y < o.y - o.pad || Y > o.y + o.h + o.pad) continue;
+          const m = Math.max(o.pad * 1.5, o.r);
+          if (X > o.x + m && X < o.x + o.w - m && Y > o.y + m && Y < o.y + o.h - m) continue;
           const sd = roundedRectDistance(X, Y, o);
-          if (sd < o.pad) {
+          // Only the cloth near the rim is pushed out, fading to nothing a little way inside.
+          // Pushing everything under a card shoved its whole width of dots into the margins,
+          // where on a phone they piled up in bright columns.
+          const inner = o.pad * 1.5;
+          if (sd < o.pad && sd > -inner) {
             const gx = roundedRectDistance(X + 0.75, Y, o) - sd;
             const gy = roundedRectDistance(X, Y + 0.75, o) - sd;
             const length = Math.hypot(gx, gy) || 1;
             // Capped, so dots deep under a card are not flung across the page.
-            const push = Math.min(o.pad - sd, o.pad * 1.6) * o.str;
+            const fade = sd < 0 ? 1 + sd / inner : 1;
+            const push = Math.min(o.pad - sd, o.pad * 1.6) * o.str * fade;
             fx += (gx / length) * push;
             fy += (gy / length) * push;
           }
@@ -261,7 +268,8 @@ export class Fabric {
 
   private draw() {
     const g = this.context;
-    const levels = 6;
+    // Enough colour steps that a dot settling never visibly jumps from one to the next.
+    const levels = 12;
     const buckets: number[][] = Array.from({ length: levels }, () => []);
     g.clearRect(0, 0, this.width, this.height);
     const n = this.cols * this.rows;
