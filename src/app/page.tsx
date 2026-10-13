@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { DotField } from "@/app/doto-launcher/DotField";
-import { showCritters } from "@/content/critters";
 import { caseStudies } from "@/content/work";
+import { WellLink } from "@/components/fabric/WellLink";
 import { Device } from "@/components/ux/Device";
-import { HeroCritters } from "@/components/ux/HeroCritters";
 import { HeroStage } from "@/components/ux/HeroStage";
 import { Reveal, SplitHeadline } from "@/components/ux/Reveal";
 import { CopyEmail } from "@/components/ux/ScrollBits";
@@ -14,8 +12,10 @@ Direction contract: a UX designer's portfolio for hiring managers and clients. C
 how respected designers present themselves: open with a plain fact (role, place, what I
 made), tell the background as a short story with real names and dates, and let the projects
 carry the argument. No process diagrams, slogans or aphorisms, no adjectives about myself.
-Sections: work, about, contact. Dark and calm, with the dot field from Doto as the
-signature surface and each project's own accent colour. Motion never holds text back.
+Sections: work, about, contact. Dark and calm, and the whole page sits in one dot sheet like
+Doto's canvas (SiteFabric): cards are pressed into it, text thins it, the cursor and the
+critters dent it, and a card opens by widening its well until it is the page. Each project
+keeps its own accent colour. Motion never holds text back.
 */
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
@@ -58,7 +58,7 @@ export default function Home() {
   } as const;
 
   return (
-    <main className="grain relative min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
+    <main className="grain relative min-h-screen overflow-x-clip font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
       {/* ===== NAV ===== */}
       <nav className="fixed inset-x-0 top-0 z-40">
         <div className="mx-auto mt-4 flex max-w-6xl items-center justify-between gap-4 rounded-full border border-white/10 bg-neutral-950/60 px-5 py-2.5 backdrop-blur-xl sm:px-6 [margin-inline:max(1rem,calc((100vw-72rem)/2))]">
@@ -79,11 +79,9 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <header className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 [touch-action:pan-y]">
-        {showCritters ? <HeroCritters /> : <DotField />}
         <div aria-hidden="true" className="glow-drift pointer-events-none absolute -left-40 top-10 -z-0 size-[560px] rounded-full bg-cyan-400/15 blur-[120px]" />
         <div aria-hidden="true" className="glow-drift pointer-events-none absolute -right-32 bottom-0 -z-0 size-[520px] rounded-full bg-fuchsia-500/10 blur-[120px]" style={{ animationDelay: "-8s" }} />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(10,10,10,0.85)_0%,rgba(10,10,10,0.4)_50%,rgba(10,10,10,0)_80%)]" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-neutral-950 to-transparent" />
 
         <div className="relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 pb-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
@@ -161,7 +159,7 @@ export default function Home() {
               style={{ top: `calc(7rem + ${i * 1.75}rem)` }}
             >
               <Reveal fade>
-                <Link href={`/work/${study.slug}`} className={`block rounded-[2rem] ${focus}`}>
+                <WellLink href={`/work/${study.slug}`} className={`block rounded-[2rem] ${focus}`}>
                   <SpotlightCard accent={study.accent} className="shadow-[0_-30px_60px_-30px_rgba(0,0,0,0.9)]">
                     <div className="grid items-center gap-10 p-7 sm:p-12 md:min-h-[520px] md:grid-cols-[1fr_1.05fr]">
                       <div className="relative">
@@ -213,7 +211,7 @@ export default function Home() {
                       </div>
                     </div>
                   </SpotlightCard>
-                </Link>
+                </WellLink>
               </Reveal>
             </div>
           ))}
@@ -221,9 +219,8 @@ export default function Home() {
 
         <Reveal className="mt-20">
           <p className={eyebrow}>Also built</p>
-          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
             {[
-              { title: "NinKeys", body: "A swipe keyboard for iPhone, rebuilt from a well-loved app that had been abandoned." },
               { title: "Client websites", body: "Sites for an artisan metalworker, a children's nature book series and a speech therapy practice." },
             ].map((item) => (
               <li key={item.title} className="bg-neutral-950 p-6 transition-colors hover:bg-neutral-900">
@@ -317,7 +314,7 @@ export default function Home() {
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">For businesses</h3>
                 <p className="mt-3 text-sm leading-7 text-neutral-400">
                   I design and build apps and websites for small businesses, and hand them over
-                  working, like Bid Tracker. Tell me what is confusing your customers or your team.
+                  working. Tell me what is confusing your customers or your team.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>Email me</a>

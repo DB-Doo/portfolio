@@ -30,9 +30,27 @@ export type PageOptions = {
   margin?(): number;
 };
 
+export type SiteOptions = {
+  canvas: HTMLCanvasElement;
+  input: HTMLElement;
+  zoom: number;
+  walls(): Element[];
+  ledges(): Element[];
+  /** Where the nest is, in world units: x, y. */
+  nestAt(box: DOMRect, zoom: number): [number, number];
+  /** Where the dock is, in world units, and the way it faces (radians, default up). */
+  dockAt(box: DOMRect, zoom: number): [number, number] | [number, number, number];
+  /** Every dent the critters make this frame, in window pixels, for the page's own sheet. */
+  press(dents: { x: number; y: number; r: number }[]): void;
+  still: boolean;
+  signal: AbortSignal;
+  fontMono?: string;
+};
+
 export type Engine = {
   mount(canvas: HTMLCanvasElement, opts: object): Critters;
   mountPage(opts: PageOptions): Critters;
+  mountSite(opts: SiteOptions): Critters;
 };
 
 declare global {

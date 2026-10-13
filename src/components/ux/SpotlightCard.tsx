@@ -4,8 +4,8 @@ import { useRef, type CSSProperties, type ReactNode } from "react";
 
 /*
 A card whose surface catches a soft light where the pointer is, in the project's accent
-colour, with a highlight that slowly travels around its border. Pure CSS variables, so it
-costs nothing when the pointer is elsewhere.
+colour. Pure CSS variables, so it costs nothing when the pointer is elsewhere. It sits in a
+well in the site's dot sheet (data-fabric="well"), which gathers the cloth at its rim.
 */
 
 export function SpotlightCard({
@@ -28,10 +28,10 @@ export function SpotlightCard({
         ref.current.style.setProperty("--mx", `${event.clientX - box.left}px`);
         ref.current.style.setProperty("--my", `${event.clientY - box.top}px`);
       }}
+      data-fabric="well"
       style={{ "--accent": accent } as CSSProperties}
       className={`group relative isolate overflow-hidden rounded-[2rem] p-px ${className}`}
     >
-      <div aria-hidden="true" className="ring-sweep absolute inset-[-50%] -z-10 opacity-60" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 rounded-[2rem] bg-white/[0.06]" />
       <div className="relative h-full overflow-hidden rounded-[calc(2rem-1px)] bg-neutral-950">
         <div

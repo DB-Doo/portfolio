@@ -31,8 +31,9 @@ Deploys to **Vercel** on every push to `main`. Custom domain `dbdoo.dev` aliased
 
 UX portfolio (merged to `main` 2026-09-24):
 
+- One sheet (2026-10-13, Dan picked it from three mocks): a page-wide Doto dot fabric sits fixed behind every page (`src/components/fabric/`: `engine.ts` lattice physics, `SiteFabric.tsx` wells under cards and light presses under text, `WellLink.tsx` card-to-case-study morph, `bus.ts` connecting them). The spider and Roomba live on that sheet on every page (`SiteCritters.tsx`, `mountSite` in `public/doto-launcher/critters/stage.js`); text and nav are walls, cards and images are ledges (`room.ts`). Reduced motion draws a still lattice and a "Wake the critters" button. Rule: motion never holds text back.
 - Home (`src/app/page.tsx`): hero (NinKeys keyboard at the back, Wide and Doto phones in front), three case-study cards, "Also built", About (story plus a "Previously" list), contact. No process section: research (2026-09-28) found respected designer sites do not have one and hiring managers read them as filler. Copy opens with plain facts, never slogans or aphorisms. Résumé at `public/Dan_Brandt_Resume.pdf`.
-- Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
+- Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `ninkeys`. Bid Tracker is gone from the site at Dan's request (2026-10-13); NinKeys took its place.
 - Visual language matches `/doto-launcher`: neutral-950, cyan-300/400 signal, mono eyebrow labels, Geist via `font-sans` (body CSS still says Arial, so each page's `<main>` sets `font-sans`).
 - Every case-study claim is sourced from that project's repo (dot.o: `docs/okf`, `docs/design`, `docs/feedback`, commits; Wide: `docs/audit`, `docs/superpowers/specs`). Never describe unshipped dot.o features as shipped; check its `docs/okf/release/feature-switches.md`.
 - Canvas Critters (2026-10-13, Dan picked "A"): the spider nests on the Doto card in the home hero and the Roomba docks beside the buttons; they wake when a visitor moves over open dots and ignore the cursor over text. A phone playground sits on `/doto-launcher`, marked Pro. Dan decided (2026-10-13) they go live on the site as soon as he approves, ahead of the app; the copy says they are coming to Doto Pro (PR #3).
@@ -40,7 +41,7 @@ UX portfolio (merged to `main` 2026-09-24):
 
 ## Next up
 
-1. Dan confirms the Bid Tracker "why" lines and the reason the paged grid was dropped in dot.o.
+1. Dan checks the One sheet redesign locally (branch `claude/project-thread-4vkuqp`) and confirms NinKeys details: name, status "In private testing", timeline. Then the reason the paged grid was dropped in dot.o.
 2. A UX-titled résumé (the current PDF says App & Web Developer).
 3. More before/after pairs for dot.o (tutorial vs hints, three drawers vs one) from old commits.
 4. Merge PR #3 once Dan approves it locally. When the critters ship in the app, change the Doto page label "Coming to Doto Pro" to say they are in Pro.

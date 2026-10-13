@@ -286,5 +286,136 @@
     };
   }
 
-  window.DotoCritters = { mount, mountPage };
+
+  /**
+   * Lets the pair live on the whole site: one window-sized world over the page's own dot sheet,
+   * on every page. The window is the room. Text and controls on screen (`walls`) are driven
+   * around, cards and pictures (`ledges`) can be stood on and carry whoever stands on them as
+   * the page scrolls, and anything scrolled out of view leaves the room. The page draws the
+   * sheet (`noFabric`), so every dent a foot, the Roomba or a ball makes is handed to `press`
+   * in window pixels instead. The nest and the dock are places in the window from `nestAt` and
+   * `dockAt`; when those move, the homes glide there and carry whoever is in them.
+   */
+  function mountSite(o) {
+    const { canvas, input } = o;
+    const zoom = o.zoom || 1;
+    let box = canvas.getBoundingClientRect();
+    setStage(box.width / zoom, box.height / zoom, 1, [64, 64, 64], [103, 232, 249]);
+    setFonts(o.fontDots, o.fontMono);
+
+    const page = [];
+    for (const el of o.walls()) page.push({ el, wall: true, kind: "page", page: true, name: el.dataset.critterName || "the page" });
+    for (const el of o.ledges()) page.push({ el, wall: false, kind: "page", page: true, name: el.dataset.critterName || "a card" });
+    const nest = { kind: "nest", home: true, bare: true, hw: 24, hh: 24, r: 24, x: 0, y: 0, name: "its nest" };
+    const dock = { kind: "dock", home: true, bare: true, hw: 26, hh: 26, r: 26, x: 0, y: 0, name: "its dock" };
+    const OUT = -9999;
+    let first = true;
+
+    const measure = () => {
+      box = canvas.getBoundingClientRect();
+      let moved = 0;
+      for (const it of page) {
+        const r = it.el.getBoundingClientRect();
+        // Scrolled out of the window, or hidden: out of the room until it comes back.
+        if (!r.width || r.bottom < -160 || r.top > box.height + 160) {
+          if (it.x !== OUT) { Object.assign(it, { x: OUT, y: OUT, hw: 1, hh: 1, r: 1 }); moved += 50; }
+          it.dx = 0; it.dy = 0;
+          continue;
+        }
+        const hw = r.width / 2 / zoom, hh = r.height / 2 / zoom;
+        const x = (r.left - box.left) / zoom + hw - (it.jx || 0), y = (r.top - box.top) / zoom + hh - (it.jy || 0);
+        const fresh = it.x === undefined || it.x === OUT;
+        it.dx = fresh ? 0 : x - it.x; it.dy = fresh ? 0 : y - it.y;
+        moved += fresh ? 50 : Math.abs(it.dx) + Math.abs(it.dy) + Math.abs((it.hw || hw) - hw) + Math.abs((it.hh || hh) - hh);
+        Object.assign(it, { x, y, hw, hh, r: Math.min(14 / zoom, hw, hh) });
+      }
+      const n = o.nestAt(box, zoom), d = o.dockAt(box, zoom);
+      const k = first ? 1 : 0.16;
+      const nx = lerp(nest.x, n[0], k), ny = lerp(nest.y, n[1], k);
+      nest.dx = first ? 0 : nx - nest.x; nest.dy = first ? 0 : ny - nest.y; nest.x = nx; nest.y = ny;
+      dock.x = lerp(dock.x, d[0], k); dock.y = lerp(dock.y, d[1], k); dock.face = d[2] ?? -Math.PI / 2;
+      first = false;
+      return moved;
+    };
+    measure();
+    const items = [...page, nest, dock];
+    const world = new World(canvas, "nest", 3, (w) => roommates(w, items, { nest, dock }), {
+      items, fabricItems: [], input, signal: o.signal, noFabric: true,
+      hover: true, clear: true, chrome: false, spacing: 22 / zoom, dot: 1.6 / zoom, maxDpr: 2,
+    });
+    const { sp, rb } = world.critter;
+    window.__critters = world;
+
+    // Every dent goes to the page's sheet, in window pixels.
+    let dents = [];
+    const fab = world.fabric, pressCloth = fab.press.bind(fab);
+    fab.press = (x, y, r, tint) => { pressCloth(x, y, r, tint); if (r > 0.3) dents.push({ x: x * zoom, y: y * zoom, r: r * zoom }); };
+
+    let met = false;
+    rb.seen = -999;
+    const presence = world.critter.presence;
+    world.critter.presence = () => { met = true; presence(); };
+
+    let sinceMap = 0, drift = 0;
+    rb.placeDock();
+    const follow = (dt) => {
+      drift += measure();
+      rb.placeDock();
+      sinceMap += dt;
+      // While the page scrolls the floor plan changes every frame; redraw the Roomba's map of
+      // it now and then, not every frame.
+      if (drift > 4 && sinceMap > 0.5) { rb.maps = null; drift = 0; sinceMap = 0; }
+      for (const it of [...page.filter((p) => !p.wall), nest]) {
+        if (!it.dx && !it.dy) continue;
+        const on = (x, y) => sdf(it, x, y) < 2;
+        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) { sp.x += it.dx; sp.y += it.dy; }
+        if (rb.z > 3 && on(rb.x, rb.y)) { rb.x += it.dx; rb.y += it.dy; }
+        for (const b of world.balls) if (!b.held && on(b.x, b.y + b.r + 1)) { b.x += it.dx; b.y += it.dy; }
+      }
+      // Whoever was carried off the edge of the window comes back in at the edge.
+      sp.inBounds?.();
+      for (const it of page) {
+        if (it.wall) continue;
+        const jx = it.jx || 0, jy = it.jy || 0;
+        if (jx || jy || it.jiggled) { it.el.style.translate = jx || jy ? `${(jx * zoom).toFixed(2)}px ${(jy * zoom).toFixed(2)}px` : ""; it.jiggled = !!(jx || jy); }
+      }
+      if (!met) {
+        if (sp.act.kind === "emerge") sp.act.t = 0;
+        rb.seen = Math.min(rb.seen, world.clock - 999);
+      }
+    };
+
+    let raf = 0, alive = true, last = 0;
+    const loop = (now) => {
+      if (!alive) return;
+      const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
+      if (!document.hidden) {
+        if (!VIEW.paused) follow(dt);
+        last = now;
+        dents = [];
+        world.frame(now);
+        o.press?.(dents);
+      } else { world.last = now; last = now; }
+      raf = requestAnimationFrame(loop);
+    };
+    const onResize = () => {
+      box = canvas.getBoundingClientRect();
+      setStage(box.width / zoom, box.height / zoom, 1, [64, 64, 64], [103, 232, 249]);
+      measure(); world.resize(); rb.maps = null;
+    };
+    addEventListener("resize", onResize, { signal: o.signal });
+    VIEW.paused = !!o.still;
+    if (o.still) { world.frame(performance.now()); o.press?.(dents); }
+    else loop(performance.now());
+    return {
+      wake() { if (!alive || !VIEW.paused) return; VIEW.paused = false; met = true; world.last = 0; loop(performance.now()); },
+      toss() { met = true; presence(); sp.key(); },
+      stop() {
+        alive = false; cancelAnimationFrame(raf);
+        for (const it of page) it.el.style.translate = "";
+      },
+    };
+  }
+
+  window.DotoCritters = { mount, mountPage, mountSite };
 })();

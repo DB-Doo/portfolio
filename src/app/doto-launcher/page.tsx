@@ -3,12 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { showCritters } from "@/content/critters";
 import { CritterPhone } from "./CritterPhone";
-import { DotField } from "./DotField";
 
 /*
 Direction contract: the page a stranger lands on from a post, a pitch or a search. The
-first viewport answers what Doto is and where to get it, over a dot lattice the visitor
-can push around, because the product is something you touch rather than read about. The
+first viewport answers what Doto is and where to get it, over the site's dot sheet the
+visitor can push around, because the product is something you touch rather than read about. The
 Play screenshots and four short reasons follow, then the invitation to r/doto. Same dark,
 direct identity and cyan signal as the privacy policy. Copy follows the launcher's store voice: no dashes, no
 prices, nothing admires itself.
@@ -97,9 +96,8 @@ const linkClass =
 
 export default function DotoLauncherPage() {
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
+    <main className="min-h-screen text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
       <section className="relative isolate flex min-h-[88svh] flex-col overflow-hidden border-b border-neutral-800 [touch-action:pan-y]">
-        <DotField />
         <div className="pointer-events-none absolute inset-0 -z-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.92)_0%,rgba(10,10,10,0.6)_45%,rgba(10,10,10,0)_75%)]" />
 
         <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col px-6 py-8 sm:px-10">
@@ -203,7 +201,10 @@ export default function DotoLauncherPage() {
                 ))}
               </ul>
             </div>
-            <CritterPhone />
+            {/* The site's own critters treat the phone as a wall, so they never meet these two. */}
+            <div data-critter="wall" data-critter-name="the phone">
+              <CritterPhone />
+            </div>
           </div>
         </section>
       )}

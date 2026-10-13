@@ -576,7 +576,9 @@ class World {
     if (this.opts.clear) ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     else { ctx.fillStyle = this.opts.ground || GROUND; ctx.fillRect(0, 0, this.canvas.width, this.canvas.height); }
     ctx.setTransform(s, 0, 0, s, 0, 0);
-    if (this.fctx) {
+    if (this.opts.noFabric) {
+      // The page draws its own sheet; the critters' presses are handed to it instead.
+    } else if (this.fctx) {
       const f = this.fctx;
       f.setTransform(1, 0, 0, 1, 0, 0); f.clearRect(0, 0, f.canvas.width, f.canvas.height);
       f.setTransform(s, 0, 0, s, 0, 0); this.fabric.draw(f, this.opts.dot || 1.15);

@@ -88,7 +88,13 @@ class Roomba {
   /** Distance to the nearest outline or screen edge, blended where two meet so their seams are round. */
   field(x, y) {
     let f = Math.min(x - 2, W - 2 - x, y - 34, H - 4 - y);
-    for (const o of this.items) { if (o === this.dock && this.ignoreDock) continue; f = smin(f, sdf(o, x, y), 6); }
+    for (const o of this.items) {
+      if (o === this.dock && this.ignoreDock) continue;
+      // A box this far away can't change the blend (smin only reaches k = 6), so skip its sdf.
+      const bx = Math.abs(x - o.x) - o.hw, by = Math.abs(y - o.y) - o.hh;
+      if (bx > f + 6 || by > f + 6) continue;
+      f = smin(f, sdf(o, x, y), 6);
+    }
     return f;
   }
   fieldN(x, y) {
