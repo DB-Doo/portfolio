@@ -110,7 +110,7 @@ export default function Home() {
                 <Link href={`/work/${doto.slug}`} className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-cyan-300">
                   Doto
                 </Link>
-                , is a home screen for Android, live on Google Play.
+                , is a home screen for Android made of dots that move with your music, rise into 3D and, soon, host a spider and a Roomba. It&rsquo;s live on Google Play.
               </p>
             </Reveal>
             <Reveal delay={0.85}>

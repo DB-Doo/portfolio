@@ -19,7 +19,7 @@ const COMMUNITY_URL = "https://www.reddit.com/r/doto/";
 export const metadata: Metadata = {
   title: "Doto Launcher | An infinite canvas for Android",
   description:
-    "An Android home screen made of dots. Put apps and widgets anywhere on one canvas, and play music to watch it move. No ads, no account.",
+    "An Android home screen made of dots. Put apps anywhere on one canvas, watch it move with your music, raise it into 3D, and meet the Canvas Critters. No ads, no account.",
   alternates: {
     canonical: "/doto-launcher",
   },
@@ -63,11 +63,6 @@ const reasons = [
   },
   {
     number: "03",
-    title: "Music you can see",
-    body: "Add the music widget and its dots move with what is actually playing. With Pro, the whole home screen moves. When the music stops, the screen goes still and costs no battery.",
-  },
-  {
-    number: "04",
     title: "No ads. No account.",
     body: "No analytics and no crash reporting. Pro is one purchase, never a subscription, with a free week to try it.",
   },
@@ -75,12 +70,28 @@ const reasons = [
 
 const screens = [
   { file: "01-home", alt: "A home screen made of dots. No grid, no pages." },
-  { file: "02-music", alt: "Your music moves the dots. Pro." },
-  { file: "03-3d", alt: "Raise it into 3D. Pro." },
   { file: "04-looks", alt: "One tap, a whole new look: colors, font, icons, widgets and fabric." },
   { file: "05-anywhere", alt: "Put anything anywhere. Pro." },
   { file: "06-day", alt: "Your whole day at a glance. Pro." },
   { file: "07-hold", alt: "Hold anywhere to make it yours." },
+] as const;
+
+/* The three things Dan sees as Doto's standouts (2026-10-13), so they lead the page. */
+const standouts = [
+  {
+    file: "02-music",
+    label: "Music visualizer",
+    title: "Your music moves the dots",
+    body: "Add the music widget and its dots move with what is actually playing. With Pro, the whole home screen moves. When the music stops, the screen goes still and costs no battery.",
+    alt: "A music widget whose dots ripple with the song that is playing",
+  },
+  {
+    file: "03-3d",
+    label: "3D canvas · Pro",
+    title: "Raise the canvas into 3D",
+    body: "The flat sheet of dots rises into a landscape that shifts as you tilt your phone. Shape its terrain and glass to taste.",
+    alt: "The dot canvas raised into a 3D landscape",
+  },
 ] as const;
 
 const critterTips = [
@@ -116,8 +127,8 @@ export default function DotoLauncherPage() {
               Your home screen is a canvas made of dots.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8">
-              Put apps and widgets anywhere. Pinch out to see all of it. Hold empty space
-              to change the whole look.
+              Put apps and widgets anywhere. Play music and the dots move with it, raise
+              the canvas into 3D, and soon share it with a spider and a Roomba.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
@@ -140,6 +151,57 @@ export default function DotoLauncherPage() {
         </div>
       </section>
 
+      <section aria-labelledby="standouts-heading" className="border-b border-neutral-800">
+        <div className="mx-auto max-w-5xl px-6 py-20 sm:px-10">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
+            Only on Doto
+          </p>
+          <h2
+            id="standouts-heading"
+            className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+          >
+            A home screen that moves, rises and has roommates.
+          </h2>
+          <div className="mt-14 grid gap-14 sm:grid-cols-2 sm:gap-10">
+            {standouts.map((item) => (
+              <figure key={item.file} data-fabric="well" className="rounded-3xl">
+                <Image
+                  src={`/doto-launcher/screens/${item.file}.webp`}
+                  alt={item.alt}
+                  width={720}
+                  height={1280}
+                  sizes="(min-width: 640px) 440px, 100vw"
+                  className="mx-auto h-auto w-full max-w-72 rounded-3xl border border-neutral-800"
+                />
+                <figcaption className="mt-8">
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
+                    {item.label}
+                  </p>
+                  <h3 className="mt-3 text-xl font-semibold tracking-tight text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-neutral-400">{item.body}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          {showCritters && (
+            <a
+              href="#critters-heading"
+              className="mt-14 block rounded-3xl border border-neutral-800 bg-neutral-950/70 p-8 transition-colors hover:border-cyan-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 sm:p-10"
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
+                Canvas Critters · Coming to Doto Pro
+              </p>
+              <p className="mt-3 text-xl font-semibold tracking-tight text-white">
+                A spider and a Roomba live on your canvas.
+              </p>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-400">
+                The two you see wandering this page are the same ones. Play with them below. ↓
+              </p>
+            </a>
+          )}
+        </div>
+      </section>
+
       <section aria-label="Screenshots" className="border-b border-neutral-800">
         <ul className="mx-auto flex max-w-5xl snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 py-12 sm:scroll-px-10 [scrollbar-width:thin] sm:px-10">
           {screens.map((screen) => (
@@ -158,7 +220,7 @@ export default function DotoLauncherPage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-20 sm:px-10">
-        <div className="grid gap-12 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
+        <div className="grid gap-12 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
           {reasons.map((reason) => (
             <div key={reason.number}>
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
