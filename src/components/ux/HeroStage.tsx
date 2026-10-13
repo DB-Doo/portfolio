@@ -51,9 +51,11 @@ export function HeroStage({ back, left, right }: { back: Figure; left: Figure; r
     return () => window.removeEventListener("pointermove", move);
   }, [reduce, px, py]);
 
+  // The server can't know about reduced motion, so it renders the entrance's first frame.
+  // Reduced motion still has to land on the final frame, or the layers stay invisible.
   const enter = (delay: number) =>
     reduce
-      ? {}
+      ? { initial: false, animate: { opacity: 1, y: 0, scale: 1 }, transition: { duration: 0 } }
       : {
           initial: { opacity: 0, y: 60, scale: 0.94 },
           animate: { opacity: 1, y: 0, scale: 1 },
@@ -66,7 +68,7 @@ export function HeroStage({ back, left, right }: { back: Figure; left: Figure; r
         className="absolute left-0 top-[6%] w-[82%]"
         style={reduce ? undefined : { x: backX, y: backY, rotateY: backTiltY }}
       >
-        <motion.div {...enter(0.5)}>
+        <motion.div {...enter(0.5)} data-critter="ledge" data-critter-name="the Level window">
           <BrowserFrame figure={back} sizes="520px" url="dbdoo.dev/level" />
         </motion.div>
       </motion.div>
@@ -76,7 +78,7 @@ export function HeroStage({ back, left, right }: { back: Figure; left: Figure; r
         style={reduce ? undefined : { x: leftX, y: leftY, translateY: leftShiftY }}
       >
         <motion.div {...enter(0.7)}>
-          <div className="float" style={{ animationDelay: "-2s" }}>
+          <div className="float" style={{ animationDelay: "-2s" }} data-critter="ledge" data-critter-name="the Wide phone">
             <PhoneFrame figure={left} sizes="200px" className="rotate-[-4deg]" />
           </div>
         </motion.div>
@@ -87,7 +89,7 @@ export function HeroStage({ back, left, right }: { back: Figure; left: Figure; r
         style={reduce ? undefined : { x: rightX, y: rightY, translateY: rightShiftY }}
       >
         <motion.div {...enter(0.9)}>
-          <div className="float">
+          <div className="float" data-critter="ledge" data-critter-name="the Doto phone" data-critter-nest>
             <PhoneFrame figure={right} sizes="210px" priority className="rotate-[5deg]" />
           </div>
         </motion.div>

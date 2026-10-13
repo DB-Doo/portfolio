@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { showCritters } from "@/content/critters";
 import { CritterPhone } from "./CritterPhone";
 import { DotField } from "./DotField";
 
@@ -82,14 +83,6 @@ const screens = [
   { file: "06-day", alt: "Your whole day at a glance. Pro." },
   { file: "07-hold", alt: "Hold anywhere to make it yours." },
 ] as const;
-
-/*
-The critters ship in the Halloween update (Oct 31, 2026). Until then the section shows on local
-builds and Vercel previews only, so the live page never describes a feature people can't get.
-Set this to true when the update is live on Google Play.
-*/
-const CRITTERS_RELEASED = false;
-const showCritters = CRITTERS_RELEASED || process.env.VERCEL_ENV !== "production";
 
 const critterTips = [
   "Tap play on the music widget and watch them dance.",

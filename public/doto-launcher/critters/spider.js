@@ -363,7 +363,7 @@ class JumpingSpider {
   }
   pickWander() {
     const r = this.rand();
-    const others = this.items.filter((o) => !o.home && Math.hypot(o.x - this.x, o.y - this.y) > 45);
+    const others = this.items.filter((o) => !o.home && !o.wall && Math.hypot(o.x - this.x, o.y - this.y) > 45);
     if (r < 0.5 && others.length) {
       const o = others[Math.floor(this.rand() * others.length)];
       const jx = o.x + (this.rand() - 0.5) * o.hw * 0.6, jy = o.y + (this.rand() - 0.5) * o.hh * 0.6;
@@ -371,11 +371,13 @@ class JumpingSpider {
     }
     for (let k = 0; k < 12; k++) {
       const x = 24 + this.rand() * (W - 48), y = 60 + this.rand() * (H - 110);
-      if (Math.hypot(x - this.x, y - this.y) < 60) continue;
+      if (Math.hypot(x - this.x, y - this.y) < 60 || this.nearWall(x, y)) continue;
       return { x, y, why: `Exploring ${placeName(x, y)}` };
     }
     return { x: W / 2, y: H / 2, why: "Exploring the middle" };
   }
+  /** Too close to page text to stop there. */
+  nearWall(x, y) { for (const o of this.items) if (o.wall && sdf(o, x, y) < 14) return true; return false; }
   /** What it will do with a ball it catches, by how much it trusts you. */
   carryPlan() { return this.trust >= 0.7 ? (this.unanswered >= 2 ? "keep" : "toss") : this.trust >= 0.45 ? "bring" : "keep"; }
 
@@ -442,8 +444,8 @@ class JumpingSpider {
     let best = null, bs = -1;
     for (let k = 0; k < 16; k++) {
       let x, y, perch = null;
-      if (k < this.items.length && this.rand() < 0.7) { perch = this.items[k]; x = perch.x; y = perch.y; }
-      else { x = 24 + this.rand() * (W - 48); y = 60 + this.rand() * (H - 110); }
+      if (k < this.items.length && !this.items[k].wall && this.rand() < 0.7) { perch = this.items[k]; x = perch.x; y = perch.y; }
+      else { x = 24 + this.rand() * (W - 48); y = 60 + this.rand() * (H - 110); if (this.nearWall(x, y)) continue; }
       const away = Math.hypot(x - fx, y - fy), hop = Math.hypot(x - this.x, y - this.y);
       if (hop > 170 || hop < 40) continue;
       const s = Math.min(away, 200) + (perch ? 30 : 0) - hop * 0.2 + this.rand() * 20;

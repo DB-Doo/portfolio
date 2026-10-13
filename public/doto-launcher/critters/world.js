@@ -9,10 +9,11 @@ const INK = [243, 237, 247], ACC = [255, 79, 163], CYAN = [65, 227, 255], GREEN 
 const AMBER = [255, 196, 107], RED = [255, 92, 92];
 const GROUND = "#0b0a12", SURFACE = "#17141f";
 let W = 300, H = 620; const TAU = Math.PI * 2;
-let FAB_BASE = 0.4;
+let FAB_BASE = 0.4, FAB_INK = INK, FAB_LIFT = null;
 let FONT_DOTO = "Doto, monospace", FONT_MONO = "'JetBrains Mono', monospace";
 function setFonts(dots, mono) { if (dots) FONT_DOTO = `${dots}, monospace`; if (mono) FONT_MONO = `${mono}, monospace`; }
-function setStage(w, h, base) { W = w; H = h; FAB_BASE = base ?? 0.4; }
+/** Sizes the world and styles its cloth. With `lift`, dots are drawn solid in `ink` and turn `lift` as they're pushed, like the website's dot field. */
+function setStage(w, h, base, ink, lift) { W = w; H = h; FAB_BASE = base ?? 0.4; FAB_INK = ink || INK; FAB_LIFT = lift || null; }
 const VIEW = { mesh: false, paused: false };
 
 const rgba = (c, a) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a < 0 ? 0 : a > 1 ? 1 : a})`;
@@ -66,6 +67,7 @@ function normal(o, px, py) {
 function groundAt(items, x, y) {
   let h = 0;
   for (const o of items) {
+    if (o.wall) continue;
     const d = sdf(o, x, y);
     if (d < 1.5) h = Math.max(h, WIDGET_TOP * smooth((1.5 - d) / 3));
   }
@@ -181,8 +183,13 @@ class Fabric {
     for (let i = 0; i < n; i++) {
       if (al[i] <= 0.01) continue;
       const g = this.gather[i];
-      ctx.fillStyle = g > 0.25 ? rgba(mix(INK, this.tint[i] ? CYAN : ACC, g * 0.55), al[i]) : rgba(INK, al[i]);
-      ctx.beginPath(); ctx.arc(this.px[i], this.py[i], base, 0, TAU); ctx.fill();
+      let r = base;
+      if (FAB_LIFT) {
+        const lift = clamp(Math.hypot(this.px[i] - this.bx[i], this.py[i] - this.by[i]) / (s * 0.75), 0, 1);
+        ctx.fillStyle = g > 0.25 ? rgba(mix(FAB_LIFT, this.tint[i] ? CYAN : ACC, g * 0.45), 1) : rgba(mix(FAB_INK, FAB_LIFT, lift), 1);
+        r = base * (1 + lift * 0.5);
+      } else ctx.fillStyle = g > 0.25 ? rgba(mix(INK, this.tint[i] ? CYAN : ACC, g * 0.55), al[i]) : rgba(INK, al[i]);
+      ctx.beginPath(); ctx.arc(this.px[i], this.py[i], r, 0, TAU); ctx.fill();
     }
   }
 }
@@ -342,6 +349,7 @@ function drawWidgets(ctx, world) {
     ctx.save();
     if (o.jx || o.jy) ctx.translate(o.jx || 0, o.jy || 0);
     const rr = Math.min(o.r, o.hw, o.hh);
+    if (o.bare) { if (o.home && world.critter && world.critter.drawHome) world.critter.drawHome(ctx, o); ctx.restore(); continue; }
     // A thin lip down to the cloth, so a widget reads as standing on it.
     ctx.beginPath(); ctx.roundRect(o.x - o.hw, o.y - o.hh + 2.5, o.hw * 2, o.hh * 2, rr);
     ctx.fillStyle = "#07060b"; ctx.fill();
@@ -417,7 +425,8 @@ class World {
     this.opts = opts;
     this.canvas = canvas; this.ctx = canvas.getContext("2d");
     this.items = opts.items || homeScreen(homeKind);
-    this.fabric = new Fabric(this.items, opts.spacing || 9);
+    this.fabric = new Fabric(opts.fabricItems || this.items, opts.spacing || 9);
+    this.fctx = opts.fabricCanvas ? opts.fabricCanvas.getContext("2d") : null;
     this.balls = []; this.silk = []; this.music = new Music();
     this.clock = 0; this.touch = null; this.visible = false; this.last = 0; this.rand = rng(seed * 7 + 3);
     this.critter = makeCritter(this, seed);
@@ -426,16 +435,19 @@ class World {
   }
   pt(e) { const r = this.canvas.getBoundingClientRect(); return [((e.clientX - r.left) / r.width) * W, ((e.clientY - r.top) / r.height) * H]; }
   listen() {
-    const c = this.canvas;
-    c.addEventListener("pointermove", (e) => this.hover(e));
-    c.addEventListener("pointerleave", () => { if (this.touch && this.touch.hover) this.touch = null; });
-    c.addEventListener("pointerdown", (e) => {
+    // With `input`, a page section feeds the pointer and the canvas stays out of its way.
+    const c = this.opts.input || this.canvas, page = !!this.opts.input;
+    const on = (type, fn) => c.addEventListener(type, fn, { signal: this.opts.signal });
+    on("pointermove", (e) => this.hover(e));
+    on("pointerleave", () => { if (this.touch && this.touch.hover) this.touch = null; });
+    on("pointerdown", (e) => {
       if (this.ghostRun) { this.ghostRun = null; this.endTouch(this.clock * 1000, true); }
       if (this.touch && this.touch.hover) this.touch = null;
       if (this.touch) return;
-      this.critter.presence?.();
-      c.setPointerCapture?.(e.pointerId);
       const [x, y] = this.pt(e), now = performance.now();
+      if (this.onWall(x, y)) return;
+      this.critter.presence?.();
+      if (!page) c.setPointerCapture?.(e.pointerId);
       const music = this.items.find((o) => o.kind === "music");
       if (music && sdf(music, x, y) < 0 && x < music.x - music.hw + 40) { this.music.on = !this.music.on; this.critter.musicChanged?.(this.music.on); return; }
       this.touch = { id: e.pointerId, x, y, x0: x, y0: y, t0: now, path: 0, vx: 0, vy: 0, speed: 0, still: 0, hist: [[x, y, now]], long: false };
@@ -447,7 +459,7 @@ class World {
         if (t && t.path < 8) { t.long = true; this.critter.long?.(t); }
       }, 430);
     });
-    c.addEventListener("pointermove", (e) => {
+    on("pointermove", (e) => {
       const t = this.touch; if (!t || e.pointerId !== t.id) return;
       const [x, y] = this.pt(e), now = performance.now(), d = Math.hypot(x - t.x, y - t.y);
       t.path += d; if (d > 0.6) t.still = 0;
@@ -462,15 +474,19 @@ class World {
       clearTimeout(this.longTimer);
       this.endTouch(performance.now());
     };
-    c.addEventListener("pointerup", up); c.addEventListener("pointercancel", up);
-    c.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.critter.key?.(); } });
+    on("pointerup", up); on("pointercancel", up);
+    if (!page) on("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.critter.key?.(); } });
   }
+  /** True over a wall: text and controls on a web page, which the critters leave alone. */
+  onWall(x, y) { for (const o of this.items) if (o.wall && sdf(o, x, y) < 0) return true; return false; }
   /** A mouse resting over the page counts as a finger that never presses: critters notice it, it can't grab. */
   hover(e) {
     if (!this.opts.hover || e.pointerType !== "mouse" || e.buttons) return;
     const [x, y] = this.pt(e), now = performance.now();
     let t = this.touch;
     if (t && !t.hover) return;
+    // Over text the visitor is reading: the critters leave them to it.
+    if (this.onWall(x, y)) { if (t) this.touch = null; return; }
     this.critter.presence?.();
     if (!t) { this.touch = { id: "hover", hover: true, x, y, x0: x, y0: y, t0: now, path: 0, vx: 0, vy: 0, speed: 0, still: 0, hist: [[x, y, now]], long: false, on: null }; return; }
     const d = Math.hypot(x - t.x, y - t.y);
@@ -520,6 +536,7 @@ class World {
     const r = this.canvas.getBoundingClientRect(), dpr = Math.min(this.opts.maxDpr || 2, window.devicePixelRatio || 1);
     this.canvas.width = Math.max(1, Math.round(r.width * dpr)); this.canvas.height = Math.max(1, Math.round(r.height * dpr));
     this.scale = this.canvas.width / W;
+    if (this.fctx) { const f = this.opts.fabricCanvas, q = f.getBoundingClientRect(); f.width = Math.max(1, Math.round(q.width * dpr)); f.height = Math.max(1, Math.round(q.height * dpr)); }
   }
   /** Throws a ball so it arrives at (tx, ty) after about `time` seconds, on the canvas's own gravity. */
   static aim(fromX, fromY, tx, ty, time) {
@@ -559,7 +576,11 @@ class World {
     if (this.opts.clear) ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     else { ctx.fillStyle = this.opts.ground || GROUND; ctx.fillRect(0, 0, this.canvas.width, this.canvas.height); }
     ctx.setTransform(s, 0, 0, s, 0, 0);
-    this.fabric.draw(ctx, 1.15);
+    if (this.fctx) {
+      const f = this.fctx;
+      f.setTransform(1, 0, 0, 1, 0, 0); f.clearRect(0, 0, f.canvas.width, f.canvas.height);
+      f.setTransform(s, 0, 0, s, 0, 0); this.fabric.draw(f, this.opts.dot || 1.15);
+    } else this.fabric.draw(ctx, this.opts.dot || 1.15);
     cr.drawUnder?.(ctx);
     drawWidgets(ctx, this);
     drawSilk(ctx, this);

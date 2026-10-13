@@ -2,6 +2,7 @@
 
 import { Doto } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
+import { loadCritters, type Critters } from "@/components/ux/critterEngine";
 
 /*
 A live phone running the launcher's Canvas Critters: the jumping spider and the Roomba sharing one
@@ -12,38 +13,6 @@ the visitor wakes them.
 */
 
 const doto = Doto({ variable: "--font-doto", weight: "800", subsets: ["latin"] });
-
-const ENGINE = ["world.js", "spider.js", "roomba.js", "stage.js"].map((f) => `/doto-launcher/critters/${f}`);
-
-type Critters = { wake(): void; toss(): void; stop(): void };
-type Engine = { mount(canvas: HTMLCanvasElement, opts: object): Critters };
-declare global {
-  interface Window {
-    DotoCritters?: Engine;
-  }
-}
-
-let loading: Promise<Engine> | null = null;
-
-function loadEngine(): Promise<Engine> {
-  if (window.DotoCritters) return Promise.resolve(window.DotoCritters);
-  // The files share globals, so they load in order, one after another.
-  loading ??= ENGINE.reduce<Promise<void>>(
-    (ready, src) =>
-      ready.then(
-        () =>
-          new Promise((resolve, reject) => {
-            const script = document.createElement("script");
-            script.src = src;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Could not load ${src}`));
-            document.body.appendChild(script);
-          }),
-      ),
-    Promise.resolve(),
-  ).then(() => window.DotoCritters as Engine);
-  return loading;
-}
 
 export function CritterPhone() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -68,7 +37,7 @@ export function CritterPhone() {
     visibility.observe(canvas);
 
     const start = () => {
-      loadEngine()
+      loadCritters()
         .then((engine) => {
           if (cancelled || critters.current) return;
           const style = getComputedStyle(canvas);

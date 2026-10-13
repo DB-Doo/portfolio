@@ -58,8 +58,8 @@ class Roomba {
   constructor(world, seed) {
     this.w = world; this.items = world.items; this.rand = rng(seed * 31 + 5);
     this.dock = this.items.find((o) => o.home);
-    this.entry = [this.dock.x, this.dock.y + this.dock.hh + RR + 16];
-    this.x = this.dock.x; this.y = this.dock.y; this.heading = -Math.PI / 2;
+    this.placeDock();
+    this.x = this.dock.x; this.y = this.dock.y; this.heading = this.face;
     this.v = 0; this.spin = 0; this.z = WIDGET_TOP; this.vz = 0;
     this.tiltF = 0; this.tiltS = 0; this.tiltFT = 0; this.squash = 0; this.squashT = 0;
     this.jit = 0; this.jitT = 0; this.shake = [0, 0]; this.shakeT = null;
@@ -75,6 +75,13 @@ class Roomba {
     this.mood = "sleepy"; this.lookX = 0; this.lookY = 0; this.look = null; this.blinkIn = 2; this.blinkT = 0;
     this.nav = null; this.act = null; this.thought = "";
     this.begin("docked", "Charging in its dock", { need: 0.3 });
+  }
+
+  /** Where it rolls out to: straight behind it as it sits facing `dock.face` (up, unless a page says otherwise). */
+  placeDock() {
+    this.face = this.dock.face ?? -Math.PI / 2;
+    const out = this.dock.hh + RR + 16;
+    this.entry = [this.dock.x - Math.cos(this.face) * out, this.dock.y - Math.sin(this.face) * out];
   }
 
   // ======== the room, as it sees it ========
@@ -294,26 +301,26 @@ class Roomba {
     const n = this.nav || (this.nav = { mode: "go", path: null, lt: 0, lx: this.x, ly: this.y, stuck: 0 });
     const dx = gx - this.x, dy = gy - this.y, d = Math.hypot(dx, dy);
     if (d <= stop) { this.brake(dt); return true; }
-    if (this.groundUnder() > 3) { this.climbOver(gx, gy); return false; }
+    if (this.groundUnder() > 3) { return this.climbOver(gx, gy); }
     const vmax = VMAX * this.traits.zip * pace * clamp((d - stop) / 30 + 0.2, 0.3, 1);
     const ux = dx / d, uy = dy / d;
     n.lt += dt;
     if (n.lt > 1) { n.stuck = Math.hypot(this.x - n.lx, this.y - n.ly) < 4 ? n.stuck + n.lt : 0; n.lt = 0; n.lx = this.x; n.ly = this.y; }
-    if (n.stuck > 2) { this.climbOver(gx, gy); return false; }
+    if (n.stuck > 2) { return this.climbOver(gx, gy); }
     const clear = !this.blocked(ux, uy, d - stop);
     if (clear && (n.mode === "go" || !n.path || Math.hypot(n.path.end[0] - this.x, n.path.end[1] - this.y) < 60)) { n.mode = "go"; n.path = null; }
     else {
       const P = n.path;
       if (!P || Math.hypot(P.gx - gx, P.gy - gy) > 14 || this.clock - P.at > 2) {
         const next = this.plan(gx, gy);
-        if (!next) { this.climbOver(gx, gy); return false; }
+        if (!next) { return this.climbOver(gx, gy); }
         next.i = 0; n.path = next;
       }
       n.mode = "route";
       const end = n.path.end;
       // At the end of the route and still not there: the goal is on a widget or boxed in, so over it goes.
       if (Math.hypot(end[0] - this.x, end[1] - this.y) < 6 && d > stop) {
-        if (d > stop + 26 && d < 110) { this.climbOver(gx, gy); return false; }
+        if (d > stop + 26 && d < 110) { return this.climbOver(gx, gy); }
         this.brake(dt); return true;
       }
     }
@@ -328,11 +335,14 @@ class Roomba {
       const a = Math.atan2(gy - this.y, gx - this.x);
       over = widgetAt(this.items, this.x + Math.cos(a) * s, this.y + Math.sin(a) * s);
     }
+    // Page text is a wall: it gives up on that goal rather than drive across words.
+    if (over && over.wall && this.groundUnder() <= 3) { this.nav = null; this.thought = `Can't get past ${over.name}, so it's doing something else`; return true; }
     this.climbing = { t: 0, ph: 0, a: Math.atan2(gy - this.y, gx - this.x), gx, gy, on: false };
     this.climbedAt = this.clock;
     const stuck = this.nav && this.nav.stuck > 2;
     this.nav = null;
     if (over) this.thought = stuck ? `Stuck, so it's climbing over ${over.name}` : `No way round, so it's climbing over ${over.name}`;
+    return false;
   }
   stepClimb(dt) {
     const c = this.climbing;
@@ -438,7 +448,8 @@ class Roomba {
       }
       case "explore": { const p = data.p || this.freeSpot(); return this.begin("explore", `Exploring ${placeName(p[0], p[1])}`, { x: p[0], y: p[1] }); }
       case "play": {
-        const pool = this.items.filter((o) => !o.home && o.y < 520);
+        const pool = this.items.filter((o) => !o.home && !o.wall && o.y < H - 100);
+        if (!pool.length) return this.start("explore");
         const o = pool[Math.floor(this.rand() * pool.length)];
         if (o.kind === "clock") return this.start("edge", { o, race: true });
         const words = { folder: ["Nudging the folder to see what's in it", "boop"], music: ["Bumping the music widget, hoping for a song", "♪?"], icon: ["Sniffing an icon", "sniff"] }[o.kind] || ["Poking at a widget", "boop"];
@@ -546,7 +557,7 @@ class Roomba {
       case "docked": {
         this.kinematic = true; this.ignoreDock = true;
         this.x = ease(this.x, this.dock.x, 6, dt); this.y = ease(this.y, this.dock.y, 6, dt);
-        this.heading = wrap(this.heading + wrap(-Math.PI / 2 - this.heading) * (1 - Math.exp(-6 * dt)));
+        this.heading = wrap(this.heading + wrap(this.face - this.heading) * (1 - Math.exp(-6 * dt)));
         this.v = 0; this.spin = 0;
         this.battery = Math.min(1, this.battery + dt * 0.05);
         if (this.bin > 0.001) {
@@ -565,14 +576,14 @@ class Roomba {
       }
       case "launch": {
         this.ignoreDock = true;
-        this.drive(dt, -26, clamp(wrap(-Math.PI / 2 - this.heading) * 3, -1, 1));
-        if (this.y >= this.entry[1] - 6) { a.data.done = true; const then = a.data.then; if (then) this.start(then.kind, then.data); else this.think(); }
+        this.drive(dt, -26, clamp(wrap(this.face - this.heading) * 3, -1, 1));
+        if ((this.dock.x - this.x) * Math.cos(this.face) + (this.dock.y - this.y) * Math.sin(this.face) >= this.dock.hh + RR + 10) { a.data.done = true; const then = a.data.then; if (then) this.start(then.kind, then.data); else this.think(); }
         break;
       }
       case "home": {
         this.brushT = 0.3;
         if (a.ph === 0) { this.lookAt(this.dock.x, this.dock.y); if (this.navigate(dt, this.entry[0], this.entry[1], 5, 0.9)) a.ph = 1; }
-        else if (a.ph === 1) { if (this.turnTo(dt, -Math.PI / 2, 0.6)) a.ph = 2; }
+        else if (a.ph === 1) { if (this.turnTo(dt, this.face, 0.6)) a.ph = 2; }
         else {
           this.ignoreDock = true;
           this.steer(dt, this.dock.x, this.dock.y, 22);
@@ -1266,6 +1277,8 @@ class Roomba {
   }
   drawHome(ctx, o) {
     const docked = this.act.kind === "docked", charging = docked && this.battery < 1;
+    // Drawn for a dock it faces up into; a page can turn the dock to face another way.
+    ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(this.face + Math.PI / 2); ctx.translate(-o.x, -o.y);
     // The back wall: an arc of dots round the top of the pad.
     for (let k = 0; k <= 16; k++) {
       const a = -Math.PI * 0.86 + (k / 16) * Math.PI * 0.72;
@@ -1282,6 +1295,7 @@ class Roomba {
       ctx.strokeStyle = rgba(INK, 0.12); ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
       ctx.beginPath(); ctx.arc(o.x, o.y, RR + 1, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
     }
+    ctx.restore();
   }
   drawOver(ctx) {
     for (const m of this.marks) {
