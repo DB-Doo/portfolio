@@ -20,7 +20,8 @@
     // A flick on empty space throws one ball, not one per critter.
     rb.throwBall = () => {};
     const parts = [sp, rb];
-    const all = (fn) => (...a) => { for (const p of parts) p[fn]?.(...a); };
+    // A critter that is `away` (the spider out on its dragline) sits out of the room entirely.
+    const all = (fn) => (...a) => { for (const p of parts) if (!p.away) p[fn]?.(...a); };
     return {
       sp, rb,
       step: all("step"), press: all("press"), drawUnder: all("drawUnder"), drawShadow: all("drawShadow"),
@@ -28,7 +29,7 @@
       down: all("down"), move: all("move"), long: all("long"),
       ballLanded: all("ballLanded"), musicChanged: all("musicChanged"),
       drawHome(ctx, o) { (o.kind === "nest" ? sp : rb).drawHome(ctx, o); },
-      hit(x, y) { return sp.hit(x, y) || rb.hit(x, y); },
+      hit(x, y) { return (!sp.away && sp.hit(x, y)) || rb.hit(x, y); },
       up(t, g, vx, vy) {
         if (t.on === "spider") return sp.up(t, g, vx, vy);
         if (t.on === "roomba") return rb.up(t, g, vx, vy);
@@ -144,7 +145,7 @@
       for (const it of [...page.filter((p) => !p.wall), nest]) {
         if (!it.dx && !it.dy) continue;
         const on = (x, y) => sdf(it, x, y) < 2;
-        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) carry(it.dx, it.dy);
+        if (!sp.away && !sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) carry(it.dx, it.dy);
         if (rb.z > 3 && on(rb.x, rb.y)) { rb.x += it.dx; rb.y += it.dy; }
         for (const b of world.balls) if (!b.held && on(b.x, b.y + b.r + 1)) { b.x += it.dx; b.y += it.dy; }
       }
@@ -378,7 +379,7 @@
       for (const it of [...page.filter((p) => !p.wall), nest]) {
         if (!it.dx && !it.dy) continue;
         const on = (x, y) => sdf(it, x, y) < 2;
-        if (!sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) carry(it.dx, it.dy);
+        if (!sp.away && !sp.jump && sp.z < WIDGET_TOP + 12 && on(sp.x, sp.y)) carry(it.dx, it.dy);
         if (rb.z > 3 && on(rb.x, rb.y)) { rb.x += it.dx; rb.y += it.dy; }
         for (const b of world.balls) if (!b.held && on(b.x, b.y + b.r + 1)) { b.x += it.dx; b.y += it.dy; }
       }
@@ -402,6 +403,7 @@
       }
     };
 
+    const rope = abseil(o, sp, zoom);
     let raf = 0, alive = true, last = 0;
     const loop = (now) => {
       if (!alive) return;
@@ -411,6 +413,7 @@
         last = now;
         dents = [];
         world.frame(now);
+        rope.step(dt); rope.draw();
         o.press?.(dents);
       } else { world.last = now; last = now; }
       raf = requestAnimationFrame(loop);
@@ -428,9 +431,150 @@
       wake() { if (!alive || !VIEW.paused) return; VIEW.paused = false; met = true; world.last = 0; loop(performance.now()); },
       toss() { met = true; presence(); sp.key(); },
       stop() {
-        alive = false; cancelAnimationFrame(raf);
+        alive = false; cancelAnimationFrame(raf); rope.remove();
         for (const it of page) it.el.style.translate = "";
       },
+    };
+  }
+
+  /**
+   * Down the page, the spider lets itself down a dragline (Dan, 2026-10-13). Once the reader
+   * scrolls past the first screen it pays out silk from where it stands, straight up to the top
+   * of the window, so it never jumps: the line appears above it and it swings into hanging head
+   * first. Then it drifts over to the right edge and lowers itself as the reader goes, the whole
+   * page's length mapped onto the window's height, so it reaches the bottom with the reader. The
+   * line is a chain of points under gravity, so a sudden scroll swings it. Scrolled back to the
+   * top it turns upright and steps off the line where it hangs.
+   * It draws on its own fixed canvas and never takes the pointer.
+   */
+  function abseil(o, sp, zoom) {
+    const c = document.createElement("canvas");
+    c.setAttribute("aria-hidden", "true");
+    Object.assign(c.style, { position: "fixed", inset: "0", width: "100%", height: "100%", pointerEvents: "none", zIndex: "30" });
+    document.body.appendChild(c);
+    const ctx = c.getContext("2d");
+    const N = 16, BACK = 18;
+    const pts = Array.from({ length: N }, () => ({ x: 0, y: 0, px: 0, py: 0 }));
+    let vw = 0, vh = 0, dpr = 1, state = "off", L = 0, ax = 0, turn = 0, fade = 0, clock = 0;
+    let lastY = scrollY, vel = 0, drawn = false;
+    const size = () => {
+      vw = innerWidth; vh = innerHeight; dpr = Math.min(2, devicePixelRatio || 1);
+      c.width = Math.round(vw * dpr); c.height = Math.round(vh * dpr);
+    };
+    size();
+    addEventListener("resize", size, { signal: o.signal });
+    const lane = () => vw - clamp(vw * 0.05, 20, 72);
+    // Where the abdomen's tip is drawn, in window pixels: the line's lower end.
+    const tip = () => {
+      const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
+      return [(sc[0] - sp.fx * BACK) * zoom, (sc[1] - sp.fy * BACK) * zoom];
+    };
+    const hangFrom = (x0, x1, y1) => {
+      for (let i = 0; i < N; i++) {
+        const t = i / (N - 1), p = pts[i];
+        p.x = p.px = lerp(x0, x1, t); p.y = p.py = lerp(-6, y1, t);
+      }
+    };
+    const integrate = (dt, ay, kick) => {
+      for (let i = 1; i < N; i++) {
+        const p = pts[i], vx = (p.x - p.px) * 0.985, vy = (p.y - p.py) * 0.985;
+        p.px = p.x; p.py = p.y;
+        p.x += vx + kick * (i / N) * dt * dt; p.y += vy + ay * dt * dt;
+      }
+    };
+    const constrain = (seg) => {
+      for (let i = 1; i < N; i++) {
+        const a = pts[i - 1], b = pts[i], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1e-4;
+        const f = ((d - seg) / d) * 0.55;
+        if (i === 1) { b.x -= dx * f; b.y -= dy * f; }
+        else { a.x += dx * f * 0.5; a.y += dy * f * 0.5; b.x -= dx * f * 0.5; b.y -= dy * f * 0.5; }
+      }
+    };
+    const clear = () => { if (drawn) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, c.width, c.height); drawn = false; } };
+    return {
+      step(dt) {
+        const room = Math.max(1, document.documentElement.scrollHeight - vh);
+        const start = vh * 0.5;
+        const want = !VIEW.paused && room > vh * 0.6 && scrollY > (state === "off" ? start : vh * 0.3);
+        const v = (scrollY - lastY) / Math.max(dt, 1e-3); lastY = scrollY;
+        const acc = clamp((v - vel) / Math.max(dt, 1e-3), -9000, 9000); vel = lerp(vel, v, 0.5);
+        if (state === "fading") {
+          // The line it left goes slack and fades out.
+          fade -= dt * 2.5;
+          for (let i = 1; i < N; i++) pts[i].y += dt * 40 * (i / N);
+          if (fade <= 0) { state = "off"; clear(); }
+          return;
+        }
+        if (state === "off") {
+          if (!want || sp.jump || sp.held) return;
+          // Pays out a line straight up from where it is.
+          const [x, y] = tip();
+          if (y < 30 || y > vh - 10 || x < 0 || x > vw) return;
+          ax = x; L = y + 6; turn = 0; fade = 0; hangFrom(x, x, y);
+          sp.away = true; state = "on";
+        }
+        clock += dt; sp.clock += dt;
+        if (state === "on" && !want) state = "landing";
+        if (state === "landing" && want) state = "on";
+        fade = Math.min(1, fade + dt * 3);
+        if (state === "on") {
+          // Over to the right edge, and down as far through the window as the reader is
+          // through the page.
+          ax = lerp(ax, lane(), 1 - Math.exp(-dt * 2.6));
+          const p = clamp((scrollY - start) / Math.max(1, room - start), 0, 1);
+          const target = lerp(vh * 0.2, vh * 0.78, p) + 6;
+          const ease = target - L, rate = ease > 0 ? 220 : 420;
+          L += clamp(ease * (1 - Math.exp(-dt * 2.2)), -rate * dt, rate * dt);
+          turn = Math.min(1, turn + dt * 1.6);
+        } else {
+          turn = Math.max(0, turn - dt * 2);
+        }
+        // A scroll that speeds up or brakes swings it, the way a sudden stop swings a pendant.
+        const ay = 1500 - acc * 0.1, kick = -acc * 0.04 * Math.sin(clock * 1.7);
+        pts[0].x = pts[0].px = ax; pts[0].y = pts[0].py = -6;
+        const sub = 3, h = dt / sub;
+        for (let s = 0; s < sub; s++) {
+          integrate(h, ay, kick);
+          for (let k = 0; k < 6; k++) constrain(L / (N - 1));
+        }
+        for (const q of pts) q.x = clamp(q.x, 16, vw - 16);
+        if (state === "landing" && turn === 0) {
+          // Steps off where it hangs, the right way up.
+          const e = pts[N - 1], [tx, ty] = tip();
+          sp.x += (e.x - tx) / zoom; sp.y += (e.y - ty) / zoom;
+          for (const f of sp.feet) { f.x += (e.x - tx) / zoom; f.y += (e.y - ty) / zoom; }
+          sp.inBounds?.();
+          sp.away = false; state = "fading";
+        }
+      },
+      draw() {
+        if (state === "off") return;
+        drawn = true;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, vw, vh);
+        // The line, as a row of fine dots like the rest of the silk.
+        ctx.fillStyle = rgba(INK, 0.42 * fade);
+        let carry = 0;
+        for (let i = 1; i < N; i++) {
+          const a = pts[i - 1], b = pts[i], d = Math.hypot(b.x - a.x, b.y - a.y);
+          for (let t = carry; t < d; t += 3.2) { ctx.beginPath(); ctx.arc(a.x + ((b.x - a.x) * t) / d, a.y + ((b.y - a.y) * t) / d, 0.65, 0, TAU); ctx.fill(); }
+          carry = (carry - d) % 3.2; if (carry < 0) carry += 3.2;
+        }
+        const g = (clock * 0.45) % 1, i = Math.min(N - 2, Math.floor(g * (N - 1))), u = g * (N - 1) - i;
+        ctx.fillStyle = rgba(CYAN, 0.6 * fade * Math.sin(g * Math.PI));
+        ctx.beginPath(); ctx.arc(lerp(pts[i].x, pts[i + 1].x, u), lerp(pts[i].y, pts[i + 1].y, u), 1, 0, TAU); ctx.fill();
+        if (state === "fading") return;
+        // The spider at the line's end. Turned fully, it hangs head first along the line; at
+        // turn 0 it is drawn exactly as it stood in the room.
+        const e = pts[N - 1], f = pts[N - 2];
+        const along = Math.atan2(e.y - f.y, e.x - f.x) - Math.atan2(sp.fy, sp.fx);
+        const k = turn * turn * (3 - 2 * turn);
+        let rot = along; while (rot > Math.PI) rot -= TAU; while (rot < -Math.PI) rot += TAU;
+        const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
+        ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(rot * k); ctx.scale(zoom, zoom);
+        ctx.translate(-(sc[0] - sp.fx * BACK), -(sc[1] - sp.fy * BACK));
+        sp.draw(ctx); ctx.restore();
+      },
+      remove() { if (sp.away) sp.away = false; c.remove(); },
     };
   }
 
