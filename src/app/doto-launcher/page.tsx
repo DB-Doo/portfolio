@@ -187,7 +187,7 @@ export default function DotoLauncherPage() {
           <div className="mx-auto grid max-w-5xl items-center gap-14 px-6 py-20 sm:px-10 md:grid-cols-[1fr_300px] md:gap-16">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
-                New in the Halloween update
+                Canvas Critters · Pro · New in the Halloween update
               </p>
               <h2
                 id="critters-heading"
@@ -198,7 +198,8 @@ export default function DotoLauncherPage() {
               <p className="mt-5 max-w-xl text-sm leading-7 text-neutral-400 sm:text-base">
                 A jumping spider made of dots hops between your widgets and slowly learns to
                 trust you. A little Roomba tidies up after it and goes home to charge. Play music
-                and they both dance. They are live on this phone, so try them.
+                and they both dance. Add them with Pro from Canvas Critters in the widget
+                picker. They are live on this phone, so try them.
               </p>
               <ul className="mt-8 grid gap-3 font-mono text-xs leading-5 text-neutral-500">
                 {critterTips.map((tip) => (
