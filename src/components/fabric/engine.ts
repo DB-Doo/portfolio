@@ -276,7 +276,11 @@ export class Fabric {
     for (let i = 0; i < n; i++) {
       const y = this.y[i];
       if (y < -4 || y > this.height + 4) continue;
-      buckets[Math.min(levels - 1, Math.floor(this.lift[i] * levels))].push(i);
+      // Dots hugging the window's side edges stay at rest colour, so a lit column never reads
+      // as a line drawn down the edge of the screen.
+      const x = this.x[i];
+      const edge = x < 10 || x > this.width - 10;
+      buckets[edge ? 0 : Math.min(levels - 1, Math.floor(this.lift[i] * levels))].push(i);
     }
     const [r0, g0, b0] = this.base;
     const [r1, g1, b1] = this.lit;
