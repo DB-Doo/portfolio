@@ -15,6 +15,10 @@ The plain dot field paints first. The engine loads once the browser is idle, the
 same lattice, so the swap doesn't show. Both critters sleep at home until someone moves over the
 open dots, and a cursor over text is ignored, so nobody reading the hero is followed. Off screen
 or in a hidden tab nothing is drawn. Reduced motion leaves them asleep with a button to wake them.
+
+Once the hero is scrolled away, on screens wide enough to have an empty right margin, the spider
+lets itself down into that margin on a dragline with the Roomba hanging under it, and reels back
+up before the hero returns.
 */
 
 export function HeroCritters() {
@@ -34,6 +38,11 @@ export function HeroCritters() {
     let cancelled = false;
     let controller: AbortController | null = null;
     let width = 0;
+    // The margin canvas sits on the body: inside the hero it would be clipped to the hero's layer.
+    const dangle = document.createElement("canvas");
+    dangle.setAttribute("aria-hidden", "true");
+    dangle.className = "pointer-events-none fixed inset-0 z-30 h-full w-full";
+    document.body.append(dangle);
 
     const visibility = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
@@ -79,6 +88,11 @@ export function HeroCritters() {
             },
             still,
             isVisible: () => visible,
+            dangleCanvas: dangle,
+            // How far the hero has gone above the window, or 0 while any of it shows.
+            below: () => Math.max(0, -hero.getBoundingClientRect().bottom - 40),
+            // The empty margin right of the page's widest column (max-w-6xl and its padding).
+            margin: () => (window.innerWidth - 1152) / 2 + 40,
             signal: controller.signal,
             fontMono: style.getPropertyValue("--font-geist-mono").trim(),
           });
@@ -115,6 +129,7 @@ export function HeroCritters() {
       controller?.abort();
       critters.current?.stop();
       critters.current = null;
+      dangle.remove();
     };
   }, []);
 

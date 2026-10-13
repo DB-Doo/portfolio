@@ -22,6 +22,12 @@ export type PageOptions = {
   signal: AbortSignal;
   fontDots?: string;
   fontMono?: string;
+  /** A fixed, window-sized canvas where the pair hang into the margin once the hero is gone. */
+  dangleCanvas?: HTMLCanvasElement;
+  /** Pixels the hero is above the window, 0 while it shows. */
+  below?(): number;
+  /** Width of the empty right margin, in pixels. */
+  margin?(): number;
 };
 
 export type Engine = {

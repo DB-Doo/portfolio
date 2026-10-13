@@ -31,7 +31,7 @@ Deploys to **Vercel** on every push to `main`. Custom domain `dbdoo.dev` aliased
 
 UX portfolio (merged to `main` 2026-09-24):
 
-- Home (`src/app/page.tsx`): hero, three case-study cards, "Also built", About (story plus a "Previously" list), contact. No process section: research (2026-09-28) found respected designer sites do not have one and hiring managers read them as filler. Copy opens with plain facts, never slogans or aphorisms. Résumé at `public/Dan_Brandt_Resume.pdf`.
+- Home (`src/app/page.tsx`): hero (NinKeys keyboard at the back, Wide and Doto phones in front), three case-study cards, "Also built", About (story plus a "Previously" list), contact. No process section: research (2026-09-28) found respected designer sites do not have one and hiring managers read them as filler. Copy opens with plain facts, never slogans or aphorisms. Résumé at `public/Dan_Brandt_Resume.pdf`.
 - Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
 - Visual language matches `/doto-launcher`: neutral-950, cyan-300/400 signal, mono eyebrow labels, Geist via `font-sans` (body CSS still says Arial, so each page's `<main>` sets `font-sans`).
 - Every case-study claim is sourced from that project's repo (dot.o: `docs/okf`, `docs/design`, `docs/feedback`, commits; Wide: `docs/audit`, `docs/superpowers/specs`). Never describe unshipped dot.o features as shipped; check its `docs/okf/release/feature-switches.md`.
@@ -49,7 +49,7 @@ UX portfolio (merged to `main` 2026-09-24):
 ## Gotchas
 
 - **Next.js 16 breaking changes** — the `AGENTS.md` warning at the top of this file is real. Always check `node_modules/next/dist/docs/` before writing code that assumes old Next patterns.
-- **Canvas Critters** — the spider and Roomba live in the home hero (`HeroCritters.tsx`) and in a phone playground on `/doto-launcher` (`CritterPhone.tsx`); the engine is plain JS in `public/doto-launcher/critters/`. `CRITTERS_RELEASED` in `src/content/critters.ts` is the kill switch for the live site (previews always show them). Elements marked `data-critter="wall"` are text they drive around; `data-critter="ledge"` are cards they can stand on.
+- **Canvas Critters** — the spider and Roomba live in the home hero (`HeroCritters.tsx`) and in a phone playground on `/doto-launcher` (`CritterPhone.tsx`); the engine is plain JS in `public/doto-launcher/critters/`. `CRITTERS_RELEASED` in `src/content/critters.ts` is the kill switch for the live site (previews always show them). Elements marked `data-critter="wall"` are text they drive around; `data-critter="ledge"` are cards they can stand on. Below the hero, on windows with a right margin of 90px or more, the pair hang into that margin on draglines (`dangler` in `stage.js`, drawn on a fixed canvas the hero appends to the body).
 - **R3F / Three.js** — must be `"use client"`, wrap in `next/dynamic` with `ssr: false`.
 - **GSAP ScrollTrigger** — only fire inside `useEffect`; never during SSR.
 - **react-fluid-distortion** — requires `transpilePackages` config in `next.config.ts`.
