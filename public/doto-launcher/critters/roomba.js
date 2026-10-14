@@ -1157,6 +1157,13 @@ class Roomba {
   }
   lightAt(a) {
     const k = this.act.kind, cl = this.clock;
+    if (this.ring != null) {
+      // Riding the spider's line on the website, the ring fills as the reader goes down the
+      // page, flashes green at the bottom, and breathes low while it dozes.
+      const u = ((((a + Math.PI / 2) % TAU) + TAU) % TAU) / TAU, on = clamp((this.ring - u) * 24 + 0.5, 0, 1);
+      const f = this.ringFlash || 0, d = this.doze || 0, br = 1 - d * (0.5 - 0.25 * Math.sin(cl * 1.8));
+      return [f > 0 ? mix(CYAN, GREEN, Math.min(1, f * 2)) : CYAN, (0.1 + 0.72 * on + f * 0.5 * Math.abs(Math.sin(cl * 9))) * br];
+    }
     if (k === "angry") return [RED, 0.55 + 0.4 * Math.abs(Math.sin(cl * 9))];
     if (k === "docked" && this.battery < 1) return [GREEN, 0.2 + 0.6 * (0.5 + 0.5 * Math.sin(a - cl * 3)) * (0.6 + 0.4 * Math.sin(cl * 2))];
     if (this.battery < LOW_BATTERY + 0.04) return [AMBER, Math.sin(cl * 5) > 0 ? 0.85 : 0.2];

@@ -403,7 +403,7 @@
       }
     };
 
-    const rope = abseil({ ...o, onLand: () => { met = true; }, onWake: () => { met = true; } }, sp, rb, zoom);
+    const rope = abseil({ ...o, onLand: () => { met = true; }, onWake: () => { met = true; }, dent: (x, y, r) => dents.push({ x, y, r }) }, sp, rb, zoom);
     let raf = 0, alive = true, last = 0;
     const loop = (now) => {
       if (!alive) return;
@@ -470,6 +470,20 @@
     let sDraw = 0, rDraw = 0;
     const settle = (cur, to, k) => cur + wrap(to - cur) * k;
     let lastHow = "", wakeT = 0;
+    // What it gets up to while it rides (Dan, 2026-10-14, "I like all of them"):
+    //   ring     its light ring fills as the reader goes down the page, green at the bottom;
+    //   doze     reading stops for a while and it nods off on the thread; a scroll jolts it awake;
+    //   bungee   a hard flick drops it on a stretchy cord, its side brush spinning to steady it;
+    //   five     it and the spider bump as each section heading goes by;
+    //   swing    when the scroll stops after a run, the line swings and settles;
+    //   beam     it sweeps its headlight over each card it passes;
+    //   swap     now and then it climbs round the spider to ride the other end;
+    //   lap      at the bottom it hops off for a victory lap, and rejoins when the reader heads up.
+    let idle = 0, doze = 0, jolt = 0, joy = 0, bo = 0, bv = 0, bcd = 0, ox = 0, oy = 0, cord = [0, 0];
+    let fiveCd = 0, fiveT = -1, fiveSpark = false, runSp = 0, swung = true, swingT = 0, beam = null, lit = new WeakSet();
+    let swap = null, nextSwap = 18 + Math.random() * 14, lapT = -1, lapped = false, leap = null, duck = 0;
+    let heads = [], cards = [], scanT = 0;
+    const headTop = new WeakMap();
     let lastY = scrollY, vel = 0, drawn = false;
     const size = () => {
       vw = innerWidth; vh = innerHeight; dpr = Math.min(2, devicePixelRatio || 1);
@@ -508,8 +522,10 @@
       }
     };
     const integrate = (arr, dt, ay, kick) => {
+      // Looser while a stop has set it swinging, so the swing carries and settles slowly.
+      const damp = swingT > 0 ? 0.985 + 0.009 * Math.min(1, swingT) : 0.985;
       for (let i = 1; i < arr.length; i++) {
-        const p = arr[i], vx = (p.x - p.px) * 0.985, vy = (p.y - p.py) * 0.985;
+        const p = arr[i], vx = (p.x - p.px) * damp, vy = (p.y - p.py) * damp;
         p.px = p.x; p.py = p.y;
         p.x += vx + kick * (i / arr.length) * dt * dt; p.y += vy + ay * dt * dt;
       }
@@ -545,6 +561,8 @@
     const clear = () => { if (drawn) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, c.width, c.height); drawn = false; } };
     // The Roomba lets go and is back on the floor where it hangs, the right way up.
     const dropRoomba = () => {
+      rx += ox; ry += oy; ox = oy = bo = bv = 0;
+      rb.ring = null; rb.doze = 0; rb.ringFlash = 0; swap = null; leap = null; beam = null;
       const [lx, ly] = lug();
       rb.x += (rx - lx) / zoom; rb.y += (ry - ly) / zoom;
       rb.squash = 0.5;
@@ -628,7 +646,6 @@
           }
         }
         if (ride === "ready" && state !== "on") ride = "off";
-        if (rb.away) { rb.seen = rb.w.clock; rb.mood = "open"; }
         if (rb.away) {
           rfade = Math.min(1, rfade + dt * 3);
           // A slow turn on its thread now and then, the way a hanging thing does.
@@ -690,6 +707,155 @@
           rx = px; ry = py; rang = wrap(pa - Math.PI / 2);
           if (state !== "on") rturn = Math.max(0, Math.min(rturn, turn));
         }
+
+        // ---- While it rides ----
+        const riding = rb.away && state === "on" && (ride === "hang" || ride === "bead");
+        const p = clamp(scrollY / room, 0, 1), speed = Math.abs(v);
+        scanT -= dt;
+        if (scanT <= 0) {
+          scanT = 1.5;
+          heads = [...document.querySelectorAll("main h2, main h3")];
+          // The same cards, phones and pictures the sheet gathers round (room.ts LEDGES).
+          cards = [...document.querySelectorAll('[data-critter="ledge"], [data-fabric="well"], main figure, main img')];
+        }
+        if (rb.away) {
+          // The room doesn't step it while it rides, so its own little clocks run here.
+          rb.clock += dt; rb.squash += -rb.squash * (1 - Math.exp(-dt * 9));
+          rb.blinkIn -= dt; rb.blinkT -= dt;
+          if (rb.blinkIn <= 0) { rb.blinkT = 0.13; rb.blinkIn = 1.8 + Math.random() * 4; }
+          rb.ring = p; rb.ringFlash = Math.max(0, (rb.ringFlash || 0) - dt * 0.8);
+        }
+        // Dozes when the reader stops for a while; the next scroll jolts it awake with a start.
+        idle = speed > 25 ? 0 : idle + dt;
+        if (doze > 0.5 && speed > 60) { jolt = 0.8; rb.squash = 0.5; bv -= 260 * zoom; doze = 0.4; }
+        doze = riding && idle > 7 && !beam ? Math.min(1, doze + dt * 0.3) : Math.max(0, doze - dt * 3);
+        jolt = Math.max(0, jolt - dt); joy = Math.max(0, joy - dt);
+        if (rb.away) {
+          rb.seen = rb.w.clock; rb.doze = doze;
+          rb.mood = jolt > 0 ? "wide" : joy > 0 ? "happy" : doze > 0.6 ? "sleepy" : "open";
+        }
+        // A hard flick drops it on a bungee: a stretchy cord and a bouncy spring back.
+        bcd = Math.max(0, bcd - dt);
+        if (riding && speed > 2400 && bcd === 0 && doze < 0.5) { bv += clamp(v * 0.28, -420, 1150) * zoom; bcd = 0.9; }
+        bv += (-70 * bo - 3.4 * bv) * dt; bo += bv * dt;
+        if (bo < -32 * zoom) { bo = -32 * zoom; bv = Math.max(0, bv); }
+        if (bo > 170 * zoom) { bo = 170 * zoom; bv = Math.min(0, bv); }
+        if (!riding) { bo *= Math.exp(-dt * 10); bv *= Math.exp(-dt * 10); }
+        // Riding above the spider, it drops out to the side of it rather than through it.
+        cord = ride === "bead" && bo > 0 ? [-0.6, 0.8] : [0, 1];
+        if (rb.away) {
+          // Its side brush spins up like a propeller to steady it on the cord.
+          const prop = clamp(Math.abs(bv) / (320 * zoom) + Math.abs(bo) / (70 * zoom), 0, 1);
+          rb.brushOn += (prop - rb.brushOn) * (1 - Math.exp(-dt * 8));
+          rb.brushA += dt * (12 + 50 * prop) * rb.brushOn;
+        }
+        // A high five as each section heading passes the middle of the window.
+        let fo = 0;
+        for (const h of heads) {
+          const top = h.getBoundingClientRect().top, was = headTop.get(h);
+          headTop.set(h, top);
+          if (was !== undefined && was > vh * 0.42 && top <= vh * 0.42 && riding && fiveT < 0 && fiveCd === 0 && !swap && Math.abs(bo) < 20 * zoom && doze < 0.5) { fiveT = 0; fiveSpark = false; }
+        }
+        fiveCd = Math.max(0, fiveCd - dt);
+        if (fiveT >= 0) {
+          fiveT += dt; fiveCd = 2.5;
+          const k = fiveT / 0.6;
+          if (k >= 1 || !riding) fiveT = -1;
+          else {
+            const f = Math.sin(k * Math.PI);
+            fo = ride === "bead" ? f * Math.max(0, BEAD() - 40 * zoom) : -f * 10 * zoom;
+            if (!fiveSpark && k > 0.5) {
+              fiveSpark = true; rb.squash = 0.4; joy = 0.9;
+              const [cx, cy] = ride === "bead" ? [pts[N - 1].x, pts[N - 1].y - 6 * zoom] : head();
+              for (let n = 0; n < 10; n++) {
+                const a = (n / 10) * TAU, sp2 = 70 + Math.random() * 60;
+                puffs.push({ x: cx, y: cy, vx: Math.cos(a) * sp2, vy: Math.sin(a) * sp2, life: 0.5, col: n % 2 ? GREEN : CYAN });
+              }
+            }
+          }
+        }
+        // A run that stops sets the line swinging, and it settles slowly.
+        runSp += (speed - runSp) * (1 - Math.exp(-dt * 3));
+        swingT = Math.max(0, swingT - dt);
+        if (speed > 140) swung = false;
+        else if (!swung && runSp > 380 && speed < 15 && state === "on") {
+          swung = true; swingT = 2.6;
+          const amp = clamp(runSp * 0.0011, 0.5, 1.6) * (Math.random() < 0.5 ? -1 : 1);
+          for (let i = 1; i < N; i++) pts[i].px -= amp * (i / (N - 1));
+          if (ride === "hang") for (let i = 1; i < M; i++) tail[i].px -= amp * 1.15;
+        }
+        // Its headlight sweeps each card it passes, the dots parting where the light lands.
+        if (beam) {
+          beam.t += dt;
+          if (beam.t > 1.9 || !riding) beam = null;
+        } else if (riding && doze < 0.3 && !swap && fiveT < 0) {
+          for (const el of cards) {
+            if (lit.has(el)) continue;
+            const r = el.getBoundingClientRect();
+            if (r.height > 60 && r.left < rx - 140 && r.top < ry && r.bottom > ry + 40) { lit.add(el); beam = { el, t: 0 }; break; }
+          }
+        }
+        if (beam) {
+          const r = beam.el.getBoundingClientRect(), k = beam.t / 1.9;
+          beam.x = Math.min(r.left + r.width * 0.5, rx - 120); beam.y = lerp(r.top + 26, r.bottom - 26, ease(k)); beam.a = Math.sin(k * Math.PI);
+          o.dent?.(beam.x, beam.y, 18 * beam.a);
+        }
+        if (rb.away) {
+          const lx = beam ? -1.4 : 0, ly = beam ? clamp((beam.y - ry) / 120, -0.9, 0.9) : 0;
+          rb.lookX += (lx - rb.lookX) * (1 - Math.exp(-dt * 6)); rb.lookY += (ly - rb.lookY) * (1 - Math.exp(-dt * 6));
+        }
+        // Now and then it climbs round the spider to ride the other end, the spider leaning aside.
+        if (riding && !swap && !beam && fiveT < 0 && Math.abs(bo) < 4 && doze < 0.2 && lapT < 0 && (ride !== "hang" || rturn >= 1)) {
+          nextSwap -= dt;
+          if (nextSwap <= 0) {
+            swap = { t: 0, dur: 1.3, fx: rx, fy: ry, a0: rang, to: ride === "bead" ? "hang" : "bead" };
+            ride = "swap"; nextSwap = 22 + Math.random() * 18; rb.squash = 0.4; spin = 0; spinV = 0;
+          }
+        }
+        if (ride === "swap") {
+          const w2 = swap; w2.t += dt;
+          const k = clamp(w2.t / w2.dur, 0, 1), e = ease(k);
+          let tx, ty;
+          if (w2.to === "hang") { const [hx, hy] = head(); tx = hx; ty = hy + 26 * zoom; }
+          else [tx, ty] = along(Math.max(0, L - BEAD()));
+          const cx = Math.min(w2.fx, tx) - 64 * zoom, cy = (w2.fy + ty) / 2;
+          rx = (1 - e) * (1 - e) * w2.fx + 2 * (1 - e) * e * cx + e * e * tx;
+          ry = (1 - e) * (1 - e) * w2.fy + 2 * (1 - e) * e * cy + e * e * ty;
+          rang = w2.a0 * (1 - e) - Math.sin(k * Math.PI) * 0.55; rturn = 1;
+          duck = Math.sin(k * Math.PI);
+          if (k >= 1) {
+            rb.squash = 0.45; duck = 0;
+            if (w2.to === "hang") { const [hx, hy] = head(); Lt = 26 * zoom; lay(tail, hx, hy, tx, ty); shot = 1; ride = "hang"; }
+            else { bead = Math.max(0, L - BEAD()); ride = "bead"; }
+            swap = null;
+          }
+        } else duck = Math.max(0, duck - dt * 3);
+        // At the bottom its ring flashes green, then it hops off for a victory lap. It rejoins
+        // once the reader heads back up.
+        if (riding && p > 0.985 && lapT < 0 && !lapped && fiveT < 0) { lapT = 0; rb.ringFlash = 1; joy = 1.2; }
+        if (lapT >= 0 && !leap) {
+          lapT += dt;
+          if (!riding && ride !== "swap") lapT = -1;
+          else if (lapT > 0.9 && riding && Math.abs(bo) < 6 * zoom) {
+            const tx = clamp(vw * (0.38 + Math.random() * 0.24), 60, vw - 60), ty = vh * 0.8;
+            leap = { t: 0, fx: rx + ox, fy: ry + oy, a0: rang, tx, ty }; ride = "leap"; rb.squash = 0.55;
+          }
+        }
+        if (ride === "leap") {
+          const f = leap; f.t += dt;
+          const k = clamp(f.t / 0.95, 0, 1);
+          const cx = (f.fx + f.tx) / 2, cy = Math.min(f.fy, f.ty) - 130 * zoom;
+          rx = (1 - k) * (1 - k) * f.fx + 2 * (1 - k) * k * cx + k * k * f.tx;
+          ry = (1 - k) * (1 - k) * f.fy + 2 * (1 - k) * k * cy + k * k * f.ty;
+          rang = f.a0 * (1 - ease(k)) + Math.sin(k * Math.PI) * 0.4; rscale = 1 + Math.sin(k * Math.PI) * 0.12; rturn = 1;
+          if (k >= 1) {
+            rscale = 1; dropRoomba(); rb.squash = 0.6; ride = "parked"; lapped = true; lapT = -1;
+            rb.begin("zoomies", "Made it to the bottom with you. Victory lap!", { n: 2, goal: null });
+          }
+        }
+        if (ride === "parked" && (p < 0.9 || state !== "on")) ride = "off";
+        if (p < 0.9) lapped = false;
+        ox = cord[0] * bo; oy = cord[1] * bo + fo;
         for (const q of puffs) { q.x += q.vx * dt; q.y += q.vy * dt; q.life -= dt; }
         while (puffs.length && puffs[0].life <= 0) puffs.shift();
         // A scroll that speeds up or brakes swings it, the way a sudden stop swings a pendant.
@@ -716,6 +882,7 @@
         if (state === "landing" && turn === 0) {
           // Both step off where they hang, the right way up.
           if (rb.away) dropRoomba(); ride = "off";
+          lit = new WeakSet(); lapT = -1; lapped = false; fiveT = -1; duck = 0;
           const e = pts[N - 1], [tx, ty] = tip();
           sp.x += (e.x - tx) / zoom; sp.y += (e.y - ty) / zoom;
           for (const f of sp.feet) { f.x += (e.x - tx) / zoom; f.y += (e.y - ty) / zoom; }
@@ -737,7 +904,7 @@
         ctx.beginPath(); ctx.arc(lerp(pts[i].x, pts[i + 1].x, u), lerp(pts[i].y, pts[i + 1].y, u), 1, 0, TAU); ctx.fill();
         if (state === "fading") return;
         for (const q of puffs) {
-          ctx.fillStyle = rgba(CYAN, 0.6 * Math.max(0, q.life / 0.55));
+          ctx.fillStyle = rgba(q.col || CYAN, 0.6 * Math.max(0, q.life / 0.55));
           ctx.beginPath(); ctx.arc(q.x, q.y, (q.big ? 1.6 : 1.1) * (0.6 + q.life), 0, TAU); ctx.fill();
         }
         if (ride === "hang") {
@@ -755,11 +922,31 @@
             silk(cast, rfade);
           } else silk(tail, rfade);
         }
+        if (beam && beam.a > 0.01) {
+          // The headlight: a soft cone from its face to where the light lands on the card.
+          const sx = rx + ox, sy = ry + oy + (RR + 2) * zoom, dx = beam.x - sx, dy = beam.y - sy, dl = Math.hypot(dx, dy) || 1;
+          const nx = -dy / dl, ny = dx / dl, wd = 34 * zoom;
+          const gr = ctx.createLinearGradient(sx, sy, beam.x, beam.y);
+          gr.addColorStop(0, rgba(CYAN, 0.16 * beam.a)); gr.addColorStop(1, rgba(CYAN, 0.02 * beam.a));
+          ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(sx + nx * 4, sy + ny * 4); ctx.lineTo(beam.x + nx * wd, beam.y + ny * wd); ctx.lineTo(beam.x - nx * wd, beam.y - ny * wd); ctx.lineTo(sx - nx * 4, sy - ny * 4); ctx.closePath(); ctx.fill();
+          const sg = ctx.createRadialGradient(beam.x, beam.y, 0, beam.x, beam.y, wd * 1.4);
+          sg.addColorStop(0, rgba(CYAN, 0.1 * beam.a)); sg.addColorStop(1, rgba(CYAN, 0));
+          ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(beam.x, beam.y, wd * 1.4, 0, TAU); ctx.fill();
+        }
+        if (rb.away && Math.abs(bo) > 3) {
+          // The bungee cord, thinning as it stretches.
+          const n = 6, cc = [];
+          for (let j = 0; j <= n; j++) cc.push({ x: rx + cord[0] * bo * (j / n), y: ry + cord[1] * bo * (j / n) });
+          silk(cc, rfade * clamp(1.2 - Math.abs(bo) / (220 * zoom), 0.5, 1));
+        }
         if (rb.away) {
           // Drawn from where its thread is tied. At rturn 0 it is drawn exactly as it stood.
           const k = ride === "fly" ? 1 : ease(rturn);
           const rc = project(rb.x, rb.y, rb.z || 0, [0, 0]);
-          ctx.save(); ctx.translate(rx, ry); rDraw = settle(rDraw, rang * k + spin * k, ride === "fly" ? 1 : 0.25); ctx.rotate(rDraw); ctx.scale(zoom * rscale, zoom * rscale);
+          // Dozing, it breathes slowly and its head nods; on the bungee it wobbles.
+          const breathe = 1 + doze * 0.03 * Math.sin(clock * 1.8), nod = doze * 0.12 * (0.6 + 0.4 * Math.sin(clock * 0.9));
+          const wob = clamp(bv / (2600 * zoom), -0.3, 0.3);
+          ctx.save(); ctx.translate(rx + ox, ry + oy); rDraw = settle(rDraw, rang * k + spin * k + nod + wob, ride === "fly" || ride === "leap" || ride === "swap" ? 1 : 0.25); ctx.rotate(rDraw); ctx.scale(zoom * rscale * breathe, zoom * rscale * breathe);
           ctx.translate(-rc[0], -(rc[1] - RR - 2));
           rb.draw(ctx); ctx.restore();
         }
@@ -767,7 +954,7 @@
         // turn 0 it is drawn exactly as it stood in the room.
         const e = pts[N - 1];
         const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
-        ctx.save(); ctx.translate(e.x, e.y); sDraw = settle(sDraw, spinOf(), 0.25); ctx.rotate(sDraw); ctx.scale(zoom, zoom);
+        ctx.save(); ctx.translate(e.x, e.y); sDraw = settle(sDraw, spinOf() - duck * 0.45, 0.25); ctx.rotate(sDraw); ctx.scale(zoom, zoom);
         ctx.translate(-(sc[0] - sp.fx * BACK), -(sc[1] - sp.fy * BACK));
         sp.draw(ctx); ctx.restore();
       },
