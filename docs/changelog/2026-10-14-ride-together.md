@@ -16,7 +16,7 @@ Capture (laptop and 6 Pro): three slow scrolls from the top past the first scree
 
 ## What it gets up to on the way down
 
-Before: once on the line, the Roomba just rode along. After, it has eight things it does while you read:
+Before: once on the line, the Roomba just rode along. After, it has seven things it does while you read:
 
 - **Progress ring:** its light ring fills as you go down the page and flashes green at the bottom.
 - **Dozing:** stop reading for a while and it nods off, breathing slowly with its ring dimmed. The next scroll jolts it awake, wide-eyed.
@@ -24,7 +24,6 @@ Before: once on the line, the Roomba just rode along. After, it has eight things
 - **Victory lap:** at the bottom it hops off the line onto the page for a lap, and rejoins when you scroll back up.
 - **High fives:** it bumps the spider as each heading passes the middle of the window, with a little burst of sparks.
 - **Pendulum:** stop after a quick scroll and the line swings, then settles.
-- **Headlight:** it sweeps a soft beam over each card and picture it passes, and the dots part where the light lands.
 - **Swapping places:** now and then it climbs round the spider to ride the other end, and the spider leans aside.
 
 Capture (laptop and 6 Pro): one slow read from top to bottom, with a ten-second pause partway, one hard flick, the bottom, and back to the top.
