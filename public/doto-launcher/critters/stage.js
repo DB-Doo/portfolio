@@ -590,7 +590,7 @@
           ax = x; L = y + 6; turn = 0; fade = 0; lay(pts, x, -6, x, y);
           sp.away = true; state = "on";
         }
-        clock += dt; sp.clock += dt;
+        clock += dt;
         if (state === "on" && !want) state = "landing";
         if (state === "landing" && want) state = "on";
         fade = Math.min(1, fade + dt * 3);
@@ -601,7 +601,9 @@
           ax = lerp(ax, lane(), 1 - Math.exp(-dt * 2.6));
           const p = clamp(scrollY / room, 0, 1);
           // Room below for the Roomba riding under it.
-          const target = lerp(vh * 0.1, vh * 0.74, p) + 6;
+          // Climbing a little way up its line now and then, between scrolls.
+          const hg = sp.hang, hoist = hg && hg.mode === "hoist" ? Math.sin(Math.PI * Math.min(1, hg.t / 1.6)) * 22 * zoom : 0;
+          const target = lerp(vh * 0.1, vh * 0.74, p) + 6 - hoist;
           // Just on the line it eases over gently; once hanging it follows closely.
           const grip = lerp(1, 6, turn);
           L += clamp((target - L) * (1 - Math.exp(-dt * grip)), -900 * dt, 900 * dt);
@@ -728,6 +730,8 @@
         if (doze > 0.5 && speed > 60) { jolt = 0.8; rb.squash = 0.5; bv -= 260 * zoom; doze = 0.4; }
         doze = riding && idle > 7 ? Math.min(1, doze + dt * 0.3) : Math.max(0, doze - dt * 3);
         jolt = Math.max(0, jolt - dt); joy = Math.max(0, joy - dt);
+        // The spider hangs like one: legs out in the air, hind pair on the line, never standing.
+        sp.hangStep(dt, { k: ease(turn), v, idle });
         if (rb.away) {
           rb.seen = rb.w.clock; rb.doze = doze;
           rb.mood = jolt > 0 ? "wide" : joy > 0 ? "happy" : doze > 0.6 ? "sleepy" : "open";
@@ -863,7 +867,7 @@
         if (state === "landing" && turn === 0) {
           // Both step off where they hang, the right way up.
           if (rb.away) dropRoomba(); ride = "off";
-          lapT = -1; lapped = false; fiveT = -1; duck = 0;
+          lapT = -1; lapped = false; fiveT = -1; duck = 0; sp.hang = null;
           const e = pts[N - 1], [tx, ty] = tip();
           sp.x += (e.x - tx) / zoom; sp.y += (e.y - ty) / zoom;
           for (const f of sp.feet) { f.x += (e.x - tx) / zoom; f.y += (e.y - ty) / zoom; }

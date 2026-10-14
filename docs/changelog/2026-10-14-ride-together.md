@@ -35,3 +35,9 @@ Before: the copy called the critters "a spider and a Roomba". After: everything 
 ## Zuzu holds together
 
 Before: hanging on the line, and anywhere far from the middle of a big window, Zuzu's body layers splayed apart into a stack of rings (Dan's screenshot, 2026-10-14). After: it stays one compact puck. The engine's perspective was tuned for a phone-sized stage; on the website its lean is now measured from no further than a phone's width away, and while riding it is drawn with no lean at all. Capture: Zuzu hanging at the right edge on a laptop, and docked in the bottom corner.
+
+## Kiwi hangs like a real jumping spider
+
+- **Before:** on the dragline Kiwi kept its standing pose, legs folded under as if on the floor.
+- **After:** Kiwi hangs with its legs spread in the air and cycles through hanging moves: slow leg paddling, a front-leg wave, grooming its palps, peering down, hauling itself up the line hand over hand, and tucking its legs in when the reader stops scrolling. A hard flick flares the legs out; scrolling up makes it climb.
+- **Why:** Dan, 2026-10-14: "it still looks like it's just standing. I want it to look real."

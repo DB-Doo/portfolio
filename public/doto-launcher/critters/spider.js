@@ -306,6 +306,84 @@ class JumpingSpider {
     }
   }
 
+  /**
+   * Hanging head first on its dragline on the website (Dan, 2026-10-14: "it still looks like it's
+   * just standing"). The room doesn't step it while it hangs, so this poses it: legs spread out in
+   * the air with the hind pair holding the line behind the abdomen, never planted. `k` blends from
+   * how it stood (0) to hanging (1); `v` is the reader's scroll speed, `idle` how long they have
+   * been still. Between scrolls it does something now and then, the way a real one does: waves
+   * its front legs, cleans its palps, peers about, or climbs a little way up its line.
+   */
+  hangStep(dt, h) {
+    const k = h.k, v = h.v;
+    this.clock += dt;
+    const hg = this.hang || (this.hang = { mode: "drift", t: 0, next: 2 + this.rand() * 2, splay: 0, climb: 0 });
+    hg.t += dt;
+    // Reacts to the reader: a hard flick flares its legs; scrolling up it climbs; long still, it tucks in.
+    if (Math.abs(v) > 2200) hg.splay = 1;
+    hg.splay = Math.max(0, hg.splay - dt * 1.4);
+    const climbT = v < -60 ? 1 : 0;
+    hg.climb += (climbT - hg.climb) * (1 - Math.exp(-dt * 6));
+    if (h.idle > 7) { if (hg.mode !== "tuck") { hg.mode = "tuck"; hg.t = 0; } }
+    else if (hg.mode === "tuck") { hg.mode = "drift"; hg.t = 0; hg.next = 1.5 + this.rand() * 2; hg.splay = Math.max(hg.splay, 0.6); }
+    else if (hg.t > hg.next && Math.abs(v) < 40) {
+      // Something new now and then, only while the reader is still.
+      const r = this.rand();
+      hg.mode = hg.mode !== "drift" ? "drift" : r < 0.3 ? "wave" : r < 0.55 ? "groom" : r < 0.8 ? "peer" : "hoist";
+      hg.t = 0; hg.next = hg.mode === "drift" ? 2.5 + this.rand() * 3.5 : hg.mode === "hoist" ? 1.6 : 2.2 + this.rand() * 1.2;
+    }
+    if (Math.abs(v) > 40 && hg.mode !== "drift" && hg.mode !== "tuck") { hg.mode = "drift"; hg.t = 0; hg.next = 2 + this.rand() * 2; }
+    const m = hg.mode, cl = this.clock, fade = Math.min(1, hg.t / 0.35);
+    const tuck = m === "tuck" ? Math.min(1, hg.t / 1.2) : 0;
+    // The body: head nods when it peers, the abdomen sways on the line, it breathes.
+    let pitchT = 0;
+    if (m === "peer") pitchT = Math.sin(hg.t * 2.2) * 0.22 * fade;
+    if (m === "groom") pitchT = 0.12 * fade;
+    this.pitch += (pitchT * k - this.pitch) * (1 - Math.exp(-dt * 6));
+    this.abdS += (Math.sin(cl * 0.8) * 0.12 * k - this.abdS) * (1 - Math.exp(-dt * 4));
+    this.palpT += dt * (m === "groom" ? 1.6 : 0.6);
+    this.palpAmp += ((m === "groom" ? 1 : m === "peer" ? 0.6 : 0.25) - this.palpAmp) * (1 - Math.exp(-dt * 5));
+    // Hanging pose per leg pair (forward, side, up in SU): front legs reaching ahead (down the
+    // line), the middle pairs spread wide, the hind pair back to the line by the spinnerets.
+    const F = [3.2, 1.7, -1.15, -3.6], S = [1.85, 3.2, 3.1, 0.45], U = [0.2, -0.1, -0.25, 0.25];
+    const q = [0, 0, 0], g = [0, 0, 0];
+    const spread = 1 + hg.splay * 0.3 - tuck * 0.42;
+    const rate = 1 - Math.exp(-dt * (hg.splay > 0.5 ? 16 : 9));
+    for (let l = 0; l < 8; l++) {
+      const p = l % 4, side = l < 4 ? 1 : -1, ph = l * 1.7;
+      // A slow paddle, each leg on its own beat, as a hanging spider's legs drift.
+      const pad = (1 - tuck) * (m === "drift" ? 1 : 0.5);
+      let f = F[p] * (p === 3 ? 1 : spread) + Math.sin(cl * 1.3 + ph) * 0.3 * pad;
+      let sd = S[p] * (p === 3 ? 1 : spread) + Math.cos(cl * 1.1 + ph) * 0.25 * pad;
+      let u = U[p] + Math.sin(cl * 0.9 + ph) * 0.12 * pad - tuck * 0.15;
+      if (p === 0) {
+        if (m === "wave") {
+          // The jumping spider's display: front legs up and waving, out of step.
+          f = lerp(f, 2.1, fade); sd = lerp(sd, 1.55, fade);
+          u = lerp(u, 1.35 + Math.sin(hg.t * 7 + (side > 0 ? 0 : 1.6)) * 0.45, fade);
+        } else if (m === "groom") {
+          // Rubbing its palps clean with the front legs.
+          f = lerp(f, 1.7, fade); sd = lerp(sd, 0.35 + Math.sin(hg.t * 11 + (side > 0 ? 0 : Math.PI)) * 0.18, fade);
+          u = lerp(u, -0.2 + Math.sin(hg.t * 11 + (side > 0 ? 0 : Math.PI)) * 0.2, fade);
+        } else if (m === "peer") {
+          f = lerp(f, 2.8, fade); u = lerp(u, 0.45, fade);
+        }
+      }
+      if (p === 3) {
+        // Hand over hand on the line when it climbs: the hind feet take turns reaching up it.
+        const reach = Math.max(hg.climb, m === "hoist" ? Math.min(1, hg.t / 0.3) * (hg.t < 1.3 ? 1 : 0) : 0);
+        f -= Math.max(0, Math.sin(cl * 9 + (side > 0 ? 0 : Math.PI))) * 0.9 * reach;
+        sd = lerp(sd, 0.25, reach);
+      }
+      this.local(f, sd * side, u, q);
+      if (k < 1) { this.idealAt(l, this.x, this.y, g); q[0] = lerp(g[0], q[0], k); q[1] = lerp(g[1], q[1], k); q[2] = lerp(g[2], q[2], k); }
+      const ft = this.feet[l];
+      ft.x += (q[0] - ft.x) * rate; ft.y += (q[1] - ft.y) * rate; ft.z += (q[2] - ft.z) * rate;
+      ft.st = k > 0.02 ? "pose" : ft.st;
+    }
+    return hg;
+  }
+
   // ======== mind ========
   get stage() { for (const [t, name] of TRUST_STAGES) if (this.trust < t) return name; return "Best friends"; }
   gainTrust(a, why) {
