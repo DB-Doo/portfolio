@@ -71,7 +71,7 @@ export function CritterPhone() {
         <canvas
           ref={canvasRef}
           tabIndex={0}
-          aria-label="A Doto home screen with a jumping spider and a Roomba. Press Enter to toss a ball."
+          aria-label="A Doto home screen with Kiwi and Zuzu, the Canvas Critters. Press Enter to toss a ball."
           className="block aspect-[300/620] w-full touch-none rounded-[26px] bg-[#0b0a12] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
         />
       </div>

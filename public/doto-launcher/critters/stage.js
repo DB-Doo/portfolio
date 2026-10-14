@@ -619,7 +619,7 @@
           rb.seen = rb.w.clock; rb.mood = "open"; rb.blinkIn = 0;
           // A green blink of its ring as it comes to; the dock's own beat then rolls it out.
           rb.marks.push({ type: "pulse", x: rb.x, y: rb.y - 3, age: 0, life: 0.6, r0: 10, col: "#5eead4" });
-          if (rb.act.kind === "docked") rb.thought = "The spider's off down its line. Waking up to join it";
+          if (rb.act.kind === "docked") rb.thought = "Kiwi's off down its line. Waking up to join it";
           ride = "waking"; wakeT = 0;
         }
         if (ride === "waking") {

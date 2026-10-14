@@ -96,10 +96,10 @@ const standouts = [
 
 const critterTips = [
   "Tap play on the music widget and watch them dance.",
-  "Hold still near the spider and it comes closer.",
+  "Hold still near Kiwi and it comes closer.",
   "Flick anywhere to throw a ball.",
-  "Rub the Roomba fast to tickle it. It won't like it.",
-  "Hold the Roomba to pick it up.",
+  "Rub Zuzu fast to tickle it. It won't like it.",
+  "Hold Zuzu to pick it up.",
 ] as const;
 
 const linkClass =
@@ -128,7 +128,7 @@ export default function DotoLauncherPage() {
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8">
               Put apps and widgets anywhere. Play music and the dots move with it, raise
-              the canvas into 3D, and soon share it with a spider and a Roomba.
+              the canvas into 3D, and soon share it with Kiwi and Zuzu.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
@@ -192,7 +192,7 @@ export default function DotoLauncherPage() {
                 Canvas Critters · Coming to Doto Pro
               </p>
               <p className="mt-3 text-xl font-semibold tracking-tight text-white">
-                A spider and a Roomba live on your canvas.
+                Kiwi and Zuzu live on your canvas.
               </p>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-400">
                 The two you see wandering this page are the same ones. Play with them below. ↓
@@ -249,8 +249,8 @@ export default function DotoLauncherPage() {
                 Two roommates live on your canvas.
               </h2>
               <p className="mt-5 max-w-xl text-sm leading-7 text-neutral-400 sm:text-base">
-                A jumping spider made of dots hops between your widgets and slowly learns to
-                trust you. A little Roomba tidies up after it and goes home to charge. Play music
+                Kiwi, made of dots, hops between your widgets, strings silk between them and
+                slowly learns to trust you. Zuzu tidies up after it and rolls home to charge. Play music
                 and they both dance. They are coming to Doto as a Pro widget, and they already
                 live on this phone, so try them.
               </p>

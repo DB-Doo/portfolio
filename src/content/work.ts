@@ -69,7 +69,7 @@ export const caseStudies: CaseStudy[] = [
     headline:
       "A home screen with no grid, designed from scratch and shipped on Google Play.",
     summary:
-      "You put apps and widgets anywhere on one open canvas of dots. The dots move with your music, the canvas rises into 3D, and a spider and a Roomba are about to move in. Early testers shaped most of the big design changes.",
+      "You put apps and widgets anywhere on one open canvas of dots. The dots move with your music, the canvas rises into 3D, and two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
     did: "Designed and built the whole app. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",

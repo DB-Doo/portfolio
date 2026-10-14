@@ -28,3 +28,7 @@ Before: once on the line, the Roomba just rode along. After, it has eight things
 - **Swapping places:** now and then it climbs round the spider to ride the other end, and the spider leans aside.
 
 Capture (laptop and 6 Pro): one slow read from top to bottom, with a ten-second pause partway, one hard flick, the bottom, and back to the top.
+
+## Kiwi and Zuzu by name
+
+Before: the copy called the critters "a spider and a Roomba". After: everything a visitor reads calls them Kiwi and Zuzu, because Roomba is an iRobot trademark (Dan, 2026-10-14). Capture: the home intro, the Doto card, and the Doto page hero and Canvas Critters section.
