@@ -29,7 +29,7 @@
       down: all("down"), move: all("move"), long: all("long"),
       ballLanded: all("ballLanded"), musicChanged: all("musicChanged"),
       drawHome(ctx, o) { (o.kind === "nest" ? sp : rb).drawHome(ctx, o); },
-      hit(x, y) { return (!sp.away && sp.hit(x, y)) || rb.hit(x, y); },
+      hit(x, y) { return (!sp.away && sp.hit(x, y)) || (!rb.away && rb.hit(x, y)); },
       up(t, g, vx, vy) {
         if (t.on === "spider") return sp.up(t, g, vx, vy);
         if (t.on === "roomba") return rb.up(t, g, vx, vy);
@@ -403,7 +403,7 @@
       }
     };
 
-    const rope = abseil({ ...o, onLand: () => { met = true; } }, sp, zoom);
+    const rope = abseil({ ...o, onLand: () => { met = true; } }, sp, rb, zoom);
     let raf = 0, alive = true, last = 0;
     const loop = (now) => {
       if (!alive) return;
@@ -447,15 +447,26 @@
    * top it turns upright and steps off the line where it hangs.
    * It draws on its own fixed canvas and never takes the pointer.
    */
-  function abseil(o, sp, zoom) {
+  function abseil(o, sp, rb, zoom) {
     const c = document.createElement("canvas");
     c.setAttribute("aria-hidden", "true");
     Object.assign(c.style, { position: "fixed", inset: "0", width: "100%", height: "100%", pointerEvents: "none", zIndex: "30" });
     document.body.appendChild(c);
     const ctx = c.getContext("2d");
-    const N = 16, BACK = 18;
-    const pts = Array.from({ length: N }, () => ({ x: 0, y: 0, px: 0, py: 0 }));
+    const N = 16, M = 8, BACK = 18, FRONT = 13;
+    const chain = (n) => Array.from({ length: n }, () => ({ x: 0, y: 0, px: 0, py: 0 }));
+    const pts = chain(N), tail = chain(M);
     let vw = 0, vh = 0, dpr = 1, state = "off", L = 0, ax = 0, turn = 0, fade = 0, clock = 0;
+    // The Roomba's ride, picked at random each time they go down together (Dan, 2026-10-14):
+    //   lasso  the spider casts a thread down to it and reels it up to hang underneath;
+    //   jet    it lifts off on little puffs, flies to the line and slides down it to the spider;
+    //   hop    it crouches, springs onto the line in one arc and slides down.
+    // Then it rides either hanging under the spider ("hang") or clipped on the line above it
+    // ("bead"), now and then turning slowly on its thread.
+    let ride = "off", how = "", Lt = 0, rturn = 0, rfade = 0, shot = 0;
+    let fly = null, bead = 0, spin = 0, spinV = 0, nextSpin = 4, rx = 0, ry = 0, rang = 0, rscale = 1;
+    const puffs = [];
+    let lastHow = "";
     let lastY = scrollY, vel = 0, drawn = false;
     const size = () => {
       vw = innerWidth; vh = innerHeight; dpr = Math.min(2, devicePixelRatio || 1);
@@ -469,28 +480,73 @@
       const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
       return [(sc[0] - sp.fx * BACK) * zoom, (sc[1] - sp.fy * BACK) * zoom];
     };
-    const hangFrom = (x0, x1, y1) => {
-      for (let i = 0; i < N; i++) {
-        const t = i / (N - 1), p = pts[i];
-        p.x = p.px = lerp(x0, x1, t); p.y = p.py = lerp(-6, y1, t);
+    // Where the top of the Roomba is drawn: where its thread is tied.
+    const lug = () => {
+      const rc = project(rb.x, rb.y, rb.z || 0, [0, 0]);
+      return [rc[0] * zoom, (rc[1] - RR - 2) * zoom];
+    };
+    const wrap = (a) => { while (a > Math.PI) a -= TAU; while (a < -Math.PI) a += TAU; return a; };
+    const ease = (t) => t * t * (3 - 2 * t);
+    // How far the spider is turned from how it stood: along the line once fully turned.
+    const spinOf = () => {
+      const e = pts[N - 1], f = pts[N - 2];
+      return wrap(Math.atan2(e.y - f.y, e.x - f.x) - Math.atan2(sp.fy, sp.fx)) * ease(turn);
+    };
+    // The spider's head as drawn, where it holds the Roomba's thread.
+    const head = () => {
+      const e = pts[N - 1], r = spinOf(), d = (BACK + FRONT) * zoom;
+      const hx = sp.fx * d, hy = sp.fy * d;
+      return [e.x + hx * Math.cos(r) - hy * Math.sin(r), e.y + hx * Math.sin(r) + hy * Math.cos(r)];
+    };
+    const lay = (arr, x0, y0, x1, y1) => {
+      for (let i = 0; i < arr.length; i++) {
+        const t = i / (arr.length - 1), p = arr[i];
+        p.x = p.px = lerp(x0, x1, t); p.y = p.py = lerp(y0, y1, t);
       }
     };
-    const integrate = (dt, ay, kick) => {
-      for (let i = 1; i < N; i++) {
-        const p = pts[i], vx = (p.x - p.px) * 0.985, vy = (p.y - p.py) * 0.985;
+    const integrate = (arr, dt, ay, kick) => {
+      for (let i = 1; i < arr.length; i++) {
+        const p = arr[i], vx = (p.x - p.px) * 0.985, vy = (p.y - p.py) * 0.985;
         p.px = p.x; p.py = p.y;
-        p.x += vx + kick * (i / N) * dt * dt; p.y += vy + ay * dt * dt;
+        p.x += vx + kick * (i / arr.length) * dt * dt; p.y += vy + ay * dt * dt;
       }
     };
-    const constrain = (seg) => {
-      for (let i = 1; i < N; i++) {
-        const a = pts[i - 1], b = pts[i], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1e-4;
+    const constrain = (arr, seg) => {
+      for (let i = 1; i < arr.length; i++) {
+        const a = arr[i - 1], b = arr[i], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1e-4;
         const f = ((d - seg) / d) * 0.55;
         if (i === 1) { b.x -= dx * f; b.y -= dy * f; }
         else { a.x += dx * f * 0.5; a.y += dy * f * 0.5; b.x -= dx * f * 0.5; b.y -= dy * f * 0.5; }
       }
     };
+    const silk = (arr, alpha) => {
+      ctx.fillStyle = rgba(INK, 0.42 * alpha);
+      let carry = 0;
+      for (let i = 1; i < arr.length; i++) {
+        const a = arr[i - 1], b = arr[i], d = Math.hypot(b.x - a.x, b.y - a.y);
+        for (let t = carry; t < d; t += 3.2) { ctx.beginPath(); ctx.arc(a.x + ((b.x - a.x) * t) / d, a.y + ((b.y - a.y) * t) / d, 0.65, 0, TAU); ctx.fill(); }
+        carry = (carry - d) % 3.2; if (carry < 0) carry += 3.2;
+      }
+    };
+    // A point a given distance down the main line, and the line's direction there.
+    const along = (dist) => {
+      let left = clamp(dist, 0, L);
+      for (let i = 1; i < N; i++) {
+        const a = pts[i - 1], b = pts[i], d = Math.hypot(b.x - a.x, b.y - a.y) || 1e-4;
+        if (left <= d || i === N - 1) { const t = Math.min(1, left / d); return [lerp(a.x, b.x, t), lerp(a.y, b.y, t), Math.atan2(b.y - a.y, b.x - a.x)]; }
+        left -= d;
+      }
+      return [pts[N - 1].x, pts[N - 1].y, Math.PI / 2];
+    };
+    const BEAD = () => 80 * zoom;
     const clear = () => { if (drawn) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, c.width, c.height); drawn = false; } };
+    // The Roomba lets go and is back on the floor where it hangs, the right way up.
+    const dropRoomba = () => {
+      const [lx, ly] = lug();
+      rb.x += (rx - lx) / zoom; rb.y += (ry - ly) / zoom;
+      rb.squash = 0.5;
+      rb.away = false; ride = "off"; rturn = 0; fly = null; spin = 0; rb.maps = null;
+    };
     return {
       step(dt) {
         const room = Math.max(1, document.documentElement.scrollHeight - vh);
@@ -510,7 +566,7 @@
           // Pays out a line straight up from where it is.
           const [x, y] = tip();
           if (y < 30 || y > vh - 10 || x < 0 || x > vw) return;
-          ax = x; L = y + 6; turn = 0; fade = 0; hangFrom(x, x, y);
+          ax = x; L = y + 6; turn = 0; fade = 0; lay(pts, x, -6, x, y);
           sp.away = true; state = "on";
         }
         clock += dt; sp.clock += dt;
@@ -523,7 +579,8 @@
           // the scroll closely, only easing enough to stay soft.
           ax = lerp(ax, lane(), 1 - Math.exp(-dt * 2.6));
           const p = clamp(scrollY / room, 0, 1);
-          const target = lerp(vh * 0.1, vh * 0.82, p) + 6;
+          // Room below for the Roomba riding under it.
+          const target = lerp(vh * 0.1, vh * 0.74, p) + 6;
           // Just on the line it eases over gently; once hanging it follows closely.
           const grip = lerp(1, 6, turn);
           L += clamp((target - L) * (1 - Math.exp(-dt * grip)), -900 * dt, 900 * dt);
@@ -532,17 +589,99 @@
         } else {
           turn = Math.max(0, turn - dt * 0.9);
         }
+        // Once the spider is hanging, the Roomba joins it, a different way each time. Every
+        // start is tied to where the Roomba stands, so nothing jumps.
+        if (ride === "off" && state === "on" && turn > 0.5 && !rb.held && !rb.away) {
+          const [lx, ly] = lug();
+          if (lx > 0 && lx < vw && ly > 0 && ly < vh) {
+            const ways = ["lasso", "jet", "hop"].filter((w) => w !== lastHow);
+            how = lastHow = ways[Math.floor(Math.random() * ways.length)];
+            rb.away = true; rturn = 0; rfade = 0; spin = 0; spinV = 0; nextSpin = 5 + Math.random() * 5;
+            rx = lx; ry = ly; rang = 0; rscale = 1;
+            if (how === "lasso") {
+              const [hx, hy] = head();
+              Lt = Math.hypot(lx - hx, ly - hy); lay(tail, hx, hy, lx, ly); shot = 0; ride = "hang";
+            } else {
+              ride = "fly";
+              const [px, py] = along(L * 0.45), d = Math.hypot(px - lx, py - ly);
+              fly = { t: 0, sx: lx, sy: ly, crouch: how === "hop" ? 0.35 : 0.45, dur: clamp(d / (how === "jet" ? 520 : 760), 0.55, 1.4), arc: how === "jet" ? 90 : 170 };
+            }
+          }
+        }
+        if (ride !== "off") {
+          rfade = Math.min(1, rfade + dt * 3);
+          // A slow turn on its thread now and then, the way a hanging thing does.
+          if (ride === "hang" || ride === "bead") {
+            nextSpin -= dt;
+            if (nextSpin <= 0 && !spinV) { spinV = 1; nextSpin = 7 + Math.random() * 8; }
+            if (spinV) { spin += dt * TAU / 2.6; if (spin >= TAU) { spin = 0; spinV = 0; } }
+          }
+        }
+        if (ride === "hang") {
+          shot = Math.min(1, shot + dt * 2.8);
+          if (state === "on") {
+            // Reeled up once the cast thread has caught it: quickly at first, gently at the end.
+            if (shot >= 1) Lt += clamp((26 * zoom - Lt) * (1 - Math.exp(-dt * 1.6)), -320 * dt, 320 * dt);
+            if (shot >= 1) rturn = Math.min(1, rturn + dt * 0.7);
+          } else rturn = Math.max(0, Math.min(rturn, turn));
+        }
+        if (ride === "fly") {
+          const f = fly;
+          f.t += dt;
+          if (f.t < f.crouch) {
+            // Gathers itself: a crouch for the hop, a hum of thrust for the jet.
+            const k = f.t / f.crouch;
+            rb.squash = how === "hop" ? 0.6 * Math.sin(k * Math.PI * 0.5) : 0.15;
+            if (how === "jet" && Math.random() < 0.7) puffs.push({ x: rx + (Math.random() - 0.5) * 14 * zoom, y: ry + 30 * zoom, vx: (Math.random() - 0.5) * 20, vy: 50 + Math.random() * 40, life: 0.5 });
+          } else {
+            const k = clamp((f.t - f.crouch) / f.dur, 0, 1), e = how === "jet" ? ease(k) : k;
+            // The line moves while it flies, so it aims at where the line is now.
+            const [px, py, pa] = along(L * 0.45);
+            const cx = (f.sx + px) / 2, cy = Math.min(f.sy, py) - f.arc;
+            rx = (1 - e) * (1 - e) * f.sx + 2 * (1 - e) * e * cx + e * e * px;
+            ry = (1 - e) * (1 - e) * f.sy + 2 * (1 - e) * e * cy + e * e * py;
+            rang = wrap(pa - Math.PI / 2) * ease(k);
+            rscale = 1 + Math.sin(k * Math.PI) * (how === "hop" ? 0.16 : 0.1);
+            rb.squash = how === "hop" ? Math.max(0, 0.6 - k * 3) : 0;
+            if (how === "jet" && k < 0.92 && Math.random() < 0.9) puffs.push({ x: rx - Math.cos(rang - Math.PI / 2) * 30 * zoom, y: ry + 30 * zoom * rscale, vx: (Math.random() - 0.5) * 30, vy: 40 + Math.random() * 40, life: 0.45 });
+            if (k >= 1) { ride = "slide"; bead = L * 0.45; rturn = 1; rscale = 1; }
+          }
+        }
+        if (ride === "slide" || ride === "bead") {
+          // Clipped on the line, it slides down to just above the spider and rides there.
+          const goal = Math.max(0, L - BEAD());
+          bead += ride === "slide" ? Math.min(goal - bead, dt * 160 + (goal - bead) * dt * 2) : (goal - bead) * (1 - Math.exp(-dt * 8));
+          if (ride === "slide" && Math.abs(goal - bead) < 2) ride = "bead";
+          const [px, py, pa] = along(bead);
+          rx = px; ry = py; rang = wrap(pa - Math.PI / 2);
+          if (state !== "on") rturn = Math.max(0, Math.min(rturn, turn));
+        }
+        for (const q of puffs) { q.x += q.vx * dt; q.y += q.vy * dt; q.life -= dt; }
+        while (puffs.length && puffs[0].life <= 0) puffs.shift();
         // A scroll that speeds up or brakes swings it, the way a sudden stop swings a pendant.
         const ay = 1500 - acc * 0.1, kick = -acc * 0.04 * Math.sin(clock * 1.7);
         pts[0].x = pts[0].px = ax; pts[0].y = pts[0].py = -6;
         const sub = 3, h = dt / sub;
         for (let s = 0; s < sub; s++) {
-          integrate(h, ay, kick);
-          for (let k = 0; k < 6; k++) constrain(L / (N - 1));
+          integrate(pts, h, ay, kick);
+          for (let k = 0; k < 6; k++) constrain(pts, L / (N - 1));
+          if (ride === "hang") {
+            const [hx, hy] = head();
+            tail[0].x = tail[0].px = hx; tail[0].y = tail[0].py = hy;
+            // The Roomba is heavy: until it is lifted clear, the floor still holds it.
+            integrate(tail, h, ay * rturn, kick * 0.6);
+            for (let k = 0; k < 6; k++) constrain(tail, Lt / (M - 1));
+          }
         }
         for (const q of pts) q.x = clamp(q.x, 16, vw - 16);
+        if (ride === "hang") {
+          for (const q of tail) q.x = clamp(q.x, 16, vw - 16);
+          const t = tail[M - 1], q = tail[M - 2];
+          rx = t.x; ry = t.y; rang = wrap(Math.atan2(t.y - q.y, t.x - q.x) - Math.PI / 2);
+        }
         if (state === "landing" && turn === 0) {
-          // Steps off where it hangs, the right way up.
+          // Both step off where they hang, the right way up.
+          if (ride !== "off") dropRoomba();
           const e = pts[N - 1], [tx, ty] = tip();
           sp.x += (e.x - tx) / zoom; sp.y += (e.y - ty) / zoom;
           for (const f of sp.feet) { f.x += (e.x - tx) / zoom; f.y += (e.y - ty) / zoom; }
@@ -557,30 +696,40 @@
         if (state === "off") return;
         drawn = true;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, vw, vh);
-        // The line, as a row of fine dots like the rest of the silk.
-        ctx.fillStyle = rgba(INK, 0.42 * fade);
-        let carry = 0;
-        for (let i = 1; i < N; i++) {
-          const a = pts[i - 1], b = pts[i], d = Math.hypot(b.x - a.x, b.y - a.y);
-          for (let t = carry; t < d; t += 3.2) { ctx.beginPath(); ctx.arc(a.x + ((b.x - a.x) * t) / d, a.y + ((b.y - a.y) * t) / d, 0.65, 0, TAU); ctx.fill(); }
-          carry = (carry - d) % 3.2; if (carry < 0) carry += 3.2;
-        }
+        // The line, as a row of fine dots like the rest of the silk, with a glint running down it.
+        silk(pts, fade);
         const g = (clock * 0.45) % 1, i = Math.min(N - 2, Math.floor(g * (N - 1))), u = g * (N - 1) - i;
         ctx.fillStyle = rgba(CYAN, 0.6 * fade * Math.sin(g * Math.PI));
         ctx.beginPath(); ctx.arc(lerp(pts[i].x, pts[i + 1].x, u), lerp(pts[i].y, pts[i + 1].y, u), 1, 0, TAU); ctx.fill();
         if (state === "fading") return;
+        for (const q of puffs) {
+          ctx.fillStyle = rgba(CYAN, 0.55 * Math.max(0, q.life / 0.5));
+          ctx.beginPath(); ctx.arc(q.x, q.y, 1.1, 0, TAU); ctx.fill();
+        }
+        if (ride === "hang") {
+          // The cast thread runs out from the spider to the Roomba before it takes the weight.
+          if (shot < 1) {
+            const n = Math.max(2, Math.ceil(M * ease(shot)));
+            silk(tail.slice(0, n), rfade);
+          } else silk(tail, rfade);
+        }
+        if (ride !== "off") {
+          // Drawn from where its thread is tied. At rturn 0 it is drawn exactly as it stood.
+          const k = ride === "fly" ? 1 : ease(rturn);
+          const rc = project(rb.x, rb.y, rb.z || 0, [0, 0]);
+          ctx.save(); ctx.translate(rx, ry); ctx.rotate(rang * k + spin * k); ctx.scale(zoom * rscale, zoom * rscale);
+          ctx.translate(-rc[0], -(rc[1] - RR - 2));
+          rb.draw(ctx); ctx.restore();
+        }
         // The spider at the line's end. Turned fully, it hangs head first along the line; at
         // turn 0 it is drawn exactly as it stood in the room.
-        const e = pts[N - 1], f = pts[N - 2];
-        const along = Math.atan2(e.y - f.y, e.x - f.x) - Math.atan2(sp.fy, sp.fx);
-        const k = turn * turn * (3 - 2 * turn);
-        let rot = along; while (rot > Math.PI) rot -= TAU; while (rot < -Math.PI) rot += TAU;
+        const e = pts[N - 1];
         const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
-        ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(rot * k); ctx.scale(zoom, zoom);
+        ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(spinOf()); ctx.scale(zoom, zoom);
         ctx.translate(-(sc[0] - sp.fx * BACK), -(sc[1] - sp.fy * BACK));
         sp.draw(ctx); ctx.restore();
       },
-      remove() { if (sp.away) sp.away = false; c.remove(); },
+      remove() { sp.away = false; rb.away = false; c.remove(); },
     };
   }
 
