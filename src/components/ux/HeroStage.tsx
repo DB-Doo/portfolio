@@ -12,11 +12,13 @@ import { useEffect, useRef } from "react";
 import type { Figure } from "@/content/work";
 import Image from "next/image";
 import { PhoneFrame } from "./Device";
+import { LivePhone } from "./LivePhone";
 
 /*
 The hero's product composition: the NinKeys keyboard at the back, two phones in front. Each
 layer drifts with the pointer at its own depth and separates as the page scrolls, so the
-work feels physical before a single word about it is read. On touch and reduced motion
+work feels physical before a single word about it is read. The Doto phone is live (LivePhone):
+its dots move with music and rise into 3D when dragged. On touch and reduced motion
 the layers simply sit in place.
 */
 
@@ -101,7 +103,7 @@ export function HeroStage({ back, left, right }: { back: Figure; left: Figure; r
       >
         <motion.div {...enter(0.9)}>
           <div className="float" data-critter="ledge" data-critter-name="the Doto phone" data-critter-nest>
-            <PhoneFrame figure={right} sizes="210px" priority className="rotate-[5deg]" />
+            <LivePhone className="rotate-[5deg]" label={right.alt} />
           </div>
         </motion.div>
       </motion.div>

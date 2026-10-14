@@ -3,7 +3,9 @@ import { caseStudies } from "@/content/work";
 import { WellLink } from "@/components/fabric/WellLink";
 import { Device } from "@/components/ux/Device";
 import { HeroStage } from "@/components/ux/HeroStage";
-import { Reveal, SplitHeadline } from "@/components/ux/Reveal";
+import { Reveal } from "@/components/ux/Reveal";
+import { MotionCompare } from "@/components/ux/MotionCompare";
+import { DotHeadline } from "@/components/ux/DotHeadline";
 import { CopyEmail } from "@/components/ux/ScrollBits";
 import { SpotlightCard } from "@/components/ux/SpotlightCard";
 
@@ -31,6 +33,7 @@ const eyebrow = "font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-5
 
 /* What I do, in the words a job listing would use. */
 const proof = [
+  "Motion design",
   "Product design",
   "Interaction design",
   "Android apps",
@@ -95,18 +98,17 @@ export default function Home() {
               </p>
             </Reveal>
             <div data-critter="wall" data-critter-name="the headline">
-            <SplitHeadline
-              delay={0.15}
+            <DotHeadline
               className="mt-8 text-[2.7rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-7xl"
               parts={[
-                { text: "I design mobile and web apps, and" },
-                { text: "build them myself.", serif: true, accent: true },
+                { text: "I design interfaces" },
+                { text: "that move.", serif: true, accent: true },
               ]}
             />
             </div>
             <Reveal delay={0.7}>
               <p data-critter="wall" data-critter-name="the intro" className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
-                I&rsquo;m Dan Brandt, a UX designer in Kansas City. My newest app,{" "}
+                I&rsquo;m Dan Brandt, a UX and motion designer in Kansas City. I prototype every interaction in real code. My newest app,{" "}
                 <Link href={`/work/${doto.slug}`} className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-cyan-300">
                   Doto
                 </Link>
@@ -141,6 +143,32 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* ===== MOTION ===== */}
+      <section aria-labelledby="motion-title" className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pt-28 sm:px-10 sm:pt-36 lg:grid-cols-[1fr_340px]">
+        <Reveal>
+          <p className={eyebrow}>Motion</p>
+          <h2 id="motion-title" data-critter="wall" data-critter-name="the motion title" className="mt-4 max-w-xl text-4xl font-semibold tracking-[-0.03em] text-white sm:text-5xl">
+            The same tap, timed two ways.
+          </h2>
+          <div data-critter="wall" data-critter-name="the motion text" className="mt-6 max-w-lg space-y-4 text-lg leading-8 text-neutral-400">
+            <p>
+              On the left are the defaults most apps ship: a quarter-second linear scale, with
+              every row arriving at once.
+            </p>
+            <p>
+              On the right is how I tune it. The icon gives under the finger, the panel grows
+              out of it on a spring, rows arrive a beat apart, and closing folds back into the
+              icon. Drag the divider to compare.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal fade delay={0.1}>
+          <div data-critter="ledge" data-critter-name="the motion phone">
+            <MotionCompare />
+          </div>
+        </Reveal>
+      </section>
 
       {/* ===== WORK ===== */}
       <section id="work" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 py-28 sm:px-10 sm:py-36">
@@ -267,8 +295,8 @@ export default function Home() {
               </p>
               <p>
                 In 2024 I took a full stack development bootcamp, and in 2026 I started designing
-                and shipping my own apps. I use AI tools to write code faster, which leaves more
-                of my time for design and for testing with real people.
+                and shipping my own apps. AI tools write the boilerplate code; I tune every curve
+                and timing by hand, and spend the time saved testing with real people.
               </p>
               <p>
                 I&rsquo;m most useful when a product needs one person who can decide how it

@@ -100,3 +100,10 @@ body {
     animation: none;
   }
 }
+
+/* DotHeadline: once the dots are drawn, the HTML words stay for layout, selection and
+   screen readers, but turn transparent under them. */
+.dot-headline[data-dots="on"] h1,
+.dot-headline[data-dots="on"] h1 * {
+  color: transparent;
+}
