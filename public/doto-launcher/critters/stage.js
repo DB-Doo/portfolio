@@ -403,7 +403,7 @@
       }
     };
 
-    const rope = abseil({ ...o, onLand: () => { met = true; } }, sp, rb, zoom);
+    const rope = abseil({ ...o, onLand: () => { met = true; }, onWake: () => { met = true; } }, sp, rb, zoom);
     let raf = 0, alive = true, last = 0;
     const loop = (now) => {
       if (!alive) return;
@@ -466,7 +466,10 @@
     let ride = "off", how = "", Lt = 0, rturn = 0, rfade = 0, shot = 0;
     let fly = null, bead = 0, spin = 0, spinV = 0, nextSpin = 4, rx = 0, ry = 0, rang = 0, rscale = 1;
     const puffs = [];
-    let lastHow = "";
+    // Drawn angles, smoothed, so the dotted bodies don't shimmer as the line trembles.
+    let sDraw = 0, rDraw = 0;
+    const settle = (cur, to, k) => cur + wrap(to - cur) * k;
+    let lastHow = "", wakeT = 0;
     let lastY = scrollY, vel = 0, drawn = false;
     const size = () => {
       vw = innerWidth; vh = innerHeight; dpr = Math.min(2, devicePixelRatio || 1);
@@ -591,12 +594,28 @@
         }
         // Once the spider is hanging, the Roomba joins it, a different way each time. Every
         // start is tied to where the Roomba stands, so nothing jumps.
-        if (ride === "off" && state === "on" && turn > 0.5 && !rb.held && !rb.away) {
+        // First it wakes. Asleep on its charger it opens its eyes and rolls out of the dock;
+        // it only joins once it is up and about (Dan, 2026-10-14: it launched still asleep).
+        if (ride === "off" && state === "on" && turn > 0.35 && !rb.held && !rb.away) {
+          o.onWake?.();
+          rb.seen = rb.w.clock; rb.mood = "open"; rb.blinkIn = 0;
+          // A green blink of its ring as it comes to; the dock's own beat then rolls it out.
+          rb.marks.push({ type: "pulse", x: rb.x, y: rb.y - 3, age: 0, life: 0.6, r0: 10, col: "#5eead4" });
+          if (rb.act.kind === "docked") rb.thought = "The spider's off down its line. Waking up to join it";
+          ride = "waking"; wakeT = 0;
+        }
+        if (ride === "waking") {
+          wakeT += dt; rb.seen = rb.w.clock;
+          const busy = rb.act.kind === "docked" || rb.act.kind === "launch" || rb.held || rb.z > 3;
+          if (state !== "on") ride = "off";
+          else if ((wakeT > 1.1 && !busy) || wakeT > 4) ride = "ready";
+        }
+        if (ride === "ready" && state === "on" && !rb.held && !rb.away) {
           const [lx, ly] = lug();
           if (lx > 0 && lx < vw && ly > 0 && ly < vh) {
             const ways = ["lasso", "jet", "hop"].filter((w) => w !== lastHow);
             how = lastHow = ways[Math.floor(Math.random() * ways.length)];
-            rb.away = true; rturn = 0; rfade = 0; spin = 0; spinV = 0; nextSpin = 5 + Math.random() * 5;
+            rb.away = true; rb.mood = "open"; rturn = 0; rfade = 0; spin = 0; spinV = 0; nextSpin = 5 + Math.random() * 5;
             rx = lx; ry = ly; rang = 0; rscale = 1;
             if (how === "lasso") {
               const [hx, hy] = head();
@@ -604,11 +623,13 @@
             } else {
               ride = "fly";
               const [px, py] = along(L * 0.45), d = Math.hypot(px - lx, py - ly);
-              fly = { t: 0, sx: lx, sy: ly, crouch: how === "hop" ? 0.35 : 0.45, dur: clamp(d / (how === "jet" ? 520 : 760), 0.55, 1.4), arc: how === "jet" ? 90 : 170 };
+              fly = { t: 0, sx: lx, sy: ly, crouch: how === "hop" ? 0.5 : 0.75, dur: clamp(d / (how === "jet" ? 420 : 900), 0.5, 1.6), arc: how === "jet" ? 70 : 260 };
             }
           }
         }
-        if (ride !== "off") {
+        if (ride === "ready" && state !== "on") ride = "off";
+        if (rb.away) { rb.seen = rb.w.clock; rb.mood = "open"; }
+        if (rb.away) {
           rfade = Math.min(1, rfade + dt * 3);
           // A slow turn on its thread now and then, the way a hanging thing does.
           if (ride === "hang" || ride === "bead") {
@@ -618,7 +639,10 @@
           }
         }
         if (ride === "hang") {
-          shot = Math.min(1, shot + dt * 2.8);
+          const was = shot;
+          shot = Math.min(1, shot + dt * 1.4);
+          // Caught: a tug that squashes it before it leaves the floor.
+          if (was < 1 && shot >= 1) rb.squash = 0.45;
           if (state === "on") {
             // Reeled up once the cast thread has caught it: quickly at first, gently at the end.
             if (shot >= 1) Lt += clamp((26 * zoom - Lt) * (1 - Math.exp(-dt * 1.6)), -320 * dt, 320 * dt);
@@ -631,20 +655,30 @@
           if (f.t < f.crouch) {
             // Gathers itself: a crouch for the hop, a hum of thrust for the jet.
             const k = f.t / f.crouch;
-            rb.squash = how === "hop" ? 0.6 * Math.sin(k * Math.PI * 0.5) : 0.15;
-            if (how === "jet" && Math.random() < 0.7) puffs.push({ x: rx + (Math.random() - 0.5) * 14 * zoom, y: ry + 30 * zoom, vx: (Math.random() - 0.5) * 20, vy: 50 + Math.random() * 40, life: 0.5 });
+            // The hop crouches deep; the jet spools up and rises off the floor on its thrust.
+            rb.squash = how === "hop" ? 0.85 * Math.sin(k * Math.PI * 0.5) : 0.1;
+            if (how === "jet") {
+              ry = f.sy - 16 * zoom * ease(k); rscale = 1 + 0.06 * ease(k);
+              for (let n = 0; n < 2; n++) puffs.push({ x: rx + (Math.random() - 0.5) * 18 * zoom, y: ry + 32 * zoom, vx: (Math.random() - 0.5) * 40, vy: 60 + Math.random() * 60, life: 0.55, big: 1 });
+            }
           } else {
             const k = clamp((f.t - f.crouch) / f.dur, 0, 1), e = how === "jet" ? ease(k) : k;
             // The line moves while it flies, so it aims at where the line is now.
             const [px, py, pa] = along(L * 0.45);
-            const cx = (f.sx + px) / 2, cy = Math.min(f.sy, py) - f.arc;
+            const sy0 = how === "jet" ? f.sy - 16 * zoom : f.sy;
+            const cx = (f.sx + px) / 2, cy = Math.min(sy0, py) - f.arc;
             rx = (1 - e) * (1 - e) * f.sx + 2 * (1 - e) * e * cx + e * e * px;
-            ry = (1 - e) * (1 - e) * f.sy + 2 * (1 - e) * e * cy + e * e * py;
-            rang = wrap(pa - Math.PI / 2) * ease(k);
+            ry = (1 - e) * (1 - e) * sy0 + 2 * (1 - e) * e * cy + e * e * py;
+            // The jet banks and wobbles on its thrust; the hop tumbles a little at the top of its arc.
+            rang = wrap(pa - Math.PI / 2) * ease(k) + (how === "jet" ? Math.sin(f.t * 13) * 0.1 * (1 - k) : Math.sin(k * Math.PI) * 0.5);
             rscale = 1 + Math.sin(k * Math.PI) * (how === "hop" ? 0.16 : 0.1);
             rb.squash = how === "hop" ? Math.max(0, 0.6 - k * 3) : 0;
             if (how === "jet" && k < 0.92 && Math.random() < 0.9) puffs.push({ x: rx - Math.cos(rang - Math.PI / 2) * 30 * zoom, y: ry + 30 * zoom * rscale, vx: (Math.random() - 0.5) * 30, vy: 40 + Math.random() * 40, life: 0.45 });
-            if (k >= 1) { ride = "slide"; bead = L * 0.45; rturn = 1; rscale = 1; }
+            if (k >= 1) {
+              ride = "slide"; bead = L * 0.45; rturn = 1; rscale = 1;
+              // Lands on the line hard enough to bounce it.
+              if (how === "hop") { rb.squash = 0.6; const m = Math.round((N - 1) * 0.45); for (let j = 1; j < N; j++) pts[j].py -= 9 * Math.max(0, 1 - Math.abs(j - m) / 5); }
+            }
           }
         }
         if (ride === "slide" || ride === "bead") {
@@ -681,7 +715,7 @@
         }
         if (state === "landing" && turn === 0) {
           // Both step off where they hang, the right way up.
-          if (ride !== "off") dropRoomba();
+          if (rb.away) dropRoomba(); ride = "off";
           const e = pts[N - 1], [tx, ty] = tip();
           sp.x += (e.x - tx) / zoom; sp.y += (e.y - ty) / zoom;
           for (const f of sp.feet) { f.x += (e.x - tx) / zoom; f.y += (e.y - ty) / zoom; }
@@ -703,21 +737,29 @@
         ctx.beginPath(); ctx.arc(lerp(pts[i].x, pts[i + 1].x, u), lerp(pts[i].y, pts[i + 1].y, u), 1, 0, TAU); ctx.fill();
         if (state === "fading") return;
         for (const q of puffs) {
-          ctx.fillStyle = rgba(CYAN, 0.55 * Math.max(0, q.life / 0.5));
-          ctx.beginPath(); ctx.arc(q.x, q.y, 1.1, 0, TAU); ctx.fill();
+          ctx.fillStyle = rgba(CYAN, 0.6 * Math.max(0, q.life / 0.55));
+          ctx.beginPath(); ctx.arc(q.x, q.y, (q.big ? 1.6 : 1.1) * (0.6 + q.life), 0, TAU); ctx.fill();
         }
         if (ride === "hang") {
           // The cast thread runs out from the spider to the Roomba before it takes the weight.
           if (shot < 1) {
-            const n = Math.max(2, Math.ceil(M * ease(shot)));
-            silk(tail.slice(0, n), rfade);
+            // Thrown in a loose arc that straightens as it reaches the Roomba.
+            const reach = ease(shot), a = tail[0], b = tail[M - 1];
+            const nx = -(b.y - a.y), ny = b.x - a.x, nl = Math.hypot(nx, ny) || 1;
+            const bow = 46 * zoom * (1 - shot);
+            const cast = [];
+            for (let j = 0; j < M; j++) {
+              const t = (j / (M - 1)) * reach, w = Math.sin(t * Math.PI) * bow;
+              cast.push({ x: lerp(a.x, b.x, t) + (nx / nl) * w, y: lerp(a.y, b.y, t) + (ny / nl) * w });
+            }
+            silk(cast, rfade);
           } else silk(tail, rfade);
         }
-        if (ride !== "off") {
+        if (rb.away) {
           // Drawn from where its thread is tied. At rturn 0 it is drawn exactly as it stood.
           const k = ride === "fly" ? 1 : ease(rturn);
           const rc = project(rb.x, rb.y, rb.z || 0, [0, 0]);
-          ctx.save(); ctx.translate(rx, ry); ctx.rotate(rang * k + spin * k); ctx.scale(zoom * rscale, zoom * rscale);
+          ctx.save(); ctx.translate(rx, ry); rDraw = settle(rDraw, rang * k + spin * k, ride === "fly" ? 1 : 0.25); ctx.rotate(rDraw); ctx.scale(zoom * rscale, zoom * rscale);
           ctx.translate(-rc[0], -(rc[1] - RR - 2));
           rb.draw(ctx); ctx.restore();
         }
@@ -725,7 +767,7 @@
         // turn 0 it is drawn exactly as it stood in the room.
         const e = pts[N - 1];
         const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
-        ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(spinOf()); ctx.scale(zoom, zoom);
+        ctx.save(); ctx.translate(e.x, e.y); sDraw = settle(sDraw, spinOf(), 0.25); ctx.rotate(sDraw); ctx.scale(zoom, zoom);
         ctx.translate(-(sc[0] - sp.fx * BACK), -(sc[1] - sp.fy * BACK));
         sp.draw(ctx); ctx.restore();
       },
