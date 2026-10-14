@@ -14,7 +14,7 @@ let FONT_DOTO = "Doto, monospace", FONT_MONO = "'JetBrains Mono', monospace";
 function setFonts(dots, mono) { if (dots) FONT_DOTO = `${dots}, monospace`; if (mono) FONT_MONO = `${mono}, monospace`; }
 /** Sizes the world and styles its cloth. With `lift`, dots are drawn solid in `ink` and turn `lift` as they're pushed, like the website's dot field. */
 function setStage(w, h, base, ink, lift) { W = w; H = h; FAB_BASE = base ?? 0.4; FAB_INK = ink || INK; FAB_LIFT = lift || null; }
-const VIEW = { mesh: false, paused: false };
+const VIEW = { mesh: false, paused: false, reach: Infinity };
 
 const rgba = (c, a) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a < 0 ? 0 : a > 1 ? 1 : a})`;
 const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
@@ -42,8 +42,11 @@ const PERSP = 0.0032, TILT = 0.36;
 const VIEWDIR = (() => { const l = Math.hypot(TILT, 1); return [0, TILT / l, 1 / l]; })();
 function project(x, y, z, out) {
   out = out || [0, 0];
-  out[0] = x + (x - W / 2) * z * PERSP;
-  out[1] = y + (y - H * 0.45) * z * PERSP - z * TILT;
+  // On a stage much bigger than a phone (the website's window), the lean is measured from no
+  // further than a phone's width away, or tall bodies far from the middle splay into rings.
+  const r = VIEW.reach;
+  out[0] = x + clamp(x - W / 2, -r, r) * z * PERSP;
+  out[1] = y + clamp(y - H * 0.45, -r, r) * z * PERSP - z * TILT;
   return out;
 }
 

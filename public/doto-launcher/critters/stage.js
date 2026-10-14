@@ -308,6 +308,7 @@
     let box = canvas.getBoundingClientRect();
     setStage(box.width / zoom, box.height / zoom, 1, [64, 64, 64], [103, 232, 249]);
     setFonts(o.fontDots, o.fontMono);
+    VIEW.reach = 180;
 
     const page = [];
     for (const el of o.walls()) page.push({ el, wall: true, kind: "page", page: true, name: el.dataset.critterName || "the page" });
@@ -911,6 +912,8 @@
         if (rb.away) {
           // Drawn from where its thread is tied. At rturn 0 it is drawn exactly as it stood.
           const k = ride === "fly" ? 1 : ease(rturn);
+          // Drawn as if at the middle of the stage, so its layers don't splay apart in perspective.
+          const kx = rb.x, ky = rb.y; rb.x = W / 2; rb.y = H * 0.45;
           const rc = project(rb.x, rb.y, rb.z || 0, [0, 0]);
           // Dozing, it breathes slowly and its head nods; on the bungee it wobbles.
           const breathe = 1 + doze * 0.03 * Math.sin(clock * 1.8), nod = doze * 0.12 * (0.6 + 0.4 * Math.sin(clock * 0.9));
@@ -918,6 +921,7 @@
           ctx.save(); ctx.translate(rx + ox, ry + oy); rDraw = settle(rDraw, rang * k + spin * k + nod + wob, ride === "fly" || ride === "leap" || ride === "swap" ? 1 : 0.25); ctx.rotate(rDraw); ctx.scale(zoom * rscale * breathe, zoom * rscale * breathe);
           ctx.translate(-rc[0], -(rc[1] - RR - 2));
           rb.draw(ctx); ctx.restore();
+          rb.x = kx; rb.y = ky;
         }
         // The spider at the line's end. Turned fully, it hangs head first along the line; at
         // turn 0 it is drawn exactly as it stood in the room.

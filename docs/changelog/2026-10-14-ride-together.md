@@ -31,3 +31,7 @@ Capture (laptop and 6 Pro): one slow read from top to bottom, with a ten-second 
 ## Kiwi and Zuzu by name
 
 Before: the copy called the critters "a spider and a Roomba". After: everything a visitor reads calls them Kiwi and Zuzu, because Roomba is an iRobot trademark (Dan, 2026-10-14). Capture: the home intro, the Doto card, and the Doto page hero and Canvas Critters section.
+
+## Zuzu holds together
+
+Before: hanging on the line, and anywhere far from the middle of a big window, Zuzu's body layers splayed apart into a stack of rings (Dan's screenshot, 2026-10-14). After: it stays one compact puck. The engine's perspective was tuned for a phone-sized stage; on the website its lean is now measured from no further than a phone's width away, and while riding it is drawn with no lean at all. Capture: Zuzu hanging at the right edge on a laptop, and docked in the bottom corner.
