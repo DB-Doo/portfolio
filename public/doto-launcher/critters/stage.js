@@ -457,7 +457,7 @@
     const N = 16, M = 8, BACK = 18, FRONT = 13;
     const chain = (n) => Array.from({ length: n }, () => ({ x: 0, y: 0, px: 0, py: 0 }));
     const pts = chain(N), tail = chain(M);
-    let vw = 0, vh = 0, dpr = 1, state = "off", L = 0, ax = 0, turn = 0, fade = 0, clock = 0;
+    let vw = 0, vh = 0, dpr = 1, state = "off", L = 0, ax = 0, turn = 0, fade = 0, clock = 0, lineV = 0;
     // The Roomba's ride, picked at random each time they go down together (Dan, 2026-10-14):
     //   lasso  the spider casts a thread down to it and reels it up to hang underneath;
     //   jet    it lifts off on little puffs, flies to the line and slides down it to the spider;
@@ -606,11 +606,14 @@
           const target = lerp(vh * 0.1, vh * 0.74, p) + 6 - hoist;
           // Just on the line it eases over gently; once hanging it follows closely.
           const grip = lerp(1, 6, turn);
+          const L0 = L;
           L += clamp((target - L) * (1 - Math.exp(-dt * grip)), -900 * dt, 900 * dt);
+          lineV = lerp(lineV, (L - L0) / Math.max(dt, 1e-3) / zoom, 1 - Math.exp(-dt * 10));
           // Swings round to hang head first slowly, over about a second and a half.
           turn = Math.min(1, turn + dt * 0.65);
         } else {
           turn = Math.max(0, turn - dt * 0.9);
+          lineV = 0;
         }
         // Once the spider is hanging, the Roomba joins it, a different way each time. Every
         // start is tied to where the Roomba stands, so nothing jumps.
@@ -731,7 +734,7 @@
         doze = riding && idle > 7 ? Math.min(1, doze + dt * 0.3) : Math.max(0, doze - dt * 3);
         jolt = Math.max(0, jolt - dt); joy = Math.max(0, joy - dt);
         // The spider hangs like one: legs out in the air, hind pair on the line, never standing.
-        sp.hangStep(dt, { k: ease(turn), v, idle });
+        sp.hangStep(dt, { k: ease(turn), v, idle, lv: lineV });
         if (rb.away) {
           rb.seen = rb.w.clock; rb.doze = doze;
           rb.mood = jolt > 0 ? "wide" : joy > 0 ? "happy" : doze > 0.6 ? "sleepy" : "open";
@@ -932,6 +935,10 @@
         const e = pts[N - 1];
         const sc = project(sp.x, sp.y, sp.z || 0, [0, 0]);
         ctx.save(); ctx.translate(e.x, e.y); sDraw = settle(sDraw, spinOf() - duck * 0.45, 0.25); ctx.rotate(sDraw); ctx.scale(zoom, zoom);
+        // Climbing, it turns round about its middle to go up head first, so its head holds the
+        // line's end; the Roomba's thread still hangs from its spinnerets, now at the bottom.
+        const hg = sp.hang, fl = hg ? ease(hg.flip) : 0;
+        if (fl > 0) { const mx = sp.fx * (BACK + FRONT) / 2, my = sp.fy * (BACK + FRONT) / 2; ctx.translate(mx, my); ctx.rotate(Math.PI * fl * hg.flipDir); ctx.translate(-mx, -my); }
         ctx.translate(-(sc[0] - sp.fx * BACK), -(sc[1] - sp.fy * BACK));
         sp.draw(ctx); ctx.restore();
       },

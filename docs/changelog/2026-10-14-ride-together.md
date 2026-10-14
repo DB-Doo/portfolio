@@ -41,3 +41,9 @@ Before: hanging on the line, and anywhere far from the middle of a big window, Z
 - **Before:** on the dragline Kiwi kept its standing pose, legs folded under as if on the floor.
 - **After:** Kiwi hangs with its legs spread in the air and cycles through hanging moves: slow leg paddling, a front-leg wave, grooming its palps, peering down, hauling itself up the line hand over hand, and tucking its legs in when the reader stops scrolling. A hard flick flares the legs out; scrolling up makes it climb.
 - **Why:** Dan, 2026-10-14: "it still looks like it's just standing. I want it to look real."
+
+## Kiwi climbs and rappels with the scroll
+
+- **Before:** while you scrolled, Kiwi slid up and down its line in one still pose.
+- **After:** scrolling down, it rappels head first: hind feet feeding silk in turn, the other legs trailing in the rush of air. Scrolling up, it turns round in the air and climbs its line head first, legs stepping in two alternating sets as fast as the line shortens; stop mid-climb and it clings, then turns back. Its hanging poses (tucked, gathered, reaching, with the odd re-grip) follow the app's pose model (`/mnt/project-files/critters/kiwi-hang/poses.md`), set a little wider so the legs read at site size.
+- **Why:** Dan, 2026-10-14: "animating on the way down while I'm scrolling ... crawling up the web if I scroll up."
