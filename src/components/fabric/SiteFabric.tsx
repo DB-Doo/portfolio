@@ -22,11 +22,9 @@ type Well = { el: Element; col: Collider; depth: Spring; opens: boolean; radius:
 
 const radiusOf = (el: Element | null) => (el ? parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0 : 0);
 
-// Well depth. Phones get shallower wells: their cards nearly fill the width, and the gathered
-// cloth has only a narrow margin to go to.
-const narrow = () => typeof window !== "undefined" && window.innerWidth < 640;
-const restDepth = () => (narrow() ? 9 : 16);
-const deepDepth = () => (narrow() ? 20 : 38);
+// Well depth, the same on every screen: Dan preferred the first version's deep wells.
+const restDepth = () => 16;
+const deepDepth = () => 38;
 
 export function SiteFabric() {
   const ref = useRef<HTMLCanvasElement>(null);
