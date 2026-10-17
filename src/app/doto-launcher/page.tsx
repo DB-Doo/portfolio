@@ -94,6 +94,15 @@ const standouts = [
   },
 ] as const;
 
+/* What people said on Reddit, word for word (/mnt/project-files/feedback/testimonials.md).
+   Credited "Reddit user" until each person agrees to be named. */
+const reviews = [
+  "Tried it, loved it, now made it permanent.",
+  "Best launcher I've had the pleasure of using.",
+  "One of the most innovative launchers I've seen in ages.",
+  "Love the music equalizer effect. Selling feature for me.",
+] as const;
+
 const critterTips = [
   "Tap play on the music widget and watch them dance.",
   "Hold still near Kiwi and it comes closer.",
@@ -270,6 +279,25 @@ export default function DotoLauncherPage() {
           </div>
         </section>
       )}
+
+      <section aria-labelledby="reviews-heading" className="border-t border-neutral-800">
+        <div className="mx-auto max-w-5xl px-6 py-20 sm:px-10">
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-400">
+            From people using it
+          </p>
+          <h2 id="reviews-heading" className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            What people say
+          </h2>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+            {reviews.map((text) => (
+              <li key={text} data-critter="ledge" className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+                <blockquote className="font-serif text-xl leading-snug text-white">&ldquo;{text}&rdquo;</blockquote>
+                <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">Reddit user</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       <section className="border-t border-neutral-800">
         <div className="mx-auto max-w-5xl px-6 py-20 sm:px-10">
