@@ -9,8 +9,9 @@ export type Figure = {
   src: string;
   alt: string;
   caption?: string;
-  /** phone = tall screenshot shown in a phone frame; wide = browser window or full-width image */
-  shape: "phone" | "wide";
+  /** phone = tall screenshot shown in a phone frame; wide = browser window or full-width image;
+      panel = a cropped part of a screen (like a keyboard) on a plain rounded panel */
+  shape: "phone" | "wide" | "panel";
   width: number;
   height: number;
 };
@@ -68,7 +69,7 @@ export const caseStudies: CaseStudy[] = [
     headline:
       "A home screen with no grid, designed from scratch and shipped on Google Play.",
     summary:
-      "You put apps and widgets anywhere on one open canvas and remember where things are, the way you remember a room. Early testers shaped most of the big design changes.",
+      "You put apps and widgets anywhere on one open canvas of dots. The dots move with your music, the canvas rises into 3D, and two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
     did: "Designed and built the whole app. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",
@@ -326,87 +327,133 @@ export const caseStudies: CaseStudy[] = [
     links: [],
   },
   {
-    slug: "bid-tracker",
-    title: "Bid Tracker",
-    kind: "Client project",
-    status: "In daily use",
-    accent: "#fbbf24",
+    slug: "ninkeys",
+    title: "NinKeys",
+    kind: "iPhone keyboard",
+    status: "In private testing",
+    accent: "#818cf8",
     headline:
-      "A contractor’s spreadsheets and text threads, turned into one tool.",
+      "A swipe keyboard for iPhone where you can tap, swipe and use both thumbs in the same word.",
     summary:
-      "A bid and cost tracker built on the Google Sheet the business already trusted, so nothing had to move. The client uses it every day.",
-    did: "Designed a phone-first app on top of the spreadsheet the business already trusted, with budget bars, receipts attached to their costs and separate views for the team and the owner.",
-    role: "Design and development, working directly with the owner",
-    timeline: "6 days",
-    platform: "Web, designed for phones first",
+      "It brings back the two-thumb typing of Nintype, an older keyboard, rebuilt from scratch for current iPhones. It learns how you type, keeps your typing on your phone and works in English and Dutch.",
+    did: "Designed and built the keyboard and its app. Most of the design work went into keeping a busy, moving surface calm and readable: one light that follows your finger, a word strip that never cuts words off, three finished themes instead of a pile of half-finished ones, and a space bar that always does what you pressed.",
+    role: "Solo project: design and development",
+    timeline: "March to August 2026",
+    platform: "iPhone, iOS 16 and later",
     cover: {
-      src: "/images/bidtracker/dashboard.png",
-      width: 1280,
-      height: 900,
-      alt: "Bid Tracker dashboard with project cards and budget bars",
-      shape: "wide",
+      src: "/images/ninkeys/keyboard-hero.jpg",
+      width: 1179,
+      height: 1000,
+      alt: "NinKeys mid-swipe: a teal trail runs from A down toward C, with the suggestions trade, texas and taxed above the keys",
+      shape: "panel",
     },
     problem: [
-      "Bids were spread across spreadsheets, costs were not tracked against them, and photos of receipts got lost in text threads.",
+      "Most phone keyboards expect one way of typing: tap each letter, or swipe a whole word with one finger. Nintype, an older keyboard, let people mix the two and swipe with both thumbs at the same time.",
+      "I wanted that way of typing on a current iPhone, and to understand it well enough to improve it. That meant one keyboard that works out what you meant whether you tapped, swiped or did both, without asking you to switch modes.",
     ],
     audience: [
-      "The owner, who needs to see every job's budget at a glance.",
-      "The people submitting ideas and bids, who need a quick form that works on a phone.",
+      "People who type a lot on their phone and want to use both thumbs, not one finger.",
+      "People who type in languages other than English. Dutch works today, and testers who speak other languages help the keyboard learn theirs.",
     ],
     constraints: [
-      "The business already ran on a Google Sheet, and the owner needed to keep using it.",
+      "An iPhone keyboard runs in a small, walled-off space with a strict memory limit, so everything it knows has to fit and run on the phone.",
+      "Nothing you type leaves your phone. Testers help only through short sessions where the app shows them words to swipe, and they decide whether to send the result.",
+      "It has to run on iPhones a few years old, not only the newest ones.",
+      "A tight budget: no paid servers, so test results come back by email.",
     ],
     decisions: [
       {
-        title: "Keep the spreadsheet",
-        before: "A Google Sheet that held everything, in a shape only the owner understood.",
+        title: "One light that follows your finger",
+        before:
+          "Every tap set off a ring that spread across the keys. Typing quickly, rings fired from places your finger had already left.",
         after:
-          "An app built on top of the same sheet. It can be managed from the app or from the spreadsheet directly.",
-        why: "Nothing to move over and nothing to lose. The owner could keep working the way they already did and switch to the app at their own pace.",
+          "One soft light that sits under your finger, follows it as you slide and fades the moment you lift. The rings are still there as an option.",
+        why: "Fast typing turned the rings into little effects jumping everywhere. A single light that is always where your finger is cannot pile up, and it leaves nothing behind.",
       },
       {
-        title: "Budgets as bars, not numbers",
-        before: "Rows of figures to add up by hand.",
-        after: "Each project shows a bar that fills up as costs come in.",
-        why: "Whether a job is on budget is the first thing to check. A bar answers that at a glance.",
-      },
-      {
-        title: "Receipts attached where they belong",
-        before: "Receipt photos sent by text and lost.",
-        after: "Each photo is attached to the cost it proves and saved to Google Drive.",
-        why: "Put the proof right next to the number it explains.",
-      },
-      {
-        title: "Two views for two jobs",
-        before: "Everyone looking at the same spreadsheet.",
+        title: "A word strip that shows your words, evenly",
+        before:
+          "The strip of recent words above the keys gave each word a different sized box. One short word could fill half the strip, and long words were cut off.",
         after:
-          "A simple form for submitting ideas and bids, and a dashboard for the owner.",
-        why: "Most people need to do one thing quickly. The owner needs the whole picture.",
+          "Five equal sections, always, with empty ones holding their place. If a word is too long to fit, the oldest word steps aside instead of any word being cut off.",
+        why: "It took three tries. Each fixed the last complaint and caused the next, because I was fixing the property named instead of the goal: the strip exists to show you your words, evenly.",
+      },
+      {
+        title: "Space always types a space",
+        before:
+          "If the keyboard could not find a word for a swipe, pressing space did nothing at all, and the next word ran straight into the last one.",
+        after:
+          "Space always types a space, and keeps any letters you tapped before the swipe.",
+        why: "Pressing a key is a clear instruction. Not knowing what the swipe meant is no reason to throw away the part you typed exactly. Accuracy tests could never catch this, because nothing was typed to measure.",
+      },
+      {
+        title: "Three finished themes",
+        before:
+          "Several looks to choose from, some of them never finished to the same standard as the rest.",
+        after:
+          "Three: Carbon (dark), Frost (light) and Adaptive, the default, which follows your phone's light or dark setting.",
+        why: "In a short list, one half-finished look costs more than it adds. Each remaining theme was checked in every state a finger can put a key into, not just at rest, because that is where the earlier themes broke.",
+      },
+      {
+        title: "Vibration you can actually feel",
+        before:
+          "Six strengths for the tap vibration. On a real iPhone the two lightest could not be felt at all.",
+        after:
+          "The lightest setting is now the lightest tap you can still feel, and each step up feels different.",
+        why: "A setting you cannot tell apart from Off is not a setting.",
+      },
+      {
+        title: "A swipe trail that looks like part of the keyboard",
+        before:
+          "A thin line in fixed colours that matched no theme. It stayed on screen after you lifted your finger.",
+        after:
+          "A tapered ribbon in the theme's colour, thick at your finger and thin at the tail, that fades when you lift.",
+        why: "The taper shows which way and how quickly your finger is moving without any explanation, and a trail that stays behind makes the keyboard feel unfinished.",
       },
     ],
-    explorations: [],
+    explorations: [
+      {
+        title: "Showing what the keyboard read",
+        body: "An optional trail that marks, in order, the letters the keyboard thinks your swipe passed through. The first version drew lines between the letters and on the phone it was an orange tangle, because those lines matched nothing your finger did. Now each letter gets a ring and a number, and a letter used twice gets a double ring.",
+      },
+      {
+        title: "Themes that did not make it",
+        body: "Two themes based on Dieter Rams' approach, and one with moving liquid behind glass keys. Checking contrast before trying them on the phone caught a return key that was too faint. After trying them on the phone, I cut all three.",
+      },
+      {
+        title: "Letting you swipe more words",
+        body: "Many words the keyboard accepts, like seamless and gesture, cannot be swiped yet. Adding them did not change accuracy, but made every swipe wait longer than the keyboard allows. Which way to go is still an open decision.",
+      },
+    ],
     gallery: [
       {
-        src: "/images/bidtracker/landing.png",
-        width: 1280,
-        height: 900,
-        alt: "Bid Tracker start screen",
-        caption: "Start screen",
-        shape: "wide",
+        src: "/images/ninkeys/gestures-keyboard.jpg",
+        width: 1179,
+        height: 1096,
+        alt: "Holding the word really opens a menu to rewrite it, change its case or pick another word, next to a panel showing three swipe shapes the keyboard has learned for it",
+        caption: "Hold a word to fix it, or see the swipes it has learned",
+        shape: "panel",
       },
       {
-        src: "/images/bidtracker/admin.png",
-        width: 1280,
-        height: 900,
-        alt: "Bid Tracker owner dashboard",
-        caption: "The owner's dashboard",
-        shape: "wide",
+        src: "/images/ninkeys/animations-keyboard.jpg",
+        width: 1179,
+        height: 946,
+        alt: "Keyboard settings for the idle animation, with eleven choices such as Rain, Ocean Tide and Pong, and a slider for strength",
+        caption: "Animations for when you are not typing",
+        shape: "panel",
       },
     ],
-    outcome: ["Delivered and used every day by the client."],
-    next: [],
-    links: [{ label: "Try the demo", href: "/bid-tracker-demo" }],
-  },
+    outcome: [
+      "Test builds have gone to a small group of testers. I try every change on my own iPhone first, and most of the decisions above came from typing with it myself.",
+      "A tester on an older iPhone could not open an early build. Their crash report pointed to the cause, and the fixed version now runs on iPhones back to iOS 16.",
+      "English and Dutch both work today.",
+    ],
+    next: [
+      "Get it to testers who type in Dutch and other languages, so their swipes can teach the keyboard those languages.",
+      "Make two-thumb typing more reliable. It is the hardest part of the keyboard and still the weakest.",
+    ],
+    links: [],
+  }
 ];
 
 export function getCaseStudy(slug: string) {

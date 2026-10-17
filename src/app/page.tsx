@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { DotField } from "@/app/doto-launcher/DotField";
 import { caseStudies } from "@/content/work";
+import { WellLink } from "@/components/fabric/WellLink";
 import { Device } from "@/components/ux/Device";
 import { HeroStage } from "@/components/ux/HeroStage";
-import { Reveal, SplitHeadline } from "@/components/ux/Reveal";
+import { Reveal } from "@/components/ux/Reveal";
+import { MotionCompare } from "@/components/ux/MotionCompare";
+import { DotHeadline } from "@/components/ux/DotHeadline";
 import { CopyEmail } from "@/components/ux/ScrollBits";
 import { SpotlightCard } from "@/components/ux/SpotlightCard";
 
@@ -12,8 +14,10 @@ Direction contract: a UX designer's portfolio for hiring managers and clients. C
 how respected designers present themselves: open with a plain fact (role, place, what I
 made), tell the background as a short story with real names and dates, and let the projects
 carry the argument. No process diagrams, slogans or aphorisms, no adjectives about myself.
-Sections: work, about, contact. Dark and calm, with the dot field from Doto as the
-signature surface and each project's own accent colour. Motion never holds text back.
+Sections: work, about, contact. Dark and calm, and the whole page sits in one dot sheet like
+Doto's canvas (SiteFabric): cards are pressed into it, text thins it, the cursor and the
+critters dent it, and a card opens by widening its well until it is the page. Each project
+keeps its own accent colour. Motion never holds text back.
 */
 
 const CONTACT_EMAIL = "dan@dbdoo.dev";
@@ -29,6 +33,7 @@ const eyebrow = "font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-5
 
 /* What I do, in the words a job listing would use. */
 const proof = [
+  "Motion design",
   "Product design",
   "Interaction design",
   "Android apps",
@@ -46,17 +51,24 @@ const previously = [
 ];
 
 export default function Home() {
-  const [doto, wide, bid] = caseStudies;
+  const [doto, wide] = caseStudies;
+  const ninkeys = {
+    src: "/images/ninkeys/keyboard-hero.jpg",
+    alt: "NinKeys, my swipe keyboard for iPhone, mid-swipe with word suggestions above the keys.",
+    shape: "wide",
+    width: 1179,
+    height: 1000,
+  } as const;
 
   return (
-    <main className="grain relative min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
+    <main className="grain relative min-h-screen overflow-x-clip font-sans text-neutral-200 selection:bg-cyan-300 selection:text-neutral-950">
       {/* ===== NAV ===== */}
       <nav className="fixed inset-x-0 top-0 z-40">
         <div className="mx-auto mt-4 flex max-w-6xl items-center justify-between gap-4 rounded-full border border-white/10 bg-neutral-950/60 px-5 py-2.5 backdrop-blur-xl sm:px-6 [margin-inline:max(1rem,calc((100vw-72rem)/2))]">
           <Link href="/" className={`text-sm font-medium text-white ${focus}`}>
             Dan Brandt
           </Link>
-          <div className="flex items-center gap-5 text-sm text-neutral-400 sm:gap-7">
+          <div data-critter="wall" data-critter-name="the nav" className="flex items-center gap-5 text-sm text-neutral-400 sm:gap-7">
             <a href="#work" className={`hover:text-white ${focus}`}>Work</a>
             <a href="#about" className={`hidden hover:text-white sm:inline ${focus}`}>About</a>
             <a href={RESUME_URL} className={`hover:text-white ${focus}`}>Résumé</a>
@@ -70,16 +82,14 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <header className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 [touch-action:pan-y]">
-        <DotField />
         <div aria-hidden="true" className="glow-drift pointer-events-none absolute -left-40 top-10 -z-0 size-[560px] rounded-full bg-cyan-400/15 blur-[120px]" />
         <div aria-hidden="true" className="glow-drift pointer-events-none absolute -right-32 bottom-0 -z-0 size-[520px] rounded-full bg-fuchsia-500/10 blur-[120px]" style={{ animationDelay: "-8s" }} />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(10,10,10,0.85)_0%,rgba(10,10,10,0.4)_50%,rgba(10,10,10,0)_80%)]" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-neutral-950 to-transparent" />
 
         <div className="relative mx-auto grid w-full max-w-6xl items-center gap-16 px-6 pb-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <Reveal y={12}>
-              <p className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-300 backdrop-blur">
+              <p data-critter="wall" data-critter-name="the badge" className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs text-neutral-300 backdrop-blur">
                 <span className="relative flex size-2">
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
                   <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
@@ -87,25 +97,26 @@ export default function Home() {
                 Open to UX roles and freelance projects
               </p>
             </Reveal>
-            <SplitHeadline
-              delay={0.15}
+            <div data-critter="wall" data-critter-name="the headline">
+            <DotHeadline
               className="mt-8 text-[2.7rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-7xl"
               parts={[
-                { text: "I design mobile and web apps, and" },
-                { text: "build them myself.", serif: true, accent: true },
+                { text: "I design interfaces" },
+                { text: "that move.", serif: true, accent: true },
               ]}
             />
+            </div>
             <Reveal delay={0.7}>
-              <p className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
-                I&rsquo;m Dan Brandt, a UX designer in Kansas City. My newest app,{" "}
+              <p data-critter="wall" data-critter-name="the intro" className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
+                I&rsquo;m Dan Brandt, a UX and motion designer in Kansas City. I prototype every interaction in real code. My newest app,{" "}
                 <Link href={`/work/${doto.slug}`} className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-cyan-300">
                   Doto
                 </Link>
-                , is a home screen for Android, live on Google Play.
+                , is a home screen for Android made of dots that move with your music, rise into 3D and, soon, host two critters, Kiwi and Zuzu. It&rsquo;s live on Google Play.
               </p>
             </Reveal>
             <Reveal delay={0.85}>
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div data-critter="wall" data-critter-name="the buttons" className="mt-10 flex w-fit flex-wrap gap-3">
                 <a href="#work" className={primaryButton}>
                   See my work
                   <span className="transition-transform group-hover:translate-y-0.5">↓</span>
@@ -117,7 +128,7 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <HeroStage back={bid.cover} left={wide.cover} right={doto.cover} />
+          <HeroStage back={ninkeys} left={wide.cover} right={doto.cover} />
         </div>
       </header>
 
@@ -132,6 +143,32 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* ===== MOTION ===== */}
+      <section aria-labelledby="motion-title" className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pt-28 sm:px-10 sm:pt-36 lg:grid-cols-[1fr_340px]">
+        <Reveal>
+          <p className={eyebrow}>Motion</p>
+          <h2 id="motion-title" data-critter="wall" data-critter-name="the motion title" className="mt-4 max-w-xl text-4xl font-semibold tracking-[-0.03em] text-white sm:text-5xl">
+            The same tap, timed two ways.
+          </h2>
+          <div data-critter="wall" data-critter-name="the motion text" className="mt-6 max-w-lg space-y-4 text-lg leading-8 text-neutral-400">
+            <p>
+              On the left are the defaults most apps ship: a quarter-second linear scale, with
+              every row arriving at once.
+            </p>
+            <p>
+              On the right is how I tune it. The icon gives under the finger, the panel grows
+              out of it on a spring, rows arrive a beat apart, and closing folds back into the
+              icon. Drag the divider to compare.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal fade delay={0.1}>
+          <div data-critter="ledge" data-critter-name="the motion phone">
+            <MotionCompare />
+          </div>
+        </Reveal>
+      </section>
 
       {/* ===== WORK ===== */}
       <section id="work" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 py-28 sm:px-10 sm:py-36">
@@ -150,7 +187,7 @@ export default function Home() {
               style={{ top: `calc(7rem + ${i * 1.75}rem)` }}
             >
               <Reveal fade>
-                <Link href={`/work/${study.slug}`} className={`block rounded-[2rem] ${focus}`}>
+                <WellLink href={`/work/${study.slug}`} className={`block rounded-[2rem] ${focus}`}>
                   <SpotlightCard accent={study.accent} className="shadow-[0_-30px_60px_-30px_rgba(0,0,0,0.9)]">
                     <div className="grid items-center gap-10 p-7 sm:p-12 md:min-h-[520px] md:grid-cols-[1fr_1.05fr]">
                       <div className="relative">
@@ -202,7 +239,7 @@ export default function Home() {
                       </div>
                     </div>
                   </SpotlightCard>
-                </Link>
+                </WellLink>
               </Reveal>
             </div>
           ))}
@@ -210,9 +247,8 @@ export default function Home() {
 
         <Reveal className="mt-20">
           <p className={eyebrow}>Also built</p>
-          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
             {[
-              { title: "NinKeys", body: "A swipe keyboard for iPhone, rebuilt from a well-loved app that had been abandoned." },
               { title: "Client websites", body: "Sites for an artisan metalworker, a children's nature book series and a speech therapy practice." },
             ].map((item) => (
               <li key={item.title} className="bg-neutral-950 p-6 transition-colors hover:bg-neutral-900">
@@ -259,8 +295,8 @@ export default function Home() {
               </p>
               <p>
                 In 2024 I took a full stack development bootcamp, and in 2026 I started designing
-                and shipping my own apps. I use AI tools to write code faster, which leaves more
-                of my time for design and for testing with real people.
+                and shipping my own apps. AI tools write the boilerplate code; I tune every curve
+                and timing by hand, and spend the time saved testing with real people.
               </p>
               <p>
                 I&rsquo;m most useful when a product needs one person who can decide how it
@@ -306,7 +342,7 @@ export default function Home() {
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight text-white">For businesses</h3>
                 <p className="mt-3 text-sm leading-7 text-neutral-400">
                   I design and build apps and websites for small businesses, and hand them over
-                  working, like Bid Tracker. Tell me what is confusing your customers or your team.
+                  working. Tell me what is confusing your customers or your team.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>Email me</a>
