@@ -88,7 +88,7 @@ const permissions = [
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
   ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. Doto never writes, changes, or deletes health data."],
-  ["Shizuku", "Optional, through the separate Shizuku app and only for the earbuds case battery and High fidelity music switches you turn on under Settings > Shizuku. Nothing read this way leaves your device."],
+  ["Shizuku", "Optional. Doto lists Shizuku's own permission so it can ask, but the request is only sent when you tap Allow under Settings > Shizuku, and Shizuku shows its own prompt. It serves only the earbuds case battery and High fidelity music switches on that page. Nothing read this way leaves your device."],
 ] as const;
 
 function SectionHeading({
