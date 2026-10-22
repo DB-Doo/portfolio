@@ -67,7 +67,7 @@ const localFeatures = [
   {
     name: "Optional Shizuku features",
     detail:
-      "If you install the separate Shizuku app and allow Doto in it, two optional features become available under Settings > Shizuku: earbuds case battery and High fidelity music. Both are off until you turn them on, both run entirely on your device, and nothing they read is stored beyond the live feature or sent anywhere.",
+      "If you install the separate Shizuku app and allow Doto in it, one optional feature becomes available under Settings > Shizuku: earbuds case battery. It is off until you turn it on, it runs entirely on your device, and nothing it reads is stored beyond the live widget or sent anywhere.",
   },
   {
     name: "Notes and personalization",
@@ -88,7 +88,7 @@ const permissions = [
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
   ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. Doto never writes, changes, or deletes health data."],
-  ["Shizuku", "Optional. Doto lists Shizuku's own permission so it can ask, but the request is only sent when you tap Allow under Settings > Shizuku, and Shizuku shows its own prompt. It serves only the earbuds case battery and High fidelity music switches on that page. Nothing read this way leaves your device."],
+  ["Shizuku", "Optional. Doto lists Shizuku's own permission so it can ask, but the request is only sent when you tap Allow under Settings > Shizuku, and Shizuku shows its own prompt. It serves only the earbuds case battery switch on that page. Nothing read this way leaves your device."],
 ] as const;
 
 function SectionHeading({
@@ -385,7 +385,7 @@ export default function DotoLauncherPrivacyPolicy() {
                   access a computer plugged in by USB has. Doto never asks for
                   it on its own: Shizuku only comes into play if you open
                   Settings → Shizuku and allow Doto there, and even then only
-                  for the two features below. Each has its own switch, off by
+                  for the feature below. It has its own switch, off by
                   default, and a note on that page explains what it does
                   before you turn it on. A tester or user who never opens that
                   page gets exactly the app described everywhere else in this
@@ -403,23 +403,8 @@ export default function DotoLauncherPrivacyPolicy() {
                   logged, backed up, or sent anywhere.
                 </p>
                 <p>
-                  <span className="text-white">High fidelity music.</span>{" "}
-                  Normally the music visualizer listens through Android&apos;s
-                  standard playback capture, which some apps opt out of and
-                  which goes quiet when the volume is down. With this switch
-                  on, Doto asks Shizuku to run its own small audio service
-                  that reads the phone&apos;s mixed audio output directly, so
-                  the visualizer can follow music from any app, even at volume
-                  zero. That output can include sound from apps that opted out
-                  of standard capture. The audio is turned into levels on
-                  your device while a visualizer is on screen and is never
-                  recorded, saved, backed up, or uploaded. No song titles,
-                  voices, or recordings are kept. The standard Automatic and
-                  System audio modes keep working without Shizuku.
-                </p>
-                <p>
                   <span className="text-white">Turning it off.</span> Turn
-                  either switch off in Settings → Shizuku, revoke Doto inside
+                  the switch off in Settings → Shizuku, revoke Doto inside
                   the Shizuku app, or stop or uninstall Shizuku. The feature
                   stops at once and the rest of Doto is unaffected. Shizuku
                   itself is a third-party app with its own policy at{" "}
