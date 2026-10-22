@@ -380,8 +380,8 @@ export default function DotoLauncherPrivacyPolicy() {
                   Optional Shizuku features
                 </h3>
                 <p>
-                  Shizuku is a separate app, made by someone else, that you
-                  install and start yourself. It lends other apps the same
+                  Shizuku is a free, separate app, made by someone else, that
+                  you install and start yourself. It lends other apps the same
                   access a computer plugged in by USB has. Doto never asks for
                   it on its own: Shizuku only comes into play if you open
                   Settings → Shizuku and allow Doto there, and even then only
@@ -422,8 +422,16 @@ export default function DotoLauncherPrivacyPolicy() {
                   either switch off in Settings → Shizuku, revoke Doto inside
                   the Shizuku app, or stop or uninstall Shizuku. The feature
                   stops at once and the rest of Doto is unaffected. Shizuku
-                  itself is governed by its own developer&apos;s terms and
-                  policy.
+                  itself is a third-party app with its own policy at{" "}
+                  <a
+                    href="https://shizuku.rikka.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-cyan-300 underline decoration-cyan-800 underline-offset-4 hover:decoration-cyan-300"
+                  >
+                    shizuku.rikka.app
+                  </a>
+                  .
                 </p>
               </div>
             </section>
