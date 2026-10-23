@@ -7,10 +7,14 @@ import {
   caption,
   clamp,
   dot,
-  easeInOut,
   easeOut,
   finger,
   launched,
+  along,
+  type Key,
+  FOLDER_APPS,
+  RING,
+  seam,
   sheet,
   span,
   spring,
@@ -25,28 +29,10 @@ open app, so the difference is the time you can see.
 */
 
 const LOOP = 7;
-const MEMBERS = ["#f472b6", "#a78bfa", "#fbbf24", "#34d399", "#fb7185", "#60a5fa"];
-// A folder opens on its first ring, one app per side of the hexagon.
-const ANGLES = [0, -60, -120, 180, 120, 60].map((a) => (a * Math.PI) / 180);
+const MEMBERS = FOLDER_APPS;
+const ANGLES = RING;
 const TARGET = 1;
 const BACKDROP = ["#3f3f46", "#52525b", "#44403c", "#3f3f46", "#4b5563"];
-
-type Key = [t: number, x: number, y: number];
-
-/** Piecewise path through keyframes, eased per segment. Coordinates are fractions of W and H. */
-function along(keys: Key[], t: number) {
-  if (t <= keys[0][0]) return { x: keys[0][1], y: keys[0][2] };
-  for (let i = 1; i < keys.length; i++) {
-    const [t1, x1, y1] = keys[i];
-    const [t0, x0, y0] = keys[i - 1];
-    if (t <= t1) {
-      const k = easeInOut((t - t0) / (t1 - t0 || 1));
-      return { x: x0 + (x1 - x0) * k, y: y0 + (y1 - y0) * k };
-    }
-  }
-  const last = keys[keys.length - 1];
-  return { x: last[1], y: last[2] };
-}
 
 const scene: Scene = (ctx, W, H, t, after) => {
   sheet(ctx, W, H);
@@ -134,12 +120,7 @@ const scene: Scene = (ctx, W, H, t, after) => {
 
   if (touches) caption(ctx, W, H, touches, after);
 
-  // Fade through black at the seam so the loop restarts cleanly.
-  const fade = Math.max(1 - span(t, 0, 0.25), span(t, 6.3, 6.9));
-  if (fade > 0) {
-    ctx.fillStyle = `rgba(0,0,0,${fade})`;
-    ctx.fillRect(0, 0, W, H);
-  }
+  seam(ctx, W, H, t, LOOP);
 };
 
 export function FolderLaunchLoop() {

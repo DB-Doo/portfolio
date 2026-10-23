@@ -54,9 +54,9 @@ export function dot(ctx: CanvasRenderingContext2D, x: number, y: number, r: numb
 }
 
 /** The fingertip: faint while hovering, solid with a ring while pressed. */
-export function finger(ctx: CanvasRenderingContext2D, x: number, y: number, W: number, pressed: number, alpha = 1) {
+export function finger(ctx: CanvasRenderingContext2D, x: number, y: number, W: number, pressed: number, alpha = 1, size = 1) {
   if (alpha <= 0) return;
-  const r = W * 0.075;
+  const r = W * 0.075 * size;
   ctx.globalAlpha = clamp(alpha) * (0.16 + 0.24 * pressed);
   ctx.fillStyle = "#ffffff";
   ctx.beginPath();
@@ -112,3 +112,33 @@ export function launched(
   ctx.restore();
   ctx.globalAlpha = 1;
 }
+
+export type Key = [t: number, x: number, y: number];
+
+/** Piecewise path through keyframes, eased per segment. Coordinates are fractions of W and H. */
+export function along(keys: Key[], t: number) {
+  if (t <= keys[0][0]) return { x: keys[0][1], y: keys[0][2] };
+  for (let i = 1; i < keys.length; i++) {
+    const [t1, x1, y1] = keys[i];
+    const [t0, x0, y0] = keys[i - 1];
+    if (t <= t1) {
+      const k = easeInOut((t - t0) / (t1 - t0 || 1));
+      return { x: x0 + (x1 - x0) * k, y: y0 + (y1 - y0) * k };
+    }
+  }
+  const last = keys[keys.length - 1];
+  return { x: last[1], y: last[2] };
+}
+
+/** Fade through black at the loop seam so a loop restarts cleanly. */
+export function seam(ctx: CanvasRenderingContext2D, W: number, H: number, t: number, loop: number) {
+  const fade = Math.max(1 - span(t, 0, 0.25), span(t, loop - 0.7, loop - 0.1));
+  if (fade > 0) {
+    ctx.fillStyle = `rgba(0,0,0,${fade})`;
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
+/** The folder's apps, and the angles of the first ring they open onto. */
+export const FOLDER_APPS = ["#f472b6", "#a78bfa", "#fbbf24", "#34d399", "#fb7185", "#60a5fa"];
+export const RING = [0, -60, -120, 180, 120, 60].map((a) => (a * Math.PI) / 180);
