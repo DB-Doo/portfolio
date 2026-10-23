@@ -1,0 +1,33 @@
+{
+ "clip": "doto_ep1_before.mp4",
+ "device": "Pixel 6 Pro, 1440x3120 portrait, coordinates in screen pixels",
+ "video": "60 fps constant frame rate; first gesture DOWN placed at 1.000 s; last frame held so the opened app shows for ~2 s",
+ "gesture": "Quick launch OFF: tap folder, ~0.42 s look, tap Clock. Taps are adb `input tap` (down and up a few ms apart); draw them as normal ~80 ms taps.",
+ "alignment": "Times come from device timestamps of each injection, shifted so the DOWN sits one frame before the first visible reaction on screen. Expect +/-1 frame.",
+ "events": [
+  {
+   "t_seconds_from_record_start": 1.0,
+   "x": 1020,
+   "y": 1107,
+   "action": "down"
+  },
+  {
+   "t_seconds_from_record_start": 1.008,
+   "x": 1020,
+   "y": 1107,
+   "action": "up"
+  },
+  {
+   "t_seconds_from_record_start": 1.419,
+   "x": 641,
+   "y": 1107,
+   "action": "down"
+  },
+  {
+   "t_seconds_from_record_start": 1.427,
+   "x": 641,
+   "y": 1107,
+   "action": "up"
+  }
+ ]
+}

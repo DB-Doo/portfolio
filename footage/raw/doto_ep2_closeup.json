@@ -1,0 +1,195 @@
+{
+ "clip": "doto_ep2_closeup.mp4",
+ "device": "Pixel 6 Pro, 1440x3120 portrait, coordinates in screen pixels",
+ "video": "60 fps constant frame rate; DOWN placed at 1.000 s; last frame held so the opened app shows for ~2 s",
+ "gesture": "Quick launch ON: press folder, ~0.3 s hold, slide onto Camera (~0.6 s), Phone (~0.6 s), Clock (~0.6 s), lift on Clock. Small drift moves during each rest. Moves were injected with adb `input motionevent` about every 20-50 ms; interpolate between points for the finger.",
+ "alignment": "Times come from device timestamps of each injection, shifted so the DOWN sits one frame before the first visible reaction on screen. Expect +/-1 frame.",
+ "events": [
+  {
+   "t_seconds_from_record_start": 1.0,
+   "x": 1011,
+   "y": 1107,
+   "action": "down"
+  },
+  {
+   "t_seconds_from_record_start": 1.302,
+   "x": 1017,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.317,
+   "x": 1033,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.362,
+   "x": 1055,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.423,
+   "x": 1077,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.456,
+   "x": 1093,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.5,
+   "x": 1099,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.794,
+   "x": 1102,
+   "y": 1105,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.03,
+   "x": 1100,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.144,
+   "x": 1095,
+   "y": 1099,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.165,
+   "x": 1082,
+   "y": 1077,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.211,
+   "x": 1063,
+   "y": 1045,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.228,
+   "x": 1040,
+   "y": 1006,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.277,
+   "x": 1018,
+   "y": 967,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.316,
+   "x": 999,
+   "y": 935,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.365,
+   "x": 986,
+   "y": 913,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.386,
+   "x": 982,
+   "y": 905,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.688,
+   "x": 985,
+   "y": 903,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 2.934,
+   "x": 983,
+   "y": 905,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.045,
+   "x": 971,
+   "y": 911,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.063,
+   "x": 941,
+   "y": 929,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.103,
+   "x": 894,
+   "y": 956,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.15,
+   "x": 837,
+   "y": 988,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.201,
+   "x": 777,
+   "y": 1024,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.251,
+   "x": 720,
+   "y": 1056,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.266,
+   "x": 673,
+   "y": 1083,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.288,
+   "x": 643,
+   "y": 1101,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.339,
+   "x": 632,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.629,
+   "x": 635,
+   "y": 1105,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.904,
+   "x": 633,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 3.98,
+   "x": 633,
+   "y": 1107,
+   "action": "up"
+  }
+ ]
+}

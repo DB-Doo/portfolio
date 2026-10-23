@@ -1,0 +1,99 @@
+{
+ "clip": "doto_ep1_after.mp4",
+ "device": "Pixel 6 Pro, 1440x3120 portrait, coordinates in screen pixels",
+ "video": "60 fps constant frame rate; first gesture DOWN placed at 1.000 s; last frame held so the opened app shows for ~2 s",
+ "gesture": "Quick launch ON: press folder, ~0.32 s hold, slide onto Clock over ~0.43 s (eased, slight arc), ~0.18 s rest, lift. Moves were injected with adb `input motionevent` about every 30-40 ms (the fastest the allowed adb route goes), not every 16 ms; interpolate between points for the finger.",
+ "alignment": "Times come from device timestamps of each injection, shifted so the DOWN sits one frame before the first visible reaction on screen. Expect +/-1 frame.",
+ "events": [
+  {
+   "t_seconds_from_record_start": 1.0,
+   "x": 1020,
+   "y": 1107,
+   "action": "down"
+  },
+  {
+   "t_seconds_from_record_start": 1.32,
+   "x": 1014,
+   "y": 1106,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.349,
+   "x": 998,
+   "y": 1103,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.402,
+   "x": 972,
+   "y": 1099,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.417,
+   "x": 938,
+   "y": 1093,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.458,
+   "x": 898,
+   "y": 1088,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.5,
+   "x": 853,
+   "y": 1085,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.537,
+   "x": 808,
+   "y": 1085,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.57,
+   "x": 763,
+   "y": 1088,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.611,
+   "x": 723,
+   "y": 1093,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.65,
+   "x": 689,
+   "y": 1099,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.677,
+   "x": 663,
+   "y": 1103,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.699,
+   "x": 647,
+   "y": 1106,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.747,
+   "x": 641,
+   "y": 1107,
+   "action": "move"
+  },
+  {
+   "t_seconds_from_record_start": 1.925,
+   "x": 641,
+   "y": 1107,
+   "action": "up"
+  }
+ ]
+}
