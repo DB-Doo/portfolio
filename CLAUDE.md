@@ -44,7 +44,7 @@ UX portfolio (merged to `main` 2026-09-24):
 
 1. Dan checks the One sheet redesign locally (branch `claude/project-thread-4vkuqp`) and confirms NinKeys details: name, status "In private testing", timeline. Then the reason the paged grid was dropped in dot.o.
 2. A UX-titled résumé (the current PDF says App & Web Developer).
-3. More before/after pairs for dot.o (tutorial vs hints, three drawers vs one) from old commits.
+3. Doto before / after loops: eight episodes planned (doc https://claude.ai/artifact/8SENvRW2mCL6wbS8x5m97u). Loops live in `src/components/ux/loops/` (`LoopPair` runs two canvases on one clock; `window.__loopClock` drives it for video export). Episode 1 `FolderLaunchLoop` is built; preview at `/lab/loops` (noindex, delete once loops are placed in the case study). Next: episode 2 (app grows under the finger), 3 (Quick launch as a setting), 5 close-up (crossfade vs glide). Quick launch ships OFF by default in dot.o, so never describe it as the default.
 4. Merge PR #3 once Dan approves it locally. When the critters ship in the app, change the Doto page label "Coming to Doto Pro" to say they are in Pro.
 5. MagneticButton / TiltCard / PhotoLightbox / physics tags are no longer used by the home page; leave them until the new site settles, then remove.
 
