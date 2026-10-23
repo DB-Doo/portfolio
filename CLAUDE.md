@@ -41,6 +41,7 @@ UX portfolio (merged to `main` 2026-09-24):
 - The July recruiter-first draft ("I build the whole product") is saved on branch `july-redesign-draft` in the main checkout; Dan chose to start fresh instead.
 
 - LinkedIn alignment (2026-10-23): title is "UX / Product Designer" everywhere (site metadata, link previews, résumé) to match Dan's refreshed LinkedIn headline. Doto is a honeycomb grid inspired by the Apple Watch home screen, expanded onto an open canvas: never call it "no grid". Its signature features are the tilt-responsive 3D canvas (Pro), the whole-screen music visualizer and fabrics that respond to touch. Wide is described as one panorama with a mini map, an iPod-style history dial (HistoryRing in wide-flutter) and magnetic snapping. LinkedIn Featured links /work/doto-launcher, /work/wide and /work/bid-tracker.
+- Doto case study (2026-10-23) opens with Dan's own reasoning (page and grid, mind maps, the Watch honeycomb taken further, Nintype as the bar for feel) and leads its decisions with five of his design calls; the tester-driven decisions follow. Draft and LinkedIn posts: https://claude.ai/artifact/6mxgdsfjT238ipxjBGZiSt. Quick launch is opt-in (default off); it and widget resizing are free; the 3D tilt and whole-screen visualizer are Pro.
 
 ## Next up
 
