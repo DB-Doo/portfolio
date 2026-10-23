@@ -142,7 +142,7 @@ export const caseStudies: CaseStudy[] = [
         title: "Everything moves with your music",
         before: "A music widget that shows what's playing.",
         after:
-          "The music widget's dots move with the song. With Pro, every dot, icon and widget on the home screen moves with it.",
+          "The music widget's dots move with the song. With Pro, the whole home screen joins in through layered visualizers: a ring around the edge of everything reacts to every note, bass notes make the fabric ripple and send waves out from under your apps, and every icon and widget moves in sync with them.",
         why: "This is my favorite part. When music is on and the canvas you arranged yourself dances with the song, it feels good. It's your own playground and your own organized desk, responding to you. I had never seen music shown like this, flat across the dots and then in 3D when you tilt the phone, and watching it still tickles my brain. When the music stops, everything goes still, so it costs no battery.",
       },
       {
