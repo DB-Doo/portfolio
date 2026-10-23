@@ -21,11 +21,11 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Dan Brandt | UX Designer",
+  title: "Dan Brandt | UX / Product Designer",
   description:
-    "UX designer in Kansas City. I design mobile and web apps and build them myself. Case studies: Doto, a home screen on Google Play; Wide, a carousel editor; and NinKeys, a swipe keyboard for iPhone.",
+    "UX and product designer in Kansas City. I design mobile and web apps and build them myself. Case studies: Doto, a home screen on Google Play; Wide, a carousel editor; and NinKeys, a swipe keyboard for iPhone.",
   openGraph: {
-    title: "Dan Brandt | UX Designer",
+    title: "Dan Brandt | UX / Product Designer",
     description:
       "I design mobile and web apps and build them myself. Case studies from Doto, Wide and client work.",
     url: "https://dbdoo.dev",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dan Brandt | UX Designer",
+    title: "Dan Brandt | UX / Product Designer",
     description:
       "I design mobile and web apps and build them myself. Case studies from Doto, Wide and client work.",
   },

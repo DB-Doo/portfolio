@@ -40,6 +40,8 @@ UX portfolio (merged to `main` 2026-09-24):
 - Canvas Critters (2026-10-13, Dan picked "A"): the spider nests on the Doto card in the home hero and the Roomba docks beside the buttons; they wake when a visitor moves over open dots and ignore the cursor over text. A phone playground sits on `/doto-launcher`, marked Pro. Dan decided (2026-10-13) they go live on the site as soon as he approves, ahead of the app; the copy says they are coming to Doto Pro (PR #3).
 - The July recruiter-first draft ("I build the whole product") is saved on branch `july-redesign-draft` in the main checkout; Dan chose to start fresh instead.
 
+- LinkedIn alignment (2026-10-23): title is "UX / Product Designer" everywhere (site metadata, link previews, résumé) to match Dan's refreshed LinkedIn headline. Doto is a honeycomb grid inspired by the Apple Watch home screen, expanded onto an open canvas: never call it "no grid". Its signature features are the tilt-responsive 3D canvas (Pro), the whole-screen music visualizer and fabrics that respond to touch. Wide is described as one panorama with a mini map, an iPod-style history dial (HistoryRing in wide-flutter) and magnetic snapping. LinkedIn Featured links /work/doto-launcher, /work/wide and /work/bid-tracker.
+
 ## Next up
 
 1. Dan checks the One sheet redesign locally (branch `claude/project-thread-4vkuqp`) and confirms NinKeys details: name, status "In private testing", timeline. Then the reason the paged grid was dropped in dot.o.

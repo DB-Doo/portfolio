@@ -31,7 +31,7 @@ export async function generateMetadata({
   const study = getCaseStudy(slug);
   if (!study) return {};
   return {
-    title: `${study.title} case study | Dan Brandt, UX Designer`,
+    title: `${study.title} case study | Dan Brandt, UX / Product Designer`,
     description: study.summary,
     alternates: { canonical: `/work/${study.slug}` },
   };

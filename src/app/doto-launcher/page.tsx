@@ -53,8 +53,8 @@ export const dynamic = "force-static";
 const reasons = [
   {
     number: "01",
-    title: "No grid",
-    body: "Place apps, folders and widgets at any point on one canvas. Pinch out to see all of it. Your hand learns where everything lives.",
+    title: "A honeycomb you can touch",
+    body: "Apps sit in a honeycomb, like an Apple Watch, on one canvas you can pan and pinch. Run a finger through the fabric and it gives.",
   },
   {
     number: "02",
@@ -69,7 +69,7 @@ const reasons = [
 ] as const;
 
 const screens = [
-  { file: "01-home", alt: "A home screen made of dots. No grid, no pages." },
+  { file: "01-home", alt: "A home screen made of dots. One canvas, no pages." },
   { file: "04-looks", alt: "One tap, a whole new look: colors, font, icons, widgets and fabric." },
   { file: "05-anywhere", alt: "Put anything anywhere. Pro." },
   { file: "06-day", alt: "Your whole day at a glance. Pro." },
@@ -136,7 +136,7 @@ export default function DotoLauncherPage() {
               Your home screen is a canvas made of dots.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8">
-              Put apps and widgets anywhere. Play music and the dots move with it, raise
+              Arrange your apps in a honeycomb on one open canvas. Play music and the dots move with it, raise
               the canvas into 3D, and soon share it with Kiwi and Zuzu.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">

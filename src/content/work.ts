@@ -67,9 +67,9 @@ export const caseStudies: CaseStudy[] = [
     status: "Live on Google Play",
     accent: "#67e8f9",
     headline:
-      "A home screen with no grid, designed from scratch and shipped on Google Play.",
+      "A home screen that feels alive, designed from scratch and shipped on Google Play.",
     summary:
-      "You put apps and widgets anywhere on one open canvas of dots. The dots move with your music, the canvas rises into 3D, and two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
+      "Apps sit in a honeycomb, an idea from the Apple Watch stretched across one open canvas of dots. Tilt the phone and the 3D canvas tilts with you, every icon and widget moves with your music, and the fabric backgrounds give under your finger. Two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
     did: "Designed and built the whole app. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",
@@ -78,19 +78,19 @@ export const caseStudies: CaseStudy[] = [
       src: "/images/doto/01-spatial-home.webp",
       width: 720,
       height: 1280,
-      alt: "Doto home screen: apps and round widgets placed freely on a dark dotted background",
+      alt: "Doto home screen: round app icons and widgets on a dark dotted canvas",
       shape: "phone",
     },
     problem: [
-      "Almost every phone home screen is the same: pages of icons snapped to a grid. The minimal alternatives go the other way and strip nearly everything out. Neither lets you arrange your phone the way you arrange your desk.",
-      "I wanted a home screen that works like a place. You put things where you want them, your hand learns where they are, and the screen stays calm until you touch it.",
+      "Almost every phone home screen is the same: flat pages of icons in rows. The minimal alternatives go the other way and strip nearly everything out. Both feel like a menu, not something you can touch.",
+      "I wanted a home screen that feels alive. The Apple Watch honeycomb showed how good a field of round icons can feel under a thumb, so I took that idea much further: one canvas you can pan and pinch, that leans when you tilt the phone, moves with your music, and stays calm until you touch it.",
     ],
     quote: {
       text: "The problem with general minimal launchers is that they confine you in a small space. It suffocates me. This launcher doesn't.",
       source: "An early tester",
     },
     audience: [
-      "People who like setting up their phone their own way and are tired of the grid.",
+      "People who like setting up their phone their own way and are tired of rows of icons.",
       "People with foldable phones, who switch between a narrow outer screen and a large inner screen many times a day.",
     ],
     constraints: [
@@ -166,8 +166,8 @@ export const caseStudies: CaseStudy[] = [
     },
     explorations: [
       {
-        title: "Going back to a grid",
-        body: "I designed and built a version with tidy pages of icons, like a normal home screen. Three days later I went back to the open canvas, and it has been the product ever since.",
+        title: "Going back to pages",
+        body: "I designed and built a version with tidy pages of icons, like a normal home screen. Three days later I went back to the one open canvas, and it has been the product ever since.",
       },
       {
         title: "A new settings layout",
@@ -249,14 +249,14 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "wide",
     title: "Wide",
-    kind: "Mobile photo editor",
+    kind: "Panorama carousel editor",
     status: "In beta",
     accent: "#fb7185",
     headline:
       "Instagram carousels designed as one wide image, on a phone.",
     summary:
-      "Most tools make you design each slide on its own and hope the edges line up. Wide shows the whole strip at once, with every cut marked.",
-    did: "Designed an editor where the whole carousel is one canvas, with slide edges you can read on any photo, a preview that is also the layout view, and one consistent motion style across the app.",
+      "Most tools make you design each slide on its own and hope the edges line up. Wide treats the whole carousel as one panorama, with a mini map to get around it, a history dial to scrub through your edits and magnetic snapping to line things up.",
+    did: "Designed an editor where the whole carousel is one panorama, with a mini map for finding your way, an iPod-style dial for undo and redo, magnetic snapping, slide edges you can read on any photo, and one consistent motion style across the app.",
     role: "Solo project: design and development",
     timeline: "April to June 2026",
     platform: "Android",
@@ -299,6 +299,20 @@ export const caseStudies: CaseStudy[] = [
         after:
           "While you arrange slides, everything outside the canvas dims and the canvas shows exactly what will be exported.",
         why: "One step instead of two, and no surprises when the images land in your camera roll.",
+      },
+      {
+        title: "A mini map for a canvas wider than the screen",
+        before: "Zooming all the way out to find your place, then zooming back in to edit.",
+        after:
+          "A wireframe of the whole carousel sits inside the trackpad whenever nothing is selected. Drag on it to move around the document, and spin the ring around it to zoom.",
+        why: "A carousel can be many slides wide on a screen that shows about one. Putting the map in the trackpad means it costs no extra room, and it steps aside the moment you pick something to edit.",
+      },
+      {
+        title: "Undo as a dial",
+        before: "Undo and redo as two buttons, one step per tap.",
+        after:
+          "A history dial, like an old iPod's click wheel. Spin your finger one way to go back through your edits and the other way to go forward, and everything that changed glides back into place.",
+        why: "Getting back to how a design looked ten edits ago should be one smooth motion, not ten taps. Because the canvas glides between steps, you can watch what each edit did as you scrub past it.",
       },
       {
         title: "Animations that feel like one app",
