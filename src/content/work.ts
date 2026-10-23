@@ -110,6 +110,13 @@ export const caseStudies: CaseStudy[] = [
         why: "The Watch proved a field of round icons feels good under a thumb. It kept everything one size because it's a watch. A phone has room for more, so I kept the feel and took away the limits.",
       },
       {
+        title: "An endless canvas you can't get lost in",
+        before: "A truly infinite canvas, where one long swipe can leave you staring at empty dots with no idea how to get back.",
+        after:
+          "The edge of at least one of your apps or widgets always stays on screen. Pan past your layout and the canvas pulls back with a rubbery give. Those edges grow and shrink on the fly to fit however wide you lay things out.",
+        why: "It has to feel endless without being a place you can wander off into. Keeping something of yours in view means there is always a way home, and the rubber band tells you where your layout ends without a hard wall.",
+      },
+      {
         title: "Open a folder and launch an app in one touch",
         before: "Tap the folder, wait for it to open, look for the app, tap it. Down, up, down, up.",
         after:
