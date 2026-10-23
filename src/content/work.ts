@@ -69,7 +69,7 @@ export const caseStudies: CaseStudy[] = [
     headline:
       "A home screen that feels alive, designed from scratch and shipped on Google Play.",
     summary:
-      "Apps sit in a honeycomb, an idea from the Apple Watch stretched across one open canvas of dots. Tilt the phone and the 3D canvas tilts with you, every icon and widget moves with your music, and the fabric backgrounds give under your finger. Two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
+      "Apps sit in a honeycomb, an idea from the Apple Watch stretched across one open canvas of dots. The fabric backgrounds give under your finger, and with Pro the canvas rises into 3D and tilts with your phone while every icon and widget moves with your music. Two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
     did: "Designed and built the whole app. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",
