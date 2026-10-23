@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Dan Brandt | UX Designer";
+export const alt = "Dan Brandt | UX / Product Designer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -44,7 +44,7 @@ export default async function Image() {
             marginBottom: 16,
           }}
         >
-          UX Designer
+          UX / Product Designer
         </div>
         <div
           style={{

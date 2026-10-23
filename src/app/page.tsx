@@ -94,7 +94,7 @@ export default function Home() {
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
                   <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
                 </span>
-                Open to UX roles and freelance projects
+                Open to UX and product design roles
               </p>
             </Reveal>
             <div data-critter="wall" data-critter-name="the headline">
@@ -108,11 +108,11 @@ export default function Home() {
             </div>
             <Reveal delay={0.7}>
               <p data-critter="wall" data-critter-name="the intro" className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
-                I&rsquo;m Dan Brandt, a UX and motion designer in Kansas City. I prototype every interaction in real code. My newest app,{" "}
+                I&rsquo;m Dan Brandt, a UX and product designer in Kansas City. I build what I design, so every interaction gets tested in real code. My newest app,{" "}
                 <Link href={`/work/${doto.slug}`} className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-cyan-300">
                   Doto
                 </Link>
-                , is a home screen for Android made of dots that move with your music, rise into 3D and, soon, host two critters, Kiwi and Zuzu. It&rsquo;s live on Google Play.
+                , is an Android home screen that feels alive: a honeycomb of apps on a canvas of dots that tilts with your phone, moves with your music and, soon, hosts two critters, Kiwi and Zuzu. It&rsquo;s live on Google Play.
               </p>
             </Reveal>
             <Reveal delay={0.85}>

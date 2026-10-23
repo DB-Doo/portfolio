@@ -67,10 +67,10 @@ export const caseStudies: CaseStudy[] = [
     status: "Live on Google Play",
     accent: "#67e8f9",
     headline:
-      "A home screen with no grid, designed from scratch and shipped on Google Play.",
+      "A home screen that feels alive, designed from scratch and shipped on Google Play.",
     summary:
-      "You put apps and widgets anywhere on one open canvas of dots. The dots move with your music, the canvas rises into 3D, and two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
-    did: "Designed and built the whole app. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
+      "Apps sit in a honeycomb, an idea from the Apple Watch stretched across one open canvas of dots. The fabric backgrounds give under your finger, and with Pro the canvas rises into 3D and tilts with your phone while every icon and widget moves with your music. Two critters, Kiwi and Zuzu, are about to move in. Early testers shaped most of the big design changes.",
+    did: "Designed and built the whole app around one rule: the fewest looks and the fewest taps. The biggest changes came from testers: hints instead of a tutorial, one app list instead of three, settings where people expect them, and a way to hold the screen still.",
     role: "Solo project: design and development",
     timeline: "April 2026 to now",
     platform: "Android phones, foldables and tablets",
@@ -78,19 +78,21 @@ export const caseStudies: CaseStudy[] = [
       src: "/images/doto/01-spatial-home.webp",
       width: 720,
       height: 1280,
-      alt: "Doto home screen: apps and round widgets placed freely on a dark dotted background",
+      alt: "Doto home screen: round app icons and widgets on a dark dotted canvas",
       shape: "phone",
     },
     problem: [
-      "Almost every phone home screen is the same: pages of icons snapped to a grid. The minimal alternatives go the other way and strip nearly everything out. Neither lets you arrange your phone the way you arrange your desk.",
-      "I wanted a home screen that works like a place. You put things where you want them, your hand learns where they are, and the screen stays calm until you touch it.",
+      "Almost every interface we use is still built from pages and grids. Phones have worked that way for over fifteen years, and nobody has found a good way past it. I wanted a home screen with no sense of being boxed in.",
+      "I think in mind maps, not pages. Apple's honeycomb home screen on the Watch was the closest thing I'd seen to that: one field of apps you move around in instead of flipping through. But every app is the same size, which makes sense on a watch. A phone has room for more.",
+      "So I put that honeycomb on an endless canvas. Widgets can be big or small, your apps can all be out at once, and you can lay it out the way you'd lay out a tidy desk. Your hand learns where things are.",
+      "Then I wanted it to feel alive. The software I still measure everything against is Nintype, a keyboard that started as a jailbreak tweak for the iPhone more than fifteen years ago, years ahead of its time in how it felt under your thumbs (NinKeys is my rebuild of it). Doto is my attempt at that feeling for a whole home screen: an open canvas, silky motion and something close to a physics playground.",
     ],
     quote: {
       text: "The problem with general minimal launchers is that they confine you in a small space. It suffocates me. This launcher doesn't.",
       source: "An early tester",
     },
     audience: [
-      "People who like setting up their phone their own way and are tired of the grid.",
+      "People who like setting up their phone their own way and are tired of rows of icons.",
       "People with foldable phones, who switch between a narrow outer screen and a large inner screen many times a day.",
     ],
     constraints: [
@@ -99,6 +101,50 @@ export const caseStudies: CaseStudy[] = [
       "It has to work on every screen, from a folded phone's outer display to an unfolded tablet, and at every text size people choose in their phone settings.",
     ],
     decisions: [
+      {
+        title: "A honeycomb on an endless canvas",
+        before:
+          "Pages of same-size icons in rows, or the Apple Watch honeycomb, where every app is one size.",
+        after:
+          "The honeycomb, on one canvas you can pan and pinch, with room for widgets of any size and every app you own.",
+        why: "The Watch proved a field of round icons feels good under a thumb. It kept everything one size because it's a watch. A phone has room for more, so I kept the feel and took away the limits.",
+      },
+      {
+        title: "An endless canvas you can't get lost in",
+        before: "A truly infinite canvas, where one long swipe can leave you staring at empty dots with no idea how to get back.",
+        after:
+          "The edge of at least one of your apps or widgets always stays on screen. Pan past your layout and the canvas pulls back with a rubbery give. Those edges grow and shrink on the fly to fit however wide you lay things out.",
+        why: "It has to feel endless without being a place you can wander off into. Keeping something of yours in view means there is always a way home, and the rubber band tells you where your layout ends without a hard wall.",
+      },
+      {
+        title: "Open a folder and launch an app in one touch",
+        before: "Tap the folder, wait for it to open, look for the app, tap it. Down, up, down, up.",
+        after:
+          "Turn on Quick launch, then hold a folder, slide your finger onto an app and let go. The app grows under your finger to show it's picked, and it launches when you lift.",
+        why: "My rule for all of Doto is the fewest looks and the fewest taps. Every extra tap builds a little frustration that people rarely notice, until they've done it every day. Quick launch ships as a setting because it uses the same hold that picks up every other icon, and I didn't want to take that away from people who never go looking for the shortcut.",
+      },
+      {
+        title: "Widgets that redesign themselves as you resize them",
+        before: "Widgets come in a few fixed sizes that you choose once, from a menu.",
+        after:
+          "Resize a widget right on the canvas and almost every one changes its layout to fit, from a glance to something close to a full app. The most important information glides to the exact spot it will sit in the next layout.",
+        why: "What you want from a widget changes during the day, so resizing has to be quick. But a layout that jumps makes you hunt for what you were just reading. Because the key information moves instead of vanishing, your eye follows it and you never lose track.",
+      },
+      {
+        title: "Tilt to see it in 3D",
+        before: "A flat background behind the icons.",
+        after:
+          "Tilt the phone and the canvas shifts in 3D with a parallax effect, so the fabric under your apps has real depth.",
+        why: "I wanted the fabric to look and feel like something you can touch. It presses in under your finger, you can flick a ball across it, and haptics run through the whole launcher, so every touch answers back. Depth is the last piece that makes it a surface instead of a picture, and tilt shows it off without asking you to do anything.",
+        status: "Pro",
+      },
+      {
+        title: "Everything moves with your music",
+        before: "A music widget that shows what's playing.",
+        after:
+          "The music widget's dots move with the song. With Pro, the whole home screen joins in through layered visualizers: a spectrum wraps around the edge of your whole layout and shows which notes are playing, bass notes make the fabric ripple and send waves out from under your apps, and the icons and widget faces pump with the bass, so your whole desk seems to rumble in time with the song.",
+        why: "This is my favorite part. When music is on and the canvas you arranged yourself dances with the song, it feels good. It's your own playground and your own organized desk, responding to you. I had never seen music shown like this, flat across the dots and then in 3D when you tilt the phone, and watching it still tickles my brain. When the music stops, everything goes still, so it costs no battery.",
+      },
       {
         title: "Hints instead of a tutorial",
         before:
@@ -166,8 +212,8 @@ export const caseStudies: CaseStudy[] = [
     },
     explorations: [
       {
-        title: "Going back to a grid",
-        body: "I designed and built a version with tidy pages of icons, like a normal home screen. Three days later I went back to the open canvas, and it has been the product ever since.",
+        title: "Going back to pages",
+        body: "I designed and built a version with tidy pages of icons, like a normal home screen. Three days later I went back to the one open canvas, and it has been the product ever since.",
       },
       {
         title: "A new settings layout",
@@ -249,14 +295,14 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "wide",
     title: "Wide",
-    kind: "Mobile photo editor",
+    kind: "Panorama carousel editor",
     status: "In beta",
     accent: "#fb7185",
     headline:
       "Instagram carousels designed as one wide image, on a phone.",
     summary:
-      "Most tools make you design each slide on its own and hope the edges line up. Wide shows the whole strip at once, with every cut marked.",
-    did: "Designed an editor where the whole carousel is one canvas, with slide edges you can read on any photo, a preview that is also the layout view, and one consistent motion style across the app.",
+      "Most tools make you design each slide on its own and hope the edges line up. Wide treats the whole carousel as one panorama, with a mini map to get around it, a history dial to scrub through your edits and magnetic snapping to line things up.",
+    did: "Designed an editor where the whole carousel is one panorama, with a mini map for finding your way, an iPod-style dial for undo and redo, magnetic snapping, slide edges you can read on any photo, and one consistent motion style across the app.",
     role: "Solo project: design and development",
     timeline: "April to June 2026",
     platform: "Android",
@@ -299,6 +345,20 @@ export const caseStudies: CaseStudy[] = [
         after:
           "While you arrange slides, everything outside the canvas dims and the canvas shows exactly what will be exported.",
         why: "One step instead of two, and no surprises when the images land in your camera roll.",
+      },
+      {
+        title: "A mini map for a canvas wider than the screen",
+        before: "Zooming all the way out to find your place, then zooming back in to edit.",
+        after:
+          "A wireframe of the whole carousel sits inside the trackpad whenever nothing is selected. Drag on it to move around the document, and spin the ring around it to zoom.",
+        why: "A carousel can be many slides wide on a screen that shows about one. Putting the map in the trackpad means it costs no extra room, and it steps aside the moment you pick something to edit.",
+      },
+      {
+        title: "Undo as a dial",
+        before: "Undo and redo as two buttons, one step per tap.",
+        after:
+          "A history dial, like an old iPod's click wheel. Spin your finger one way to go back through your edits and the other way to go forward, and everything that changed glides back into place.",
+        why: "Getting back to how a design looked ten edits ago should be one smooth motion, not ten taps. Because the canvas glides between steps, you can watch what each edit did as you scrub past it.",
       },
       {
         title: "Animations that feel like one app",
