@@ -128,7 +128,7 @@ export const caseStudies: CaseStudy[] = [
         before: "A flat background behind the icons.",
         after:
           "Tilt the phone and the canvas shifts in 3D with a parallax effect, so the fabric under your apps has real depth.",
-        why: "The fabrics respond to your finger with real physics, and depth is what makes them feel like a surface instead of a picture. Tilt shows that off without asking you to do anything.",
+        why: "I wanted the fabric to look and feel like something you can touch. It presses in under your finger, you can flick a ball across it, and haptics run through the whole launcher, so every touch answers back. Depth is the last piece that makes it a surface instead of a picture, and tilt shows it off without asking you to do anything.",
         status: "Pro",
       },
       {
