@@ -31,22 +31,28 @@ Deploys to **Vercel** on every push to `main`. Custom domain `dbdoo.dev` aliased
 
 UX portfolio (merged to `main` 2026-09-24):
 
-- Home (`src/app/page.tsx`): hero, three case-study cards, "Also built", About (story plus a "Previously" list), contact. No process section: research (2026-09-28) found respected designer sites do not have one and hiring managers read them as filler. Copy opens with plain facts, never slogans or aphorisms. Résumé at `public/Dan_Brandt_Resume.pdf`.
-- Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `bid-tracker`.
+- One sheet (2026-10-13, Dan picked it from three mocks): a page-wide Doto dot fabric sits fixed behind every page (`src/components/fabric/`: `engine.ts` lattice physics, `SiteFabric.tsx` wells under cards and light presses under text, `WellLink.tsx` card-to-case-study morph, `bus.ts` connecting them). The spider and Roomba live on that sheet on every page (`SiteCritters.tsx`, `mountSite` in `public/doto-launcher/critters/stage.js`); text and nav are walls, cards and images are ledges (`room.ts`). Reduced motion draws a still lattice and a "Wake the critters" button. Rule: motion never holds text back.
+- Home (`src/app/page.tsx`): hero (dot headline "I design interfaces that move." in `DotHeadline.tsx`; NinKeys keyboard at the back, Wide phone and a live Doto phone `LivePhone.tsx` in front), a Motion section (`MotionCompare.tsx`, default vs tuned timing, Dan 2026-10-14), three case-study cards, "Also built", About (story plus a "Previously" list), contact. No process section: research (2026-09-28) found respected designer sites do not have one and hiring managers read them as filler. Copy opens with plain facts, never slogans or aphorisms. Résumé at `public/Dan_Brandt_Resume.pdf`.
+- Doto is presented through its three standouts (Dan, 2026-10-13): the music visualizer, the 3D canvas (Pro) and Canvas Critters. They lead `/doto-launcher` ("Only on Doto"), the home intro and the Doto card.
+- Case studies: data in `src/content/work.ts`, one template at `src/app/work/[slug]/page.tsx` (static params, `dynamicParams = false`). Slugs: `doto-launcher`, `wide`, `ninkeys`. Bid Tracker is gone from the site at Dan's request (2026-10-13); NinKeys took its place.
 - Visual language matches `/doto-launcher`: neutral-950, cyan-300/400 signal, mono eyebrow labels, Geist via `font-sans` (body CSS still says Arial, so each page's `<main>` sets `font-sans`).
 - Every case-study claim is sourced from that project's repo (dot.o: `docs/okf`, `docs/design`, `docs/feedback`, commits; Wide: `docs/audit`, `docs/superpowers/specs`). Never describe unshipped dot.o features as shipped; check its `docs/okf/release/feature-switches.md`.
+- Canvas Critters (2026-10-13, Dan picked "A"): the spider nests on the Doto card in the home hero and the Roomba docks beside the buttons; they wake when a visitor moves over open dots and ignore the cursor over text. A phone playground sits on `/doto-launcher`, marked Pro. Dan decided (2026-10-13) they go live on the site as soon as he approves, ahead of the app; the copy says they are coming to Doto Pro (PR #3).
 - The July recruiter-first draft ("I build the whole product") is saved on branch `july-redesign-draft` in the main checkout; Dan chose to start fresh instead.
 
 ## Next up
 
-1. Dan confirms the Bid Tracker "why" lines and the reason the paged grid was dropped in dot.o.
+1. Dan checks the One sheet redesign locally (branch `claude/project-thread-4vkuqp`) and confirms NinKeys details: name, status "In private testing", timeline. Then the reason the paged grid was dropped in dot.o.
 2. A UX-titled résumé (the current PDF says App & Web Developer).
 3. More before/after pairs for dot.o (tutorial vs hints, three drawers vs one) from old commits.
-4. MagneticButton / TiltCard / PhotoLightbox / physics tags are no longer used by the home page; leave them until the new site settles, then remove.
+4. Merge PR #3 once Dan approves it locally. When the critters ship in the app, change the Doto page label "Coming to Doto Pro" to say they are in Pro.
+5. MagneticButton / TiltCard / PhotoLightbox / physics tags are no longer used by the home page; leave them until the new site settles, then remove.
 
 ## Gotchas
 
 - **Next.js 16 breaking changes** — the `AGENTS.md` warning at the top of this file is real. Always check `node_modules/next/dist/docs/` before writing code that assumes old Next patterns.
+- **Canvas Critters** — the spider and Roomba live on the site-wide sheet on every page (`SiteCritters.tsx` → `mountSite` in `public/doto-launcher/critters/stage.js`) and in a phone playground on `/doto-launcher` (`CritterPhone.tsx`); the engine is plain JS. `CRITTERS_RELEASED` in `src/content/critters.ts` is the kill switch. Elements marked `data-critter="wall"` are text they drive around; `data-critter="ledge"` are cards they can stand on. Past the first screen the spider lets itself down a dragline at the right edge, hanging as far down the window as the reader is through the page, a live reading-progress meter (`abseil` in `stage.js`, Dan 2026-10-13); the Roomba joins it a random way each time (lasso, jet or hop, Dan 2026-10-14) and while riding it does seven tricks (progress ring, doze, bungee, high fives, pendulum, swap, victory lap at the bottom; Dan dropped the headlight sweep 2026-10-14), all in `abseil`; while hanging Kiwi poses and moves through `hangStep` in `spider.js` (app pose model: tucked, gathered, reaching, re-grips; drift, wave, groom, peer, hoist, tuck when idle, flare on a hard flick; rappels while you scroll down and turns head up to climb while you scroll up, Dan 2026-10-14); scrolled back to the top both step off and the spider goes home to its nest.
+- **Critter names in copy** — never write "Roomba" (an iRobot trademark) or "spider" in anything a visitor sees, including alt and aria text. Call them Kiwi and Zuzu (Dan, 2026-10-14). Code identifiers and comments may keep the old words.
 - **R3F / Three.js** — must be `"use client"`, wrap in `next/dynamic` with `ssr: false`.
 - **GSAP ScrollTrigger** — only fire inside `useEffect`; never during SSR.
 - **react-fluid-distortion** — requires `transpilePackages` config in `next.config.ts`.

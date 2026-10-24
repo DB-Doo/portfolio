@@ -3,7 +3,8 @@ import type { Figure } from "@/content/work";
 
 /*
 Device frames drawn in CSS, so screenshots read as products rather than loose images.
-Phones get a bezel, a camera dot and a soft reflection; wide shots get a browser window.
+Phones get a bezel, a camera dot and a soft reflection; wide shots get a browser window;
+cropped parts of a screen get a plain panel.
 */
 
 export function PhoneFrame({
@@ -82,6 +83,37 @@ export function BrowserFrame({
   );
 }
 
+/* A cropped part of a screen, such as a keyboard, on its own plain panel. */
+export function PanelFrame({
+  figure,
+  priority = false,
+  sizes = "(min-width: 1024px) 560px, 100vw",
+  className = "",
+}: {
+  figure: Figure;
+  priority?: boolean;
+  sizes?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#161616] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)] ${className}`}
+    >
+      <Image
+        src={figure.src}
+        alt={figure.alt}
+        width={figure.width}
+        height={figure.height}
+        priority={priority}
+        sizes={sizes}
+        className="block h-auto w-full"
+      />
+    </div>
+  );
+}
+
 export function Device(props: { figure: Figure; priority?: boolean; sizes?: string; className?: string }) {
-  return props.figure.shape === "phone" ? <PhoneFrame {...props} /> : <BrowserFrame {...props} />;
+  if (props.figure.shape === "phone") return <PhoneFrame {...props} />;
+  if (props.figure.shape === "panel") return <PanelFrame {...props} />;
+  return <BrowserFrame {...props} />;
 }

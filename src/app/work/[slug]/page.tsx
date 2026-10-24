@@ -107,7 +107,7 @@ export default async function CaseStudyPage({
 
   return (
     <main
-      className="grain relative min-h-screen overflow-x-clip bg-neutral-950 font-sans text-neutral-200 selection:bg-[var(--accent)] selection:text-neutral-950"
+      className="grain relative min-h-screen overflow-x-clip font-sans text-neutral-200 selection:bg-[var(--accent)] selection:text-neutral-950"
       style={{ "--accent": study.accent } as CSSProperties}
     >
       <ScrollProgress />
