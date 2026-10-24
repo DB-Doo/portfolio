@@ -15,7 +15,7 @@ JavaScript.
 export const metadata: Metadata = {
   title: "Doto Launcher Privacy Policy | dbdoo.dev",
   description:
-    "Privacy policy for the Google Play edition of Doto Launcher, including permissions, local processing, MET Norway weather, Google Play Billing, and Android backup.",
+    "Privacy policy for the Google Play edition of Doto Launcher, including permissions, local processing, optional Shizuku features, MET Norway weather, Google Play Billing, and Android backup.",
   alternates: {
     canonical: "/doto-launcher/privacy",
   },
@@ -65,6 +65,11 @@ const localFeatures = [
       "Visualization reads live audio levels through Android. Audio is processed while a visualizer is active and is not recorded, saved, or uploaded.",
   },
   {
+    name: "Optional Shizuku features",
+    detail:
+      "If you install the separate Shizuku app and allow Doto in it, one optional feature becomes available under Settings > Shizuku: earbuds case battery. It is off until you turn it on, it runs entirely on your device, and nothing it reads is stored beyond the live widget or sent anywhere.",
+  },
+  {
     name: "Notes and personalization",
     detail:
       "Notes, layouts, icon appearance, widget configuration, and launcher preferences are stored on your device.",
@@ -83,6 +88,7 @@ const permissions = [
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
   ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. Doto never writes, changes, or deletes health data."],
+  ["Shizuku", "Optional. Doto lists Shizuku's own permission so it can ask, but the request is only sent when you tap Allow under Settings > Shizuku, and Shizuku shows its own prompt. It serves only the earbuds case battery switch on that page. Nothing read this way leaves your device."],
 ] as const;
 
 function SectionHeading({
@@ -143,9 +149,9 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective October 12, 2026
+              Effective October 22, 2026
               <br />
-              Version 1.5
+              Version 1.6
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
               Local-first. No ads, no Doto account, and no automatic
@@ -368,6 +374,51 @@ export default function DotoLauncherPrivacyPolicy() {
                   </div>
                 ))}
               </dl>
+
+              <div className="mt-10 space-y-5 text-sm leading-7 text-neutral-400">
+                <h3 className="text-base font-medium text-white">
+                  Optional Shizuku features
+                </h3>
+                <p>
+                  Shizuku is a free, separate app, made by someone else, that
+                  you install and start yourself. It lends other apps the same
+                  access a computer plugged in by USB has. Doto never asks for
+                  it on its own: Shizuku only comes into play if you open
+                  Settings → Shizuku and allow Doto there, and even then only
+                  for the feature below. It has its own switch, off by
+                  default, and a note on that page explains what it does
+                  before you turn it on. A tester or user who never opens that
+                  page gets exactly the app described everywhere else in this
+                  policy.
+                </p>
+                <p>
+                  <span className="text-white">Earbuds case battery.</span>{" "}
+                  Android reports left and right earbud levels to any app with
+                  Nearby devices access, but keeps the charging case level to
+                  itself. With this switch on, Doto runs one system command
+                  through Shizuku, keeps only the battery lines of the result,
+                  and discards the rest. The case level is remembered on your
+                  device for up to 48 hours so the widget can show it while
+                  the case is closed, then it expires. Nothing read this way is
+                  logged, backed up, or sent anywhere.
+                </p>
+                <p>
+                  <span className="text-white">Turning it off.</span> Turn
+                  the switch off in Settings → Shizuku, revoke Doto inside
+                  the Shizuku app, or stop or uninstall Shizuku. The feature
+                  stops at once and the rest of Doto is unaffected. Shizuku
+                  itself is a third-party app with its own policy at{" "}
+                  <a
+                    href="https://shizuku.rikka.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-cyan-300 underline decoration-cyan-800 underline-offset-4 hover:decoration-cyan-300"
+                  >
+                    shizuku.rikka.app
+                  </a>
+                  .
+                </p>
+              </div>
             </section>
 
             <section id="health-data" className="scroll-mt-8 pt-20">
@@ -494,7 +545,8 @@ export default function DotoLauncherPrivacyPolicy() {
                 <p>
                   Local launcher state remains until you change it, clear the
                   app&apos;s storage, or uninstall Doto. Active notification,
-                  audio, Wi-Fi, and connected-device snapshots are kept only as
+                  audio, Wi-Fi, and connected-device snapshots, including the
+                  earbuds case level read through Shizuku, are kept only as
                   needed for the live feature. Cached weather locations and
                   forecasts may remain until they are refreshed, replaced,
                   cleared with app storage, or removed when Doto is
