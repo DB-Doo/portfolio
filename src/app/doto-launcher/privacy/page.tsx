@@ -149,9 +149,9 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective November 8, 2026
+              Effective November 9, 2026
               <br />
-              Version 1.7
+              Version 1.8
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
               Local-first. No ads, no Doto account, and no automatic
@@ -474,8 +474,12 @@ export default function DotoLauncherPrivacyPolicy() {
                   <span className="text-white">Turning it off.</span> Removing the
                   last widget for a metric stops its reads and clears its in-memory
                   readings and history. This does not revoke its Android permission.
-                  Leaving the foreground cancels reads and clears the health snapshot;
-                  permissions are checked before fresh readings appear on return.
+                  Leaving the foreground cancels reads. The last readings stay in
+                  process memory so the widgets show them on return instead of
+                  loading again; permissions are rechecked at once on return,
+                  before any fresh reading, and a revoked metric&apos;s readings are
+                  cleared at that check. A snapshot from an earlier day is not
+                  shown as today&apos;s.
                   In Settings → Privacy → Health Connect, Manage access
                   opens Android&apos;s controls. Disconnect clears all readings, stops
                   reads and asks Health Connect to revoke Doto&apos;s permissions.
