@@ -149,7 +149,7 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective November 9, 2026
+              Effective November 10, 2026
               <br />
               Version 1.8
             </p>
