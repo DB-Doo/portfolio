@@ -88,6 +88,7 @@ const permissions = [
   ["Nearby devices", "Connected Bluetooth names, battery reports, and a transient device address used only to match and deduplicate devices."],
   ["Usage access", "On-device daily app screen-time summaries."],
   ["Health Connect", "Read-only access to steps, heart rate, and sleep for the three health widgets, and only if you add one. Doto never writes, changes, or deletes health data."],
+  ["Accessibility", "Optional, for Double-tap to lock only. Locks the phone when you double-tap empty canvas on Home. It cannot read your screen or what you type, and collects, stores or sends nothing."],
   ["Shizuku", "Optional. Doto lists Shizuku's own permission so it can ask, but the request is only sent when you tap Allow under Settings > Shizuku, and Shizuku shows its own prompt. It serves only the earbuds case battery and high fidelity music switches on that page. Nothing read or heard this way leaves your device."],
 ] as const;
 
@@ -149,9 +150,9 @@ export default function DotoLauncherPrivacyPolicy() {
               Privacy policy
             </h1>
             <p className="mt-4 max-w-xs text-sm leading-6 text-neutral-400">
-              Effective November 10, 2026
+              Effective November 18, 2026
               <br />
-              Version 1.8
+              Version 1.9
             </p>
             <p className="mt-5 max-w-sm text-sm leading-6 text-neutral-300 lg:hidden">
               Local-first. No ads, no Doto account, and no automatic
@@ -429,6 +430,23 @@ export default function DotoLauncherPrivacyPolicy() {
                     shizuku.rikka.app
                   </a>
                   .
+                </p>
+              </div>
+
+              <div className="mt-10 space-y-5 text-sm leading-7 text-neutral-400">
+                <h3 className="text-base font-medium text-white">
+                  Optional: Double-tap to lock
+                </h3>
+                <p>
+                  Double-tap to lock is optional and off until you turn it on.
+                  It uses an Android accessibility service for one thing:
+                  locking your phone when you double-tap empty canvas on Home,
+                  the same way the power button does, so fingerprint and face
+                  unlock keep working. Before Android&apos;s Accessibility
+                  settings open, Doto explains this and asks you to continue.
+                  The service cannot read what is on your screen, does not see
+                  what you type, and collects, stores or sends nothing. You can
+                  turn it off any time in Android&apos;s Accessibility settings.
                 </p>
               </div>
             </section>
